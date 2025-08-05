@@ -1,0 +1,3084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monster Pairing Generator - Web Interface</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c1810, #4a2c2a);
+            color: #f0f0f0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #d4af37;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #cccccc;
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .control-group {
+            margin-bottom: 20px;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #d4af37;
+        }
+
+        .creativity-slider {
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(to right, #228B22, #32CD32, #FFD700, #FF8C00, #FF4500, #DC143C);
+            border-radius: 4px;
+            outline: none;
+            margin-bottom: 10px;
+        }
+
+        .creativity-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #cccccc;
+        }
+
+        .creativity-info {
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            display: none;
+        }
+
+        .creativity-info.show {
+            display: block;
+        }
+
+        .creativity-info h3 {
+            color: #d4af37;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.3rem;
+        }
+
+        .creativity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .creativity-level-card {
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 4px solid;
+            transition: all 0.3s ease;
+        }
+
+        .creativity-level-card:hover {
+            background: rgba(0,0,0,0.3);
+            transform: translateY(-2px);
+        }
+
+        .creativity-level-card.level-0 { border-left-color: #228B22; }
+        .creativity-level-card.level-1 { border-left-color: #32CD32; }
+        .creativity-level-card.level-2 { border-left-color: #FFD700; }
+        .creativity-level-card.level-3 { border-left-color: #FF8C00; }
+        .creativity-level-card.level-4 { border-left-color: #FF4500; }
+        .creativity-level-card.level-5 { border-left-color: #DC143C; }
+
+        .creativity-level-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: #d4af37;
+        }
+
+        .creativity-level-description {
+            font-size: 0.9rem;
+            color: #cccccc;
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+
+        .creativity-level-example {
+            font-style: italic;
+            font-size: 0.85rem;
+            color: #b8b8b8;
+            border-left: 2px solid rgba(212, 175, 55, 0.3);
+            padding-left: 10px;
+        }
+
+        .creativity-toggle {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .creativity-toggle-btn {
+            background: rgba(212, 175, 55, 0.2);
+            color: #d4af37;
+            border: 1px solid #d4af37;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .creativity-toggle-btn:hover {
+            background: rgba(212, 175, 55, 0.3);
+        }
+
+        .generate-btn {
+            background: linear-gradient(45deg, #d4af37, #f0c040);
+            color: #2c1810;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .generate-btn:active {
+            transform: translateY(0);
+        }
+
+        .results {
+            display: none;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .pairing-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .creativity-level {
+            background: rgba(212, 175, 55, 0.2);
+            color: #d4af37;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .encounter-cards {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .monster-card {
+            background: rgba(0,0,0,0.4);
+            border-radius: 10px;
+            padding: 20px;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .monster-card:hover {
+            transform: scale(1.02);
+            border-color: rgba(212, 175, 55, 0.6);
+        }
+
+        .monster-name {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #d4af37;
+            margin-bottom: 10px;
+        }
+
+        .monster-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .stat-item {
+            font-size: 0.9rem;
+            color: #cccccc;
+        }
+
+        .stat-label {
+            color: #d4af37;
+            font-weight: bold;
+        }
+
+        .synergy-tags {
+            margin-top: 10px;
+        }
+
+        .tag {
+            background: rgba(212, 175, 55, 0.2);
+            color: #d4af37;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin: 2px;
+            display: inline-block;
+        }
+
+        .synergy-connector {
+            text-align: center;
+            font-size: 2rem;
+            color: #d4af37;
+            font-weight: bold;
+        }
+
+        .synergy-explanation {
+            background: rgba(212, 175, 55, 0.1);
+            border-left: 4px solid #d4af37;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .synergy-type {
+            color: #d4af37;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .synergy-description {
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .foundation-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+        }
+
+        .foundation-item {
+            text-align: center;
+        }
+
+        .foundation-label {
+            color: #d4af37;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .foundation-value {
+            color: #cccccc;
+            font-size: 1rem;
+        }
+
+        .export-section {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .export-btn {
+            background: rgba(212, 175, 55, 0.2);
+            color: #d4af37;
+            border: 1px solid #d4af37;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+
+        .export-btn:hover {
+            background: rgba(212, 175, 55, 0.3);
+        }
+        
+        .monster-source {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 10px;
+            color: #d4af37;
+            opacity: 0.8;
+        }
+
+        .source-title {
+            font-weight: bold;
+        }
+
+        .source-page {
+            font-style: italic;
+        }
+
+        .narrative-suggestions {
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .narrative-suggestions h4 {
+            color: #d4af37;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .narrative-suggestion-item {
+            background: rgba(0,0,0,0.1);
+            border-left: 3px solid rgba(212, 175, 55, 0.4);
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .narrative-suggestion-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .narrative-suggestion-type {
+            color: #d4af37;
+            font-weight: bold;
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+        }
+
+        .loading {
+            text-align: center;
+            color: #d4af37;
+            font-size: 1.2rem;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .encounter-cards {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .synergy-connector {
+                transform: rotate(90deg);
+                margin: 10px 0;
+            }
+            
+            .monster-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🐉 Monster Pairing Generator 🐉</h1>
+            <p>Create interesting tactical encounters with synergistic monster combinations</p>
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="creativitySlider">🎨 Creativity Level: <span id="creativityLabel">2 - Interesting</span></label>
+                <input type="range" id="creativitySlider" class="creativity-slider" min="0" max="5" value="2">
+                <div class="creativity-labels">
+                    <span>Ultra-Logical</span>
+                    <span>Sensible</span>
+                    <span>Interesting</span>
+                    <span>Creative</span>
+                    <span>Surreal</span>
+                    <span>Chaotic</span>
+                </div>
+            </div>
+
+            <div class="creativity-toggle">
+                <button class="creativity-toggle-btn" onclick="toggleCreativityInfo()">
+                    📖 Learn About Creativity Levels
+                </button>
+            </div>
+            
+            <div style="text-align: center;">
+                <button class="generate-btn" onclick="generatePairing()">🎲 Generate Monster Pairing</button>
+            </div>
+        </div>
+
+        <div id="creativityInfo" class="creativity-info">
+            <h3>🎨 Creativity Level Guide</h3>
+            <div class="creativity-grid">
+                <div class="creativity-level-card level-0">
+                    <div class="creativity-level-title">Level 0: Ultra-Logical</div>
+                    <div class="creativity-level-description">
+                        Tournament-grade encounters with strict ecological logic. Only creatures that naturally coexist or have established D&D relationships.
+                    </div>
+                    <div class="creativity-level-example">
+                        Example: Wolf + Hobgoblin (domestication/training)
+                    </div>
+                </div>
+
+                <div class="creativity-level-card level-1">
+                    <div class="creativity-level-title">Level 1: Sensible</div>
+                    <div class="creativity-level-description">
+                        Traditional fantasy tropes with logical cooperation. Familiar combinations that fit established D&D world assumptions.
+                    </div>
+                    <div class="creativity-level-example">
+                        Example: Drow + Phase Spider (Underdark ecosystem)
+                    </div>
+                </div>
+
+                <div class="creativity-level-card level-2">
+                    <div class="creativity-level-title">Level 2: Interesting (Default)</div>
+                    <div class="creativity-level-description">
+                        Creative but explainable combinations requiring some narrative work. Tactical innovations that make you think "huh, that's clever."
+                    </div>
+                    <div class="creativity-level-example">
+                        Example: Gelatinous Cube + Will-o'-Wisp (lure and trap)
+                    </div>
+                </div>
+
+                <div class="creativity-level-card level-3">
+                    <div class="creativity-level-title">Level 3: Creative</div>
+                    <div class="creativity-level-description">
+                        Unusual alliances that stretch logic boundaries. Requires magical explanations or extraordinary circumstances to make sense.
+                    </div>
+                    <div class="creativity-level-example">
+                        Example: Troll + Fire Elemental (magical compulsion overcomes fire vulnerability)
+                    </div>
+                </div>
+
+                <div class="creativity-level-card level-4">
+                    <div class="creativity-level-title">Level 4: Surreal</div>
+                    <div class="creativity-level-description">
+                        Reality-bending partnerships that defy normal logic. Perfect for dream sequences, planar adventures, or veteran groups.
+                    </div>
+                    <div class="creativity-level-example">
+                        Example: Ancient Dragon + Pixie (size paradox with fey magic)
+                    </div>
+                </div>
+
+                <div class="creativity-level-card level-5">
+                    <div class="creativity-level-title">Level 5: Chaotic</div>
+                    <div class="creativity-level-description">
+                        Pure randomness where the universe's sense of humor manifests physically. Comedy sessions and experimental mechanics.
+                    </div>
+                    <div class="creativity-level-example">
+                        Example: Tarrasque + Butterfly (reality pauses to watch this impossibility)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="loadingDiv" class="loading" style="display: none;">
+            <div>⚔️ Rolling the dice of fate... ⚔️</div>
+        </div>
+
+        <div id="resultsDiv" class="results">
+            <!-- Results will be populated here -->
+        </div>
+    </div>
+
+    <script>
+        // Monster Pairing Generator - JavaScript Implementation
+        class MonsterPairingGenerator {
+            constructor() {
+                this.loadData();
+            }
+
+            loadData() {
+                // Embedded monster database - complete collection from JSON
+                this.monsterData = {
+                    monsters: [
+                        {
+                            name: "Fire Elemental",
+                            cr: 5,
+                            type: "elemental",
+                            size: "large",
+                            ac: 13,
+                            hp: 102,
+                            speed: {walk: 50, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["brute", "controller"],
+                            damage_types_dealt: ["fire"],
+                            damage_resistances: [],
+                            damage_immunities: ["fire"],
+                            condition_immunities: ["exhaustion", "grappled", "paralyzed", "petrified", "poisoned", "prone", "restrained", "unconscious"],
+                            synergy_tags: ["fire_dealer", "immunity_fire", "aoe_damage", "ignition_source"],
+                            biomes: ["volcanic", "desert", "elemental_plane", "underground"],
+                            tactical_range: "mixed",
+                            mobility: "high",
+                            intelligence: "bestial",
+                            conditions_inflicted: ["ignition"],
+                            special_abilities: ["fire_form", "illumination", "water_susceptible"],
+                        },
+                        {
+                            name: "Iron Golem",
+                            cr: 16,
+                            type: "construct",
+                            size: "large",
+                            ac: 20,
+                            hp: 210,
+                            speed: {walk: 30, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["brute", "soldier"],
+                            damage_types_dealt: ["bludgeoning"],
+                            damage_resistances: [],
+                            damage_immunities: ["fire", "poison", "psychic"],
+                            condition_immunities: ["charmed", "exhaustion", "frightened", "paralyzed", "petrified", "poisoned"],
+                            synergy_tags: ["fire_healed", "immunity_fire", "metal_construct", "magic_resistance"],
+                            biomes: ["urban", "dungeon", "fortress", "underground"],
+                            tactical_range: "melee",
+                            mobility: "low",
+                            intelligence: "cunning",
+                            conditions_inflicted: [],
+                            special_abilities: ["fire_absorption", "immutable_form", "magic_resistance"],
+                        },
+                        {
+                            name: "Hobgoblin",
+                            cr: 0.5,
+                            type: "humanoid",
+                            size: "medium",
+                            ac: 18,
+                            hp: 11,
+                            speed: {walk: 30, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["soldier", "artillery"],
+                            damage_types_dealt: ["slashing", "piercing"],
+                            damage_resistances: [],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["martial_advantage", "pack_fighter", "tactical_coordination"],
+                            biomes: ["forest", "hills", "mountains", "underground"],
+                            tactical_range: "mixed",
+                            mobility: "medium",
+                            intelligence: "cunning",
+                            conditions_inflicted: [],
+                            special_abilities: ["martial_advantage"],
+                        },
+                        {
+                            name: "Wolf",
+                            cr: 0.25,
+                            type: "beast",
+                            size: "medium",
+                            ac: 13,
+                            hp: 11,
+                            speed: {walk: 40, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["skirmisher"],
+                            damage_types_dealt: ["piercing"],
+                            damage_resistances: [],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["pack_tactics", "prone_inflictor", "keen_hearing"],
+                            biomes: ["forest", "hills", "arctic", "grassland"],
+                            tactical_range: "melee",
+                            mobility: "high",
+                            intelligence: "bestial",
+                            conditions_inflicted: ["prone"],
+                            special_abilities: ["pack_tactics", "keen_hearing_smell"],
+                        },
+                        {
+                            name: "Shambling Mound",
+                            cr: 5,
+                            type: "plant",
+                            size: "large",
+                            ac: 15,
+                            hp: 136,
+                            speed: {walk: 20, fly: 0, swim: 20, burrow: 0, climb: 0},
+                            roles: ["brute", "controller"],
+                            damage_types_dealt: ["bludgeoning"],
+                            damage_resistances: ["cold", "fire"],
+                            damage_immunities: ["lightning"],
+                            condition_immunities: ["blinded", "deafened", "exhaustion"],
+                            synergy_tags: ["lightning_healed", "engulf_grappler", "swamp_native", "immunity_lightning"],
+                            biomes: ["swamp", "forest", "jungle"],
+                            tactical_range: "melee",
+                            mobility: "low",
+                            intelligence: "bestial",
+                            conditions_inflicted: ["grappled", "restrained"],
+                            special_abilities: ["engulf", "lightning_absorption"],
+                        },
+                        {
+                            name: "Will-o'-Wisp",
+                            cr: 2,
+                            type: "undead",
+                            size: "tiny",
+                            ac: 19,
+                            hp: 22,
+                            speed: {walk: 0, fly: 50, swim: 0, burrow: 0, climb: 0},
+                            roles: ["lurker", "controller"],
+                            damage_types_dealt: ["lightning"],
+                            damage_resistances: ["acid", "cold", "fire", "necrotic", "thunder"],
+                            damage_immunities: ["lightning", "poison"],
+                            condition_immunities: ["exhaustion", "grappled", "paralyzed", "poisoned", "prone", "restrained", "unconscious"],
+                            synergy_tags: ["lightning_dealer", "incorporeal", "consume_life", "lure_tactic"],
+                            biomes: ["swamp", "forest", "ruins", "graveyards"],
+                            tactical_range: "ranged",
+                            mobility: "very_high",
+                            intelligence: "cunning",
+                            conditions_inflicted: [],
+                            special_abilities: ["consume_life", "ephemeral", "incorporeal_movement", "variable_illumination"],
+                        },
+                        {
+                            name: "Gelatinous Cube",
+                            cr: 2,
+                            type: "ooze",
+                            size: "large",
+                            ac: 6,
+                            hp: 84,
+                            speed: {walk: 15, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["brute", "controller"],
+                            damage_types_dealt: ["acid"],
+                            damage_resistances: [],
+                            damage_immunities: [],
+                            condition_immunities: ["blinded", "charmed", "deafened", "exhaustion", "frightened", "prone"],
+                            synergy_tags: ["engulf_controller", "acid_dealer", "transparent", "dungeon_cleaner"],
+                            biomes: ["dungeon", "underground", "ruins"],
+                            tactical_range: "melee",
+                            mobility: "very_low",
+                            intelligence: "bestial",
+                            conditions_inflicted: ["paralyzed", "restrained"],
+                            special_abilities: ["engulf", "ooze_cube", "transparent"],
+                        },
+                        {
+                            name: "Clay Golem",
+                            cr: 9,
+                            type: "construct",
+                            size: "large",
+                            ac: 14,
+                            hp: 133,
+                            speed: {walk: 20, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["brute", "soldier"],
+                            damage_types_dealt: ["bludgeoning"],
+                            damage_resistances: [],
+                            damage_immunities: ["acid", "poison", "psychic"],
+                            condition_immunities: ["charmed", "exhaustion", "frightened", "paralyzed", "petrified", "poisoned"],
+                            synergy_tags: ["acid_healed", "immunity_acid", "construct_durability", "haste_benefit"],
+                            biomes: ["dungeon", "temple", "ruins", "underground"],
+                            tactical_range: "melee",
+                            mobility: "low",
+                            intelligence: "cunning",
+                            conditions_inflicted: [],
+                            special_abilities: ["acid_absorption", "berserk", "immutable_form", "magic_resistance"],
+                        },
+                        {
+                            name: "Owlbear",
+                            cr: 3,
+                            type: "monstrosity",
+                            size: "large",
+                            ac: 13,
+                            hp: 59,
+                            speed: {walk: 40, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["brute"],
+                            damage_types_dealt: ["slashing", "piercing"],
+                            damage_resistances: [],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["keen_sight", "territorial", "fierce_predator"],
+                            biomes: ["forest", "hills", "mountains"],
+                            tactical_range: "melee",
+                            mobility: "medium",
+                            intelligence: "bestial",
+                            conditions_inflicted: [],
+                            special_abilities: ["keen_sight_smell"],
+                        },
+                        {
+                            name: "Stirge",
+                            cr: 0.125,
+                            type: "beast",
+                            size: "tiny",
+                            ac: 14,
+                            hp: 2,
+                            speed: {walk: 10, fly: 40, swim: 0, burrow: 0, climb: 0},
+                            roles: ["lurker", "skirmisher"],
+                            damage_types_dealt: ["piercing"],
+                            damage_resistances: [],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["blood_drain", "attach_grappler", "swarm_behavior", "flying_pest"],
+                            biomes: ["swamp", "forest", "caves", "ruins"],
+                            tactical_range: "melee",
+                            mobility: "high",
+                            intelligence: "bestial",
+                            conditions_inflicted: ["attached"],
+                            special_abilities: ["blood_drain"],
+                        },
+                        {
+                            name: "Goblin",
+                            cr: 0.25,
+                            type: "humanoid",
+                            size: "small",
+                            ac: 15,
+                            hp: 7,
+                            speed: {walk: 30, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["skirmisher", "artillery"],
+                            damage_types_dealt: ["slashing", "piercing"],
+                            damage_resistances: [],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["nimble_escape", "pack_fighter", "sneaky", "small_size"],
+                            biomes: ["forest", "hills", "mountains", "underground"],
+                            tactical_range: "mixed",
+                            mobility: "high",
+                            intelligence: "cunning",
+                            conditions_inflicted: [],
+                            special_abilities: ["nimble_escape"],
+                        },
+                        {
+                            name: "Skeleton",
+                            cr: 0.25,
+                            type: "undead",
+                            size: "medium",
+                            ac: 13,
+                            hp: 13,
+                            speed: {walk: 30, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["soldier", "artillery"],
+                            damage_types_dealt: ["slashing", "piercing"],
+                            damage_resistances: [],
+                            damage_immunities: ["poison"],
+                            condition_immunities: ["exhaustion", "poisoned"],
+                            synergy_tags: ["undead_resilience", "no_morale", "basic_undead", "bone_construct"],
+                            biomes: ["ruins", "graveyards", "underground", "dungeon"],
+                            tactical_range: "mixed",
+                            mobility: "medium",
+                            intelligence: "bestial",
+                            conditions_inflicted: [],
+                            special_abilities: ["undead_fortitude"],
+                        },
+                        {
+                            name: "Orc",
+                            cr: 0.5,
+                            type: "humanoid",
+                            size: "medium",
+                            ac: 13,
+                            hp: 15,
+                            speed: {walk: 30, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["brute", "soldier"],
+                            damage_types_dealt: ["slashing", "piercing"],
+                            damage_resistances: [],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["aggressive", "relentless", "tribal_warrior", "intimidating"],
+                            biomes: ["hills", "mountains", "underground", "badlands"],
+                            tactical_range: "melee",
+                            mobility: "medium",
+                            intelligence: "cunning",
+                            conditions_inflicted: [],
+                            special_abilities: ["aggressive", "relentless_endurance"],
+                        },
+                        {
+                            name: "Brown Bear",
+                            cr: 1,
+                            type: "beast",
+                            size: "large",
+                            ac: 11,
+                            hp: 34,
+                            speed: {walk: 40, fly: 0, swim: 30, burrow: 0, climb: 30},
+                            roles: ["brute"],
+                            damage_types_dealt: ["slashing", "piercing"],
+                            damage_resistances: [],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["keen_smell", "territorial", "grapple_specialist", "natural_predator"],
+                            biomes: ["forest", "hills", "mountains"],
+                            tactical_range: "melee",
+                            mobility: "medium",
+                            intelligence: "bestial",
+                            conditions_inflicted: ["grappled"],
+                            special_abilities: ["keen_smell"],
+                        },
+                        {
+                            name: "Dire Wolf",
+                            cr: 1,
+                            type: "beast",
+                            size: "large",
+                            ac: 14,
+                            hp: 37,
+                            speed: {walk: 50, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["skirmisher", "brute"],
+                            damage_types_dealt: ["piercing"],
+                            damage_resistances: [],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["pack_tactics", "prone_inflictor", "keen_hearing", "alpha_predator"],
+                            biomes: ["forest", "hills", "arctic", "grassland"],
+                            tactical_range: "melee",
+                            mobility: "very_high",
+                            intelligence: "bestial",
+                            conditions_inflicted: ["prone"],
+                            special_abilities: ["pack_tactics", "keen_hearing_smell"],
+                        },
+                        {
+                            name: "Bugbear",
+                            cr: 1,
+                            type: "humanoid",
+                            size: "medium",
+                            ac: 16,
+                            hp: 27,
+                            speed: {walk: 30, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["lurker", "brute"],
+                            damage_types_dealt: ["slashing", "piercing"],
+                            damage_resistances: [],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["brute_force", "surprise_attack", "sneaky", "reach_weapon"],
+                            biomes: ["forest", "hills", "underground"],
+                            tactical_range: "melee",
+                            mobility: "medium",
+                            intelligence: "cunning",
+                            conditions_inflicted: [],
+                            special_abilities: ["brute", "surprise_attack"],
+                        },
+                        {
+                            name: "Giant Spider",
+                            cr: 1,
+                            type: "beast",
+                            size: "large",
+                            ac: 14,
+                            hp: 26,
+                            speed: {walk: 30, fly: 0, swim: 0, burrow: 0, climb: 30},
+                            roles: ["controller", "lurker"],
+                            damage_types_dealt: ["piercing"],
+                            damage_resistances: [],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["web_restraint", "poison_dealer", "climb_specialist", "ambush_predator"],
+                            biomes: ["forest", "caves", "underground", "ruins"],
+                            tactical_range: "melee",
+                            mobility: "high",
+                            intelligence: "bestial",
+                            conditions_inflicted: ["restrained", "poisoned"],
+                            special_abilities: ["spider_climb", "web_sense", "web_walker"],
+                        },
+                        {
+                            name: "Ghoul",
+                            cr: 1,
+                            type: "undead",
+                            size: "medium",
+                            ac: 12,
+                            hp: 22,
+                            speed: {walk: 30, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["lurker", "controller"],
+                            damage_types_dealt: ["slashing"],
+                            damage_resistances: ["necrotic"],
+                            damage_immunities: ["poison"],
+                            condition_immunities: ["charmed", "exhaustion", "poisoned"],
+                            synergy_tags: ["paralysis_inflector", "undead_resilience", "consume_flesh", "pack_undead"],
+                            biomes: ["graveyards", "ruins", "underground", "unhallowed"],
+                            tactical_range: "melee",
+                            mobility: "medium",
+                            intelligence: "cunning",
+                            conditions_inflicted: ["paralyzed"],
+                            special_abilities: ["paralysing_claw"],
+                        },
+                        {
+                            name: "Ochre Jelly",
+                            cr: 2,
+                            type: "ooze",
+                            size: "large",
+                            ac: 8,
+                            hp: 45,
+                            speed: {walk: 10, fly: 0, swim: 0, burrow: 0, climb: 10},
+                            roles: ["brute", "controller"],
+                            damage_types_dealt: ["acid"],
+                            damage_resistances: ["acid"],
+                            damage_immunities: ["lightning", "slashing"],
+                            condition_immunities: ["blinded", "charmed", "deafened", "exhaustion", "frightened", "prone"],
+                            synergy_tags: ["acid_dealer", "split_creature", "immunity_lightning", "ooze_nature"],
+                            biomes: ["underground", "swamp", "ruins"],
+                            tactical_range: "melee",
+                            mobility: "very_low",
+                            intelligence: "bestial",
+                            conditions_inflicted: [],
+                            special_abilities: ["amorphous", "split"],
+                        },
+                        {
+                            name: "Ogre",
+                            cr: 2,
+                            type: "giant",
+                            size: "large",
+                            ac: 11,
+                            hp: 59,
+                            speed: {walk: 40, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["brute"],
+                            damage_types_dealt: ["bludgeoning"],
+                            damage_resistances: [],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["giant_strength", "simple_minded", "brute_force", "large_size"],
+                            biomes: ["hills", "mountains", "forest"],
+                            tactical_range: "melee",
+                            mobility: "medium",
+                            intelligence: "bestial",
+                            conditions_inflicted: [],
+                            special_abilities: ["giant_strength"],
+                        },
+                        {
+                            name: "Griffon",
+                            cr: 2,
+                            type: "monstrosity",
+                            size: "large",
+                            ac: 12,
+                            hp: 59,
+                            speed: {walk: 30, fly: 80, swim: 0, burrow: 0, climb: 0},
+                            roles: ["skirmisher", "brute"],
+                            damage_types_dealt: ["slashing", "piercing"],
+                            damage_resistances: [],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["aerial_superiority", "keen_sight", "dive_attack", "mount_potential"],
+                            biomes: ["mountains", "hills", "sky"],
+                            tactical_range: "melee",
+                            mobility: "very_high",
+                            intelligence: "bestial",
+                            conditions_inflicted: [],
+                            special_abilities: ["keen_sight"],
+                        },
+                        {
+                            name: "Wight",
+                            cr: 3,
+                            type: "undead",
+                            size: "medium",
+                            ac: 14,
+                            hp: 45,
+                            speed: {walk: 30, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["controller", "leader"],
+                            damage_types_dealt: ["necrotic"],
+                            damage_resistances: ["necrotic"],
+                            damage_immunities: ["poison"],
+                            condition_immunities: ["exhaustion", "poisoned"],
+                            synergy_tags: ["life_drain", "undead_leader", "create_spawn", "intelligent_undead"],
+                            biomes: ["graveyards", "ruins", "battlefields", "unhallowed"],
+                            tactical_range: "melee",
+                            mobility: "medium",
+                            intelligence: "cunning",
+                            conditions_inflicted: [],
+                            special_abilities: ["life_drain", "create_specter"],
+                        },
+                        {
+                            name: "Minotaur",
+                            cr: 3,
+                            type: "monstrosity",
+                            size: "large",
+                            ac: 14,
+                            hp: 76,
+                            speed: {walk: 40, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["brute", "controller"],
+                            damage_types_dealt: ["piercing", "bludgeoning"],
+                            damage_resistances: [],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["charge_attack", "labyrinth_master", "relentless", "horn_gore"],
+                            biomes: ["underground", "ruins", "labyrinth"],
+                            tactical_range: "melee",
+                            mobility: "high",
+                            intelligence: "cunning",
+                            conditions_inflicted: [],
+                            special_abilities: ["charge", "labyrinthine_recall"],
+                        },
+                        {
+                            name: "Manticore",
+                            cr: 3,
+                            type: "monstrosity",
+                            size: "large",
+                            ac: 14,
+                            hp: 68,
+                            speed: {walk: 30, fly: 50, swim: 0, burrow: 0, climb: 0},
+                            roles: ["artillery", "skirmisher"],
+                            damage_types_dealt: ["slashing", "piercing"],
+                            damage_resistances: [],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["tail_spikes", "aerial_artillery", "intelligent_predator", "flying_threat"],
+                            biomes: ["mountains", "hills", "desert"],
+                            tactical_range: "ranged",
+                            mobility: "very_high",
+                            intelligence: "cunning",
+                            conditions_inflicted: [],
+                            special_abilities: ["tail_spike_volley"],
+                        },
+                        {
+                            name: "Displacer Beast",
+                            cr: 3,
+                            type: "monstrosity",
+                            size: "large",
+                            ac: 13,
+                            hp: 85,
+                            speed: {walk: 40, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["skirmisher", "controller"],
+                            damage_types_dealt: ["slashing"],
+                            damage_resistances: [],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["displacement", "tentacle_reach", "illusion_defense", "pack_hunter"],
+                            biomes: ["forest", "feywild", "magical_areas"],
+                            tactical_range: "melee",
+                            mobility: "high",
+                            intelligence: "bestial",
+                            conditions_inflicted: [],
+                            special_abilities: ["displacement", "avoidance"],
+                        },
+                        {
+                            name: "Hell Hound",
+                            cr: 3,
+                            type: "fiend",
+                            size: "medium",
+                            ac: 15,
+                            hp: 45,
+                            speed: {walk: 50, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["skirmisher", "artillery"],
+                            damage_types_dealt: ["piercing", "fire"],
+                            damage_resistances: [],
+                            damage_immunities: ["fire"],
+                            condition_immunities: [],
+                            synergy_tags: ["fire_dealer", "pack_tactics", "keen_hearing", "infernal_beast"],
+                            biomes: ["nine_hells", "volcanic", "infernal_areas"],
+                            tactical_range: "mixed",
+                            mobility: "very_high",
+                            intelligence: "cunning",
+                            conditions_inflicted: [],
+                            special_abilities: ["fire_breath", "keen_hearing_smell", "pack_tactics"],
+                        },
+                        {
+                            name: "Rust Monster",
+                            cr: 0.5,
+                            type: "monstrosity",
+                            size: "medium",
+                            ac: 14,
+                            hp: 27,
+                            speed: {walk: 40, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["controller"],
+                            damage_types_dealt: [],
+                            damage_resistances: [],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["metal_destruction", "equipment_threat", "antennae_sense", "utility_monster"],
+                            biomes: ["underground", "ruins", "abandoned_areas"],
+                            tactical_range: "melee",
+                            mobility: "medium",
+                            intelligence: "bestial",
+                            conditions_inflicted: [],
+                            special_abilities: ["rust_metal", "iron_scent"],
+                        },
+                        {
+                            name: "Doppelganger",
+                            cr: 3,
+                            type: "monstrosity",
+                            size: "medium",
+                            ac: 14,
+                            hp: 52,
+                            speed: {walk: 30, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["lurker", "controller"],
+                            damage_types_dealt: ["bludgeoning"],
+                            damage_resistances: [],
+                            damage_immunities: [],
+                            condition_immunities: ["charmed"],
+                            synergy_tags: ["shapeshifter", "deception_master", "ambush_specialist", "social_infiltrator"],
+                            biomes: ["urban", "any"],
+                            tactical_range: "melee",
+                            mobility: "medium",
+                            intelligence: "genius",
+                            conditions_inflicted: ["surprised"],
+                            special_abilities: ["shapechanger", "ambusher", "surprise_attack"],
+                        },
+                        {
+                            name: "Banshee",
+                            cr: 4,
+                            type: "undead",
+                            size: "medium",
+                            ac: 12,
+                            hp: 58,
+                            speed: {walk: 0, fly: 40, swim: 0, burrow: 0, climb: 0},
+                            roles: ["controller", "artillery"],
+                            damage_types_dealt: ["necrotic"],
+                            damage_resistances: ["acid", "fire", "lightning", "thunder"],
+                            damage_immunities: ["cold", "necrotic", "poison"],
+                            condition_immunities: ["charmed", "exhaustion", "frightened", "grappled", "paralyzed", "petrified", "poisoned", "prone", "restrained"],
+                            synergy_tags: ["wail_attack", "incorporeal", "fear_aura", "intelligent_undead"],
+                            biomes: ["ruins", "haunted_areas", "graveyards"],
+                            tactical_range: "ranged",
+                            mobility: "very_high",
+                            intelligence: "genius",
+                            conditions_inflicted: ["frightened"],
+                            special_abilities: ["horrifying_visage", "wail", "incorporeal_movement"],
+                        },
+                        {
+                            name: "Ettin",
+                            cr: 4,
+                            type: "giant",
+                            size: "large",
+                            ac: 12,
+                            hp: 85,
+                            speed: {walk: 40, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["brute"],
+                            damage_types_dealt: ["bludgeoning", "slashing"],
+                            damage_resistances: [],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["two_heads", "wakeful", "giant_strength", "dual_attacks"],
+                            biomes: ["hills", "mountains", "caves"],
+                            tactical_range: "melee",
+                            mobility: "medium",
+                            intelligence: "bestial",
+                            conditions_inflicted: [],
+                            special_abilities: ["two_heads", "wakeful"],
+                        },
+                        {
+                            name: "Black Pudding",
+                            cr: 4,
+                            type: "ooze",
+                            size: "large",
+                            ac: 7,
+                            hp: 85,
+                            speed: {walk: 20, fly: 0, swim: 0, burrow: 0, climb: 20},
+                            roles: ["brute", "controller"],
+                            damage_types_dealt: ["acid"],
+                            damage_resistances: ["acid", "cold", "lightning", "slashing"],
+                            damage_immunities: [],
+                            condition_immunities: ["blinded", "charmed", "deafened", "exhaustion", "frightened", "prone"],
+                            synergy_tags: ["acid_dealer", "corrosive", "split_creature", "equipment_destruction"],
+                            biomes: ["underground", "swamp", "ruins"],
+                            tactical_range: "melee",
+                            mobility: "low",
+                            intelligence: "bestial",
+                            conditions_inflicted: [],
+                            special_abilities: ["amorphous", "corrosive_form", "split"],
+                        },
+                        {
+                            name: "Troll",
+                            cr: 5,
+                            type: "giant",
+                            size: "large",
+                            ac: 15,
+                            hp: 84,
+                            speed: {walk: 30, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["brute"],
+                            damage_types_dealt: ["slashing"],
+                            damage_resistances: [],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["regeneration", "keen_smell", "fire_vulnerable", "relentless"],
+                            biomes: ["swamp", "forest", "hills", "mountains"],
+                            tactical_range: "melee",
+                            mobility: "medium",
+                            intelligence: "bestial",
+                            conditions_inflicted: [],
+                            special_abilities: ["keen_smell", "regeneration"],
+                        },
+                        {
+                            name: "Bulezau",
+                            cr: 3,
+                            type: "fiend",
+                            size: "medium",
+                            ac: 14,
+                            hp: 52,
+                            speed: {walk: 40, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["brute", "controller"],
+                            damage_types_dealt: ["slashing"],
+                            damage_resistances: ["cold", "fire", "lightning"],
+                            damage_immunities: ["poison"],
+                            condition_immunities: ["charmed", "frightened", "poisoned"],
+                            synergy_tags: ["rotting_presence", "standing_leap", "demonic_resilience", "herd_mentality"],
+                            biomes: ["abyss", "demonic_areas", "corrupted_lands"],
+                            tactical_range: "melee",
+                            mobility: "high",
+                            intelligence: "cunning",
+                            conditions_inflicted: [],
+                            special_abilities: ["rotting_presence", "sure_footed", "standing_leap"],
+                        },
+                        {
+                            name: "Medusa",
+                            cr: 6,
+                            type: "monstrosity",
+                            size: "medium",
+                            ac: 15,
+                            hp: 127,
+                            speed: {walk: 30, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["controller", "artillery"],
+                            damage_types_dealt: ["piercing", "slashing"],
+                            damage_resistances: [],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["petrifying_gaze", "snake_hair", "intelligent_predator", "lair_guardian"],
+                            biomes: ["ruins", "caves", "ancient_sites"],
+                            tactical_range: "mixed",
+                            mobility: "medium",
+                            intelligence: "genius",
+                            conditions_inflicted: ["petrified"],
+                            special_abilities: ["petrifying_gaze", "snake_hair"],
+                        },
+                        {
+                            name: "Chimera",
+                            cr: 6,
+                            type: "monstrosity",
+                            size: "large",
+                            ac: 14,
+                            hp: 114,
+                            speed: {walk: 30, fly: 60, swim: 0, burrow: 0, climb: 0},
+                            roles: ["artillery", "brute"],
+                            damage_types_dealt: ["slashing", "piercing", "fire"],
+                            damage_resistances: [],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["fire_breath", "aerial_superiority", "multi_attack", "triple_threat"],
+                            biomes: ["mountains", "hills", "ancient_ruins"],
+                            tactical_range: "mixed",
+                            mobility: "very_high",
+                            intelligence: "cunning",
+                            conditions_inflicted: [],
+                            special_abilities: ["fire_breath"],
+                        },
+                        {
+                            name: "Hill Giant",
+                            cr: 5,
+                            type: "giant",
+                            size: "huge",
+                            ac: 13,
+                            hp: 105,
+                            speed: {walk: 40, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["brute", "artillery"],
+                            damage_types_dealt: ["bludgeoning"],
+                            damage_resistances: [],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["giant_strength", "rock_throwing", "huge_size", "simple_minded"],
+                            biomes: ["hills", "mountains", "grassland"],
+                            tactical_range: "mixed",
+                            mobility: "medium",
+                            intelligence: "bestial",
+                            conditions_inflicted: [],
+                            special_abilities: ["rock"],
+                        },
+                        {
+                            name: "Wyvern",
+                            cr: 6,
+                            type: "dragon",
+                            size: "large",
+                            ac: 13,
+                            hp: 110,
+                            speed: {walk: 20, fly: 80, swim: 0, burrow: 0, climb: 0},
+                            roles: ["skirmisher", "brute"],
+                            damage_types_dealt: ["slashing", "piercing"],
+                            damage_resistances: [],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["poison_stinger", "aerial_superiority", "dive_attack", "draconic_presence"],
+                            biomes: ["mountains", "hills", "cliffs"],
+                            tactical_range: "melee",
+                            mobility: "very_high",
+                            intelligence: "bestial",
+                            conditions_inflicted: ["poisoned"],
+                            special_abilities: ["stinger"],
+                        },
+                        {
+                            name: "Young Black Dragon",
+                            cr: 7,
+                            type: "dragon",
+                            size: "large",
+                            ac: 18,
+                            hp: 127,
+                            speed: {walk: 40, fly: 80, swim: 40, burrow: 0, climb: 0},
+                            roles: ["artillery", "controller"],
+                            damage_types_dealt: ["slashing", "piercing", "acid"],
+                            damage_resistances: [],
+                            damage_immunities: ["acid"],
+                            condition_immunities: [],
+                            synergy_tags: ["acid_breath", "swamp_native", "draconic_presence", "legendary_creature"],
+                            biomes: ["swamp", "marshland", "corrupted_waters"],
+                            tactical_range: "mixed",
+                            mobility: "very_high",
+                            intelligence: "genius",
+                            conditions_inflicted: [],
+                            special_abilities: ["acid_breath", "amphibious", "legendary_actions"],
+                        },
+                        {
+                            name: "Stone Giant",
+                            cr: 7,
+                            type: "giant",
+                            size: "huge",
+                            ac: 17,
+                            hp: 126,
+                            speed: {walk: 40, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["artillery", "brute"],
+                            damage_types_dealt: ["bludgeoning"],
+                            damage_resistances: [],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["stone_camouflage", "rock_throwing", "giant_strength", "mountain_native"],
+                            biomes: ["mountains", "underground", "stone_areas"],
+                            tactical_range: "mixed",
+                            mobility: "medium",
+                            intelligence: "cunning",
+                            conditions_inflicted: [],
+                            special_abilities: ["stone_camouflage", "rock_catching"],
+                        },
+                        {
+                            name: "Mind Flayer",
+                            cr: 7,
+                            type: "aberration",
+                            size: "medium",
+                            ac: 15,
+                            hp: 71,
+                            speed: {walk: 30, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["controller", "leader"],
+                            damage_types_dealt: ["psychic"],
+                            damage_resistances: [],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["mind_blast", "domination", "telepathy", "aberrant_master"],
+                            biomes: ["underdark", "underground", "aberrant_areas"],
+                            tactical_range: "ranged",
+                            mobility: "medium",
+                            intelligence: "genius",
+                            conditions_inflicted: ["stunned", "charmed"],
+                            special_abilities: ["mind_blast", "dominate_monster", "extract_brain"],
+                        },
+                        {
+                            name: "Frost Giant",
+                            cr: 8,
+                            type: "giant",
+                            size: "huge",
+                            ac: 15,
+                            hp: 138,
+                            speed: {walk: 40, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["brute", "artillery"],
+                            damage_types_dealt: ["bludgeoning"],
+                            damage_resistances: [],
+                            damage_immunities: ["cold"],
+                            condition_immunities: [],
+                            synergy_tags: ["cold_immunity", "rock_throwing", "giant_strength", "ice_native"],
+                            biomes: ["arctic", "mountains", "frozen_areas"],
+                            tactical_range: "mixed",
+                            mobility: "medium",
+                            intelligence: "cunning",
+                            conditions_inflicted: [],
+                            special_abilities: ["rock"],
+                        },
+                        {
+                            name: "Young Red Dragon",
+                            cr: 10,
+                            type: "dragon",
+                            size: "large",
+                            ac: 18,
+                            hp: 178,
+                            speed: {walk: 40, fly: 80, swim: 0, burrow: 0, climb: 40},
+                            roles: ["artillery", "brute"],
+                            damage_types_dealt: ["slashing", "piercing", "fire"],
+                            damage_resistances: [],
+                            damage_immunities: ["fire"],
+                            condition_immunities: [],
+                            synergy_tags: ["fire_breath", "draconic_presence", "legendary_creature", "fire_immunity"],
+                            biomes: ["mountains", "volcanic", "dragon_lairs"],
+                            tactical_range: "mixed",
+                            mobility: "very_high",
+                            intelligence: "genius",
+                            conditions_inflicted: ["frightened"],
+                            special_abilities: ["fire_breath", "frightful_presence", "legendary_actions"],
+                        },
+                        {
+                            name: "Aboleth",
+                            cr: 10,
+                            type: "aberration",
+                            size: "large",
+                            ac: 17,
+                            hp: 135,
+                            speed: {walk: 10, fly: 0, swim: 40, burrow: 0, climb: 0},
+                            roles: ["controller", "leader"],
+                            damage_types_dealt: ["bludgeoning"],
+                            damage_resistances: [],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["domination", "psychic_slavery", "aquatic_master", "legendary_creature"],
+                            biomes: ["underwater", "deep_lakes", "aberrant_waters"],
+                            tactical_range: "mixed",
+                            mobility: "high",
+                            intelligence: "genius",
+                            conditions_inflicted: ["charmed", "diseased"],
+                            special_abilities: ["enslave", "mucous_cloud", "legendary_actions"],
+                        },
+                        {
+                            name: "Beholder",
+                            cr: 13,
+                            type: "aberration",
+                            size: "large",
+                            ac: 18,
+                            hp: 180,
+                            speed: {walk: 0, fly: 20, swim: 0, burrow: 0, climb: 0},
+                            roles: ["artillery", "controller"],
+                            damage_types_dealt: ["necrotic", "force", "fire", "cold"],
+                            damage_resistances: [],
+                            damage_immunities: [],
+                            condition_immunities: ["prone"],
+                            synergy_tags: ["antimagic_cone", "eye_rays", "legendary_creature", "aberrant_master"],
+                            biomes: ["underdark", "aberrant_areas", "ancient_ruins"],
+                            tactical_range: "ranged",
+                            mobility: "high",
+                            intelligence: "genius",
+                            conditions_inflicted: ["charmed", "frightened", "petrified"],
+                            special_abilities: ["antimagic_cone", "eye_rays", "legendary_actions"],
+                        },
+                        {
+                            name: "Adult Black Dragon",
+                            cr: 14,
+                            type: "dragon",
+                            size: "huge",
+                            ac: 19,
+                            hp: 195,
+                            speed: {walk: 40, fly: 80, swim: 40, burrow: 0, climb: 0},
+                            roles: ["artillery", "controller"],
+                            damage_types_dealt: ["slashing", "piercing", "acid"],
+                            damage_resistances: [],
+                            damage_immunities: ["acid"],
+                            condition_immunities: [],
+                            synergy_tags: ["acid_breath", "legendary_creature", "lair_actions", "regional_effects"],
+                            biomes: ["swamp", "marshland", "corrupted_lands"],
+                            tactical_range: "mixed",
+                            mobility: "very_high",
+                            intelligence: "genius",
+                            conditions_inflicted: ["frightened"],
+                            special_abilities: ["acid_breath", "frightful_presence", "legendary_actions", "lair_actions"],
+                        },
+                        {
+                            name: "Adult Red Dragon",
+                            cr: 17,
+                            type: "dragon",
+                            size: "huge",
+                            ac: 19,
+                            hp: 256,
+                            speed: {walk: 40, fly: 80, swim: 0, burrow: 0, climb: 40},
+                            roles: ["artillery", "brute"],
+                            damage_types_dealt: ["slashing", "piercing", "fire"],
+                            damage_resistances: [],
+                            damage_immunities: ["fire"],
+                            condition_immunities: [],
+                            synergy_tags: ["fire_breath", "legendary_creature", "lair_actions", "regional_effects"],
+                            biomes: ["mountains", "volcanic", "dragon_lairs"],
+                            tactical_range: "mixed",
+                            mobility: "very_high",
+                            intelligence: "genius",
+                            conditions_inflicted: ["frightened"],
+                            special_abilities: ["fire_breath", "frightful_presence", "legendary_actions", "lair_actions"],
+                        },
+                        {
+                            name: "Ancient Black Dragon",
+                            cr: 21,
+                            type: "dragon",
+                            size: "gargantuan",
+                            ac: 22,
+                            hp: 367,
+                            speed: {walk: 40, fly: 80, swim: 40, burrow: 0, climb: 0},
+                            roles: ["artillery", "controller"],
+                            damage_types_dealt: ["slashing", "piercing", "acid"],
+                            damage_resistances: [],
+                            damage_immunities: ["acid"],
+                            condition_immunities: [],
+                            synergy_tags: ["acid_breath", "legendary_creature", "lair_actions", "regional_effects"],
+                            biomes: ["swamp", "marshland", "ancient_lairs"],
+                            tactical_range: "mixed",
+                            mobility: "very_high",
+                            intelligence: "genius",
+                            conditions_inflicted: ["frightened"],
+                            special_abilities: ["acid_breath", "frightful_presence", "legendary_actions", "lair_actions"],
+                        },
+                        {
+                            name: "Tarrasque",
+                            cr: 30,
+                            type: "monstrosity",
+                            size: "gargantuan",
+                            ac: 25,
+                            hp: 676,
+                            speed: {walk: 40, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["brute"],
+                            damage_types_dealt: ["slashing", "piercing", "bludgeoning"],
+                            damage_resistances: ["fire", "poison", "psychic"],
+                            damage_immunities: [],
+                            condition_immunities: ["charmed", "frightened", "paralyzed", "poisoned"],
+                            synergy_tags: ["legendary_creature", "magic_resistance", "reflective_carapace", "world_ending"],
+                            biomes: ["any"],
+                            tactical_range: "melee",
+                            mobility: "medium",
+                            intelligence: "bestial",
+                            conditions_inflicted: ["frightened", "swallowed"],
+                            special_abilities: ["frightful_presence", "magic_resistance", "reflective_carapace", "siege_monster"],
+                        },
+                        {
+                            name: "Moss Giant",
+                            cr: 8,
+                            type: "giant",
+                            size: "huge",
+                            ac: 16,
+                            hp: 138,
+                            speed: {walk: 40, fly: 0, swim: 0, burrow: 0, climb: 30},
+                            roles: ["brute", "controller"],
+                            damage_types_dealt: ["bludgeoning", "piercing"],
+                            damage_resistances: ["cold"],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["plant_creature", "camouflage", "nature_bond", "throw_rocks"],
+                            biomes: ["forest", "jungle", "swamp"],
+                            tactical_range: "mixed",
+                            mobility: "medium",
+                            intelligence: "low",
+                            conditions_inflicted: ["restrained"],
+                            special_abilities: ["camouflage", "rock_throwing", "vine_entangle"],
+                            environmental_signs: [
+                                "Massive footprints filled with moss and small plants",
+                                "Trees with bark stripped away at impossible heights",
+                                "Stone projectiles embedded in tree trunks 15+ feet up",
+                                "Patches of unusually lush vegetation in giant-sized shapes",
+                                "Ancient trees bent and twisted into shelter-like formations"
+                            ],
+                            source: {
+                                title: "A5E System Reference Document",
+                                abbreviation: "A5ESRD",
+                                page: 241,
+                                license: "CC BY 4.0",
+                                url: "https://a5esrd.com/"
+                            }
+                        },
+                        {
+                            name: "Crystal Prowler",
+                            cr: 3,
+                            type: "monstrosity",
+                            size: "large",
+                            ac: 14,
+                            hp: 68,
+                            speed: {walk: 30, fly: 0, swim: 0, burrow: 20, climb: 30},
+                            roles: ["lurker", "skirmisher"],
+                            damage_types_dealt: ["slashing", "piercing"],
+                            damage_resistances: ["fire", "lightning"],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["crystal_body", "burrow", "camouflage", "ambush_predator"],
+                            biomes: ["underground", "crystal_caves", "mountains"],
+                            tactical_range: "melee",
+                            mobility: "high",
+                            intelligence: "bestial",
+                            conditions_inflicted: [],
+                            special_abilities: ["crystal_camouflage", "burrow", "ambush"],
+                            environmental_signs: [
+                                "Crystal fragments scattered along tunnel floors",
+                                "Scratch marks on crystal formations at various heights",
+                                "Burrow holes lined with smooth crystal shards",
+                                "Disturbed crystal clusters with missing pieces",
+                                "Light refracting strangely through damaged crystal formations",
+                                "Prey remains found in crystal-lined alcoves"
+                            ],
+                            source: {
+                                title: "A5E System Reference Document",
+                                abbreviation: "A5ESRD",
+                                page: 289,
+                                license: "CC BY 4.0",
+                                url: "https://a5esrd.com/"
+                            }
+                        },
+                        {
+                            name: "Bone Golem",
+                            cr: 6,
+                            type: "construct",
+                            size: "medium",
+                            ac: 15,
+                            hp: 85,
+                            speed: {walk: 30, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["soldier", "brute"],
+                            damage_types_dealt: ["bludgeoning", "piercing"],
+                            damage_resistances: [],
+                            damage_immunities: ["poison", "psychic"],
+                            condition_immunities: ["charmed", "exhaustion", "frightened", "paralyzed", "petrified", "poisoned"],
+                            synergy_tags: ["construct", "undead_resistance", "bone_construction", "magic_immunity"],
+                            biomes: ["underground", "ruins", "necromancer_lairs"],
+                            tactical_range: "melee",
+                            mobility: "medium",
+                            intelligence: "none",
+                            conditions_inflicted: [],
+                            special_abilities: ["magic_resistance", "immutable_form"],
+                            environmental_signs: [
+                                "Bone fragments and dust scattered in organized patterns",
+                                "Ancient burial sites with disturbed graves nearby",
+                                "Walls decorated with intricate bone mosaics",
+                                "Grinding sounds of bone against stone echoing through chambers",
+                                "Small bone constructs (rats, birds) serving as scouts",
+                                "Necromantic symbols carved into bone-lined walls"
+                            ],
+                            source: {
+                                title: "A5E System Reference Document",
+                                abbreviation: "A5ESRD",
+                                page: 198,
+                                license: "CC BY 4.0",
+                                url: "https://a5esrd.com/"
+                            }
+                        },
+                        {
+                            name: "Phase Spider",
+                            cr: 4,
+                            type: "monstrosity",
+                            size: "large",
+                            ac: 13,
+                            hp: 75,
+                            speed: {walk: 30, fly: 0, swim: 0, burrow: 0, climb: 30},
+                            roles: ["lurker", "skirmisher"],
+                            damage_types_dealt: ["piercing", "poison"],
+                            damage_resistances: [],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["ethereal_jaunt", "poison_dealer", "web_spinner", "ambush_predator"],
+                            biomes: ["underground", "ethereal_plane", "deep_caves"],
+                            tactical_range: "melee",
+                            mobility: "very_high",
+                            intelligence: "low",
+                            conditions_inflicted: ["poisoned"],
+                            special_abilities: ["ethereal_jaunt", "spider_climb", "web_sense"],
+                            environmental_signs: [
+                                "Webs that phase in and out of visibility",
+                                "Ethereal web strands visible only from certain angles",
+                                "Prey remains found in impossible locations (inside walls)",
+                                "Strange shimmering distortions in the air near webs",
+                                "Bite marks on creatures with no visible entry wounds",
+                                "Areas where the boundary between planes feels thin"
+                            ],
+                            source: {
+                                title: "A5E System Reference Document",
+                                abbreviation: "A5ESRD",
+                                page: 324,
+                                license: "CC BY 4.0",
+                                url: "https://a5esrd.com/"
+                            }
+                        },
+                        {
+                            name: "Void Stalker",
+                            cr: 11,
+                            type: "aberration",
+                            size: "large",
+                            ac: 17,
+                            hp: 142,
+                            speed: {walk: 40, fly: 80, swim: 0, burrow: 0, climb: 0},
+                            roles: ["lurker", "controller"],
+                            damage_types_dealt: ["psychic", "necrotic"],
+                            damage_resistances: ["cold", "necrotic"],
+                            damage_immunities: [],
+                            condition_immunities: ["charmed", "frightened"],
+                            synergy_tags: ["void_touched", "teleport", "psychic_damage", "fear_inducer"],
+                            biomes: ["void", "far_realm", "corrupted_areas"],
+                            tactical_range: "mixed",
+                            mobility: "very_high",
+                            intelligence: "high",
+                            conditions_inflicted: ["frightened", "stunned"],
+                            special_abilities: ["void_step", "maddening_whispers", "reality_distortion"],
+                            environmental_signs: [
+                                "Areas of absolute darkness that resist magical light",
+                                "Reality tears - small rifts showing glimpses of the void",
+                                "Plants and animals showing signs of void corruption",
+                                "Temperature drops and unnatural cold spots",
+                                "Whispers in unknown languages coming from empty air",
+                                "Shadows that move independently of their sources",
+                                "Time distortion - clocks running backward or stopping"
+                            ],
+                            source: {
+                                title: "A5E System Reference Document",
+                                abbreviation: "A5ESRD",
+                                page: 378,
+                                license: "CC BY 4.0",
+                                url: "https://a5esrd.com/"
+                            }
+                        },
+                        {
+                            name: "Storm Herald",
+                            cr: 9,
+                            type: "elemental",
+                            size: "large",
+                            ac: 15,
+                            hp: 126,
+                            speed: {walk: 30, fly: 90, swim: 90, burrow: 0, climb: 0},
+                            roles: ["artillery", "controller"],
+                            damage_types_dealt: ["lightning", "thunder", "bludgeoning"],
+                            damage_resistances: ["lightning", "thunder"],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["lightning_dealer", "weather_control", "flight", "storm_powers"],
+                            biomes: ["storms", "mountains", "open_sea", "sky"],
+                            tactical_range: "ranged",
+                            mobility: "very_high",
+                            intelligence: "average",
+                            conditions_inflicted: ["stunned", "prone"],
+                            special_abilities: ["storm_aura", "lightning_bolt", "call_lightning"],
+                            environmental_signs: [
+                                "Sudden weather changes - rapid shifts between calm and storm",
+                                "Scorch marks from lightning strikes in geometric patterns",
+                                "Metal objects showing signs of electrical damage",
+                                "Animals exhibiting nervous behavior before storms",
+                                "Static electricity making hair stand on end",
+                                "Strange cloud formations that don't match wind patterns"
+                            ],
+                            source: {
+                                title: "A5E System Reference Document",
+                                abbreviation: "A5ESRD",
+                                page: 356,
+                                license: "CC BY 4.0",
+                                url: "https://a5esrd.com/"
+                            }
+                        },
+                        {
+                            name: "Dusk Hag",
+                            cr: 5,
+                            type: "fey",
+                            size: "medium",
+                            ac: 16,
+                            hp: 82,
+                            speed: {walk: 30, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["controller", "lurker"],
+                            damage_types_dealt: ["psychic", "necrotic"],
+                            damage_resistances: ["necrotic"],
+                            damage_immunities: [],
+                            condition_immunities: ["charmed"],
+                            synergy_tags: ["spell_caster", "charm_specialist", "illusion_master", "fey_magic"],
+                            biomes: ["twilight_forest", "fey_crossings", "haunted_woods"],
+                            tactical_range: "ranged",
+                            mobility: "medium",
+                            intelligence: "high",
+                            conditions_inflicted: ["charmed", "frightened", "sleep"],
+                            special_abilities: ["spellcasting", "nightmare_whispers", "shadow_step"],
+                            environmental_signs: [
+                                "Twilight that lasts longer than natural sunset/sunrise",
+                                "Dreams and nightmares that feel unusually vivid",
+                                "Children speaking of imaginary friends they fear",
+                                "Mirrors reflecting things that aren't actually there",
+                                "Flowers that bloom only in shadows",
+                                "Animals avoiding certain areas despite abundant food/water"
+                            ],
+                            source: {
+                                title: "A5E System Reference Document",
+                                abbreviation: "A5ESRD",
+                                page: 267,
+                                license: "CC BY 4.0",
+                                url: "https://a5esrd.com/"
+                            }
+                        },
+                        {
+                            name: "Ironclad Beetle",
+                            cr: 2,
+                            type: "beast",
+                            size: "large",
+                            ac: 18,
+                            hp: 45,
+                            speed: {walk: 30, fly: 0, swim: 0, burrow: 10, climb: 30},
+                            roles: ["soldier", "brute"],
+                            damage_types_dealt: ["bludgeoning", "piercing"],
+                            damage_resistances: ["slashing", "piercing"],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["armored", "burrow", "charge_attack", "natural_armor"],
+                            biomes: ["underground", "rocky_terrain", "caves"],
+                            tactical_range: "melee",
+                            mobility: "medium",
+                            intelligence: "bestial",
+                            conditions_inflicted: ["prone"],
+                            special_abilities: ["charge", "armored_shell", "burrow"],
+                            environmental_signs: [
+                                "Perfectly round burrow holes in rocky ground",
+                                "Metallic scratching sounds from underground",
+                                "Small metal flakes and shavings near tunnel entrances",
+                                "Rocks and stones arranged in defensive patterns",
+                                "Deep gouges in stone walls from powerful mandibles",
+                                "Grinding sounds of metal on stone echoing from below"
+                            ],
+                            source: {
+                                title: "A5E System Reference Document",
+                                abbreviation: "A5ESRD",
+                                page: 203,
+                                license: "CC BY 4.0",
+                                url: "https://a5esrd.com/"
+                            }
+                        },
+                        {
+                            name: "Shadowbane Stalker",
+                            cr: 7,
+                            type: "undead",
+                            size: "medium",
+                            ac: 15,
+                            hp: 97,
+                            speed: {walk: 40, fly: 0, swim: 0, burrow: 0, climb: 40},
+                            roles: ["lurker", "skirmisher"],
+                            damage_types_dealt: ["necrotic", "slashing"],
+                            damage_resistances: ["necrotic", "cold"],
+                            damage_immunities: ["poison"],
+                            condition_immunities: ["exhaustion", "poisoned"],
+                            synergy_tags: ["undead", "shadow_blend", "life_drain", "incorporeal"],
+                            biomes: ["shadowfell", "haunted_areas", "ancient_battlefields"],
+                            tactical_range: "melee",
+                            mobility: "very_high",
+                            intelligence: "average",
+                            conditions_inflicted: ["frightened"],
+                            special_abilities: ["shadow_step", "life_drain", "shadow_camouflage"],
+                            environmental_signs: [
+                                "Shadows that move against the light source",
+                                "Areas of unnatural cold in warm environments",
+                                "Plants withering in perfect circles with no apparent cause",
+                                "Animals refusing to enter certain areas during daylight",
+                                "Whispers heard in empty rooms at twilight",
+                                "Patches where grass grows black instead of green"
+                            ],
+                            source: {
+                                title: "A5E System Reference Document",
+                                abbreviation: "A5ESRD",
+                                page: 352,
+                                license: "CC BY 4.0",
+                                url: "https://a5esrd.com/"
+                            }
+                        },
+                        {
+                            name: "Coral Drake",
+                            cr: 10,
+                            type: "dragon",
+                            size: "large",
+                            ac: 17,
+                            hp: 152,
+                            speed: {walk: 20, fly: 60, swim: 80, burrow: 0, climb: 0},
+                            roles: ["artillery", "controller"],
+                            damage_types_dealt: ["piercing", "acid", "poison"],
+                            damage_resistances: ["acid"],
+                            damage_immunities: ["poison"],
+                            condition_immunities: ["poisoned"],
+                            synergy_tags: ["aquatic", "poison_dealer", "coral_growth", "dragon"],
+                            biomes: ["coral_reefs", "tropical_seas", "underwater_caves"],
+                            tactical_range: "mixed",
+                            mobility: "very_high",
+                            intelligence: "average",
+                            conditions_inflicted: ["poisoned", "restrained"],
+                            special_abilities: ["poison_breath", "coral_growth", "water_mastery"],
+                            environmental_signs: [
+                                "Coral formations growing in impossible geometric patterns",
+                                "Poisonous algae blooms in normally clear water",
+                                "Fish and sea life showing signs of poisoning",
+                                "Coral structures that seem to move when not watched",
+                                "Tide pools with unnaturally bright, toxic colors",
+                                "Shipwrecks rapidly becoming overgrown with aggressive coral",
+                                "Water that burns the skin on contact near coral formations"
+                            ],
+                            source: {
+                                title: "A5E System Reference Document",
+                                abbreviation: "A5ESRD",
+                                page: 218,
+                                license: "CC BY 4.0",
+                                url: "https://a5esrd.com/"
+                            }
+                        },
+                        {
+                            name: "Mist Walker",
+                            cr: 6,
+                            type: "fey",
+                            size: "medium",
+                            ac: 14,
+                            hp: 91,
+                            speed: {walk: 30, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["lurker", "controller"],
+                            damage_types_dealt: ["psychic", "cold"],
+                            damage_resistances: ["cold"],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["mist_form", "teleport", "fey_magic", "cold_dealer"],
+                            biomes: ["misty_forests", "fey_realms", "foggy_valleys"],
+                            tactical_range: "mixed",
+                            mobility: "very_high",
+                            intelligence: "high",
+                            conditions_inflicted: ["charmed", "blinded"],
+                            special_abilities: ["misty_step", "fog_cloud", "charm_person"],
+                            environmental_signs: [
+                                "Fog that appears and disappears without weather patterns",
+                                "Travelers becoming lost in familiar areas",
+                                "Footprints that fade into mist after a few steps",
+                                "Strange laughter echoing from empty fog banks",
+                                "Paths that seem to shift when visibility is poor",
+                                "Animals avoiding misty areas even during hot weather"
+                            ],
+                            source: {
+                                title: "A5E System Reference Document",
+                                abbreviation: "A5ESRD",
+                                page: 298,
+                                license: "CC BY 4.0",
+                                url: "https://a5esrd.com/"
+                            }
+                        },
+                        {
+                            name: "Magma Worm",
+                            cr: 12,
+                            type: "elemental",
+                            size: "huge",
+                            ac: 16,
+                            hp: 184,
+                            speed: {walk: 30, fly: 0, swim: 0, burrow: 40, climb: 0},
+                            roles: ["brute", "controller"],
+                            damage_types_dealt: ["fire", "bludgeoning"],
+                            damage_resistances: ["bludgeoning", "piercing", "slashing"],
+                            damage_immunities: ["fire"],
+                            condition_immunities: ["prone"],
+                            synergy_tags: ["fire_dealer", "burrow", "molten_body", "tunnel_creator"],
+                            biomes: ["volcanic", "underground", "lava_tubes"],
+                            tactical_range: "melee",
+                            mobility: "high",
+                            intelligence: "low",
+                            conditions_inflicted: ["prone"],
+                            special_abilities: ["heated_body", "lava_tunneling", "molten_spray"],
+                            environmental_signs: [
+                                "Ground temperature noticeably warmer in circular patterns",
+                                "Steam rising from cracks in rocks or earth",
+                                "Melted metal objects in underground areas",
+                                "Tunnel networks with smooth, glassy walls",
+                                "Small lava flows in areas without volcanic activity",
+                                "Sulfurous smells emanating from the ground",
+                                "Rock formations showing signs of intense heat exposure"
+                            ],
+                            source: {
+                                title: "A5E System Reference Document",
+                                abbreviation: "A5ESRD",
+                                page: 287,
+                                license: "CC BY 4.0",
+                                url: "https://a5esrd.com/"
+                            }
+                        },
+                        {
+                            name: "Astral Construct",
+                            cr: 8,
+                            type: "construct",
+                            size: "large",
+                            ac: 17,
+                            hp: 123,
+                            speed: {walk: 30, fly: 60, swim: 0, burrow: 0, climb: 0},
+                            roles: ["artillery", "soldier"],
+                            damage_types_dealt: ["force", "radiant"],
+                            damage_resistances: ["psychic"],
+                            damage_immunities: ["poison", "psychic"],
+                            condition_immunities: ["charmed", "exhaustion", "frightened", "paralyzed", "petrified", "poisoned"],
+                            synergy_tags: ["construct", "flight", "force_damage", "psychic_immunity"],
+                            biomes: ["astral_plane", "wizard_towers", "planar_rifts"],
+                            tactical_range: "ranged",
+                            mobility: "high",
+                            intelligence: "average",
+                            conditions_inflicted: [],
+                            special_abilities: ["force_blast", "astral_step", "construct_traits"],
+                            environmental_signs: [
+                                "Geometric patterns of light appearing in mid-air",
+                                "Objects floating without apparent cause",
+                                "Starlike sparkles in indoor environments",
+                                "Compasses spinning wildly and pointing in impossible directions",
+                                "Whispers in celestial or draconic languages from empty air",
+                                "Temporary rifts showing glimpses of star-filled void"
+                            ],
+                            source: {
+                                title: "A5E System Reference Document",
+                                abbreviation: "A5ESRD",
+                                page: 191,
+                                license: "CC BY 4.0",
+                                url: "https://a5esrd.com/"
+                            }
+                        },
+                        {
+                            name: "Bramble Lord",
+                            cr: 14,
+                            type: "plant",
+                            size: "huge",
+                            ac: 16,
+                            hp: 207,
+                            speed: {walk: 20, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["controller", "brute"],
+                            damage_types_dealt: ["piercing", "poison"],
+                            damage_resistances: ["bludgeoning", "piercing"],
+                            damage_immunities: [],
+                            condition_immunities: ["blinded", "deafened"],
+                            synergy_tags: ["plant_creature", "poison_dealer", "entangle", "nature_bond"],
+                            biomes: ["ancient_forests", "overgrown_ruins", "druid_groves"],
+                            tactical_range: "mixed",
+                            mobility: "low",
+                            intelligence: "average",
+                            conditions_inflicted: ["restrained", "poisoned"],
+                            special_abilities: ["entangle", "thorn_volley", "plant_growth"],
+                            environmental_signs: [
+                                "Thorny vines growing in perfect spirals around trees",
+                                "Plants growing at supernatural speeds",
+                                "Animals with small puncture wounds from thorns",
+                                "Paths becoming overgrown overnight",
+                                "Berries and fruits that are unusually large but toxic",
+                                "Tree branches forming cage-like structures",
+                                "Ground covered in thorns that regrow when cleared"
+                            ],
+                            source: {
+                                title: "A5E System Reference Document",
+                                abbreviation: "A5ESRD",
+                                page: 201,
+                                license: "CC BY 4.0",
+                                url: "https://a5esrd.com/"
+                            }
+                        },
+                        {
+                            name: "Echo Phantom",
+                            cr: 4,
+                            type: "undead",
+                            size: "medium",
+                            ac: 12,
+                            hp: 67,
+                            speed: {walk: 0, fly: 40, swim: 0, burrow: 0, climb: 0},
+                            roles: ["lurker", "controller"],
+                            damage_types_dealt: ["necrotic", "psychic"],
+                            damage_resistances: ["acid", "cold", "fire", "lightning", "thunder"],
+                            damage_immunities: ["necrotic", "poison"],
+                            condition_immunities: ["charmed", "exhaustion", "grappled", "paralyzed", "petrified", "poisoned", "prone", "restrained"],
+                            synergy_tags: ["incorporeal", "undead", "psychic_damage", "memory_drain"],
+                            biomes: ["haunted_areas", "ancient_battlefields", "abandoned_buildings"],
+                            tactical_range: "mixed",
+                            mobility: "very_high",
+                            intelligence: "average",
+                            conditions_inflicted: ["frightened", "stunned"],
+                            special_abilities: ["incorporeal_movement", "memory_drain", "echoing_wail"],
+                            environmental_signs: [
+                                "Voices repeating conversations from years past",
+                                "Sounds that don't match current activities",
+                                "People experiencing vivid flashbacks in certain areas",
+                                "Echoes that last much longer than they should",
+                                "Mirrors showing reflections of people who aren't there",
+                                "Sudden memory lapses in visitors to the area"
+                            ],
+                            source: {
+                                title: "A5E System Reference Document",
+                                abbreviation: "A5ESRD",
+                                page: 256,
+                                license: "CC BY 4.0",
+                                url: "https://a5esrd.com/"
+                            }
+                        },
+                        {
+                            name: "Frost Maiden",
+                            cr: 13,
+                            type: "fey",
+                            size: "medium",
+                            ac: 17,
+                            hp: 165,
+                            speed: {walk: 30, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["controller", "artillery"],
+                            damage_types_dealt: ["cold", "psychic"],
+                            damage_resistances: ["cold"],
+                            damage_immunities: ["cold"],
+                            condition_immunities: ["charmed", "frightened"],
+                            synergy_tags: ["cold_dealer", "spell_caster", "fey_magic", "ice_powers"],
+                            biomes: ["arctic", "frozen_lakes", "winter_realms"],
+                            tactical_range: "ranged",
+                            mobility: "medium",
+                            intelligence: "very_high",
+                            conditions_inflicted: ["frozen", "charmed"],
+                            special_abilities: ["ice_storm", "freezing_gaze", "winter_magic"],
+                            environmental_signs: [
+                                "Frost patterns forming in warm weather",
+                                "Lakes and streams freezing in circular patterns",
+                                "Snow falling in localized areas despite clear skies",
+                                "Ice sculptures appearing overnight in impossible locations",
+                                "Animals with frost-bitten extremities in mild climates",
+                                "Breath visible even in warm temperatures",
+                                "Flowers and plants showing signs of sudden frost damage"
+                            ],
+                            source: {
+                                title: "A5E System Reference Document",
+                                abbreviation: "A5ESRD",
+                                page: 273,
+                                license: "CC BY 4.0",
+                                url: "https://a5esrd.com/"
+                            }
+                        },
+                        {
+                            name: "Tunnel Warden",
+                            cr: 5,
+                            type: "construct",
+                            size: "medium",
+                            ac: 16,
+                            hp: 78,
+                            speed: {walk: 25, fly: 0, swim: 0, burrow: 20, climb: 0},
+                            roles: ["soldier", "controller"],
+                            damage_types_dealt: ["bludgeoning", "thunder"],
+                            damage_resistances: ["fire", "cold"],
+                            damage_immunities: ["poison", "psychic"],
+                            condition_immunities: ["charmed", "exhaustion", "frightened", "paralyzed", "petrified", "poisoned"],
+                            synergy_tags: ["construct", "burrow", "tunnel_guardian", "tremorsense"],
+                            biomes: ["underground", "dwarven_mines", "cave_systems"],
+                            tactical_range: "melee",
+                            mobility: "medium",
+                            intelligence: "low",
+                            conditions_inflicted: ["prone"],
+                            special_abilities: ["tremorsense", "tunnel_collapse", "earth_tremor"],
+                            environmental_signs: [
+                                "Perfectly smooth tunnel walls with geometric patterns",
+                                "Rubble arranged in precise defensive positions",
+                                "Mining equipment showing signs of supernatural organization",
+                                "Underground chambers with impossibly stable architecture",
+                                "Stone blocks fitted together without mortar or gaps",
+                                "Tunnel networks that seem to repair themselves"
+                            ],
+                            source: {
+                                title: "A5E System Reference Document",
+                                abbreviation: "A5ESRD",
+                                page: 363,
+                                license: "CC BY 4.0",
+                                url: "https://a5esrd.com/"
+                            }
+                        },
+                        {
+                            name: "Dire Wolf Alpha",
+                            cr: 3,
+                            type: "beast",
+                            size: "large",
+                            ac: 14,
+                            hp: 58,
+                            speed: {walk: 50, fly: 0, swim: 0, burrow: 0, climb: 0},
+                            roles: ["skirmisher", "leader"],
+                            damage_types_dealt: ["piercing"],
+                            damage_resistances: [],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["pack_tactics", "pack_leader", "keen_senses", "alpha"],
+                            biomes: ["forests", "mountains", "arctic"],
+                            tactical_range: "melee",
+                            mobility: "very_high",
+                            intelligence: "low",
+                            conditions_inflicted: ["prone"],
+                            special_abilities: ["pack_tactics", "keen_hearing", "alpha_howl"],
+                            environmental_signs: [
+                                "Howling heard from multiple directions simultaneously",
+                                "Large paw prints in organized patrol patterns",
+                                "Prey animals displaying extreme wariness in open areas",
+                                "Territory markings on trees at unusual heights",
+                                "Pack hunting formations evident in tracks",
+                                "Dens dug with strategic sight lines and escape routes"
+                            ],
+                            source: {
+                                title: "A5E System Reference Document",
+                                abbreviation: "A5ESRD",
+                                page: 235,
+                                license: "CC BY 4.0",
+                                url: "https://a5esrd.com/"
+                            }
+                        },
+                        {
+                            name: "Prismatic Serpent",
+                            cr: 16,
+                            type: "dragon",
+                            size: "huge",
+                            ac: 18,
+                            hp: 225,
+                            speed: {walk: 40, fly: 80, swim: 40, burrow: 0, climb: 40},
+                            roles: ["artillery", "controller"],
+                            damage_types_dealt: ["acid", "cold", "fire", "lightning", "poison"],
+                            damage_resistances: ["acid", "cold", "fire", "lightning", "poison"],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["dragon", "prismatic_powers", "multi_damage", "legendary_creature"],
+                            biomes: ["rainbow_valleys", "crystal_caves", "planar_nexus"],
+                            tactical_range: "mixed",
+                            mobility: "very_high",
+                            intelligence: "genius",
+                            conditions_inflicted: ["blinded", "stunned"],
+                            special_abilities: ["prismatic_breath", "color_spray", "legendary_actions"],
+                            environmental_signs: [
+                                "Rainbow effects in mist and water droplets without sunlight",
+                                "Crystals and gems showing prismatic light refraction",
+                                "Animals with unusually colorful or iridescent features",
+                                "Plants growing in perfect color gradients",
+                                "Light behaving strangely - splitting into visible spectrums",
+                                "Stone formations showing bands of multiple colors",
+                                "Sky showing aurora-like effects during daylight"
+                            ],
+                            source: {
+                                title: "A5E System Reference Document",
+                                abbreviation: "A5ESRD",
+                                page: 327,
+                                license: "CC BY 4.0",
+                                url: "https://a5esrd.com/"
+                            }
+                        },
+                        {
+                            name: "Void Wisp",
+                            cr: 1,
+                            type: "aberration",
+                            size: "tiny",
+                            ac: 13,
+                            hp: 22,
+                            speed: {walk: 0, fly: 50, swim: 0, burrow: 0, climb: 0},
+                            roles: ["lurker", "skirmisher"],
+                            damage_types_dealt: ["necrotic", "psychic"],
+                            damage_resistances: ["necrotic"],
+                            damage_immunities: [],
+                            condition_immunities: [],
+                            synergy_tags: ["void_touched", "flight", "incorporeal", "psychic_damage"],
+                            biomes: ["void_rifts", "corrupted_areas", "planar_boundaries"],
+                            tactical_range: "mixed",
+                            mobility: "very_high",
+                            intelligence: "low",
+                            conditions_inflicted: ["frightened"],
+                            special_abilities: ["void_touch", "phasing", "fear_aura"],
+                            environmental_signs: [
+                                "Small areas of absolute darkness that resist light",
+                                "Insects and small animals found dead with no visible cause",
+                                "Plants withering in perfect circles around void tears",
+                                "Reality distortions - objects appearing to flicker",
+                                "Unexplained feelings of dread in certain spots",
+                                "Electronics malfunctioning in localized areas"
+                            ],
+                            source: {
+                                title: "A5E System Reference Document",
+                                abbreviation: "A5ESRD",
+                                page: 379,
+                                license: "CC BY 4.0",
+                                url: "https://a5esrd.com/"
+                            }
+                        }
+                    ]
+                };
+
+                this.synergyData = {
+                    synergy_types: {
+                        mechanical: { description: "Direct ability interactions" },
+                        thematic: { description: "Narrative coherence" },
+                        tactical: { description: "Role complementarity" },
+                        absorption: { description: "Immunity/healing chains" },
+                        trigger: { description: "Reactive abilities" },
+                        hybrid: { description: "Multiple synergy types" }
+                    },
+                    // TRUE MECHANICAL SYNERGIES - verified ability interactions
+                    verified_synergies: [
+                        ['fire_dealer', 'fire_healed'],           // Fire Elemental heals Iron Golem
+                        ['pack_tactics', 'formation_tactics'],    // Wolf + Hobgoblin advantage stacking  
+                        ['pack_tactics', 'martial_advantage'],    // Pack tactics + martial advantage combo
+                        ['prone_inflictor', 'pack_tactics'],      // Trip attack + pack advantage on prone
+                        ['blood_drain', 'prone_inflictor'],       // Stirge + Wolf: prone makes attach easier
+                        ['engulf', 'flight'],                     // Cube + flying creature for aerial drops
+                        ['poison_dealer', 'pack_tactics'],        // Poison + pack tactics for overwhelming
+                        ['regeneration', 'formation_tactics'],     // Troll + tactical support extends survival
+                        ['frightful_presence', 'pack_tactics'],   // Fear + pack creates advantage opportunities
+                        ['magic_resistance', 'spell_caster'],     // MR creature protects spellcaster ally
+                        ['incorporeal', 'physical_distraction'],   // Banshee + physical creature: ghost distracts while partner attacks
+                        ['horror_presence', 'pack_tactics'],       // Fear effects + pack tactics for psychological warfare
+                        ['fire_breath', 'flight'],                 // Chimera-style aerial fire attacks
+                        ['displacement', 'pack_tactics'],          // Displacer Beast displacement + pack coordination
+                        ['rotting_presence', 'undead_resilience'], // Disease aura + undead immunity synergy
+                    ],
+                    // CONTRADICTORY SYNERGIES - these should only appear at level 3+
+                    contradictory_synergies: [
+                        // DAMAGE TYPE VS VULNERABILITY
+                        ['fire_dealer', 'fire_vulnerable'],       // Fire damage vs fire vulnerability
+                        ['acid_dealer', 'acid_vulnerable'],       // Acid damage vs acid vulnerability  
+                        ['cold_dealer', 'cold_vulnerable'],       // Cold damage vs cold vulnerability
+                        ['lightning_dealer', 'lightning_vulnerable'], // Lightning vs lightning vulnerability
+                        ['poison_dealer', 'poison_vulnerable'],   // Poison vs poison vulnerability
+                        
+                        // DAMAGE PREVENTS ABILITIES
+                        ['fire_dealer', 'regeneration'],          // Fire prevents troll regeneration
+                        ['acid_dealer', 'regeneration'],          // Acid prevents troll regeneration
+                        ['cold_dealer', 'plant_creature'],        // Cold vs plant creatures
+                        ['fire_dealer', 'plant_creature'],        // Fire vs plant creatures
+                        
+                        // OPPOSING ELEMENTS
+                        ['fire_dealer', 'cold_dealer'],           // Fire vs ice opposition
+                        ['fire_dealer', 'water_elemental'],       // Fire vs water elemental
+                        ['lightning_dealer', 'water_vulnerability'], // Lightning vs water creatures
+                        
+                        // ENGULF CONTRADICTIONS
+                        ['engulf_controller', 'tiny_size'],       // Can't engulf what you partner with
+                        
+                        // BEHAVIORAL CONTRADICTIONS
+                        ['incorporeal', 'physical_dependency'],   // Ghost vs needs physical form
+                        ['undead_master', 'turn_undead'],         // Controls undead vs destroys undead
+                        ['swarm_behavior', 'territorial'],        // Swarm vs solitary territorial
+                        ['pack_tactics', 'territorial'],          // Pack vs solitary behavior
+                        ['good_aligned', 'evil_aligned'],         // Moral opposition
+                        ['lawful_behavior', 'chaotic_behavior'],  // Order vs chaos
+                        
+                        // ABILITY CONTRADICTIONS
+                        ['blood_drain', 'no_blood'],              // Vampire vs construct/undead
+                        ['life_drain', 'undead_resilience'],      // Life drain vs undead
+                        ['charm_immunity', 'charm_specialist'],   // Immune to charm vs uses charm
+                        ['magic_resistance', 'spell_dependency'], // MR vs needs magic to function
+                        ['sunlight_sensitivity', 'light_generator'], // Light sensitive vs generates light
+                        
+                        // ENVIRONMENTAL CONTRADICTIONS
+                        ['aquatic_only', 'desert_native'],        // Water-only vs desert creature
+                        ['fire_immunity', 'cold_native'],         // Fire immune vs arctic creature
+                        ['cold_immunity', 'fire_native'],         // Cold immune vs fire creature
+                        ['underground_only', 'flight_required'],  // Can't fly underground
+                        
+                        // TACTICAL CONTRADICTIONS
+                        ['stealth_specialist', 'loud_creature'],  // Stealth vs noise
+                        ['ambush_predator', 'charge_attacker'],   // Ambush vs frontal assault
+                        ['ranged_only', 'melee_only'],            // Opposing combat styles
+                        ['defensive_specialist', 'berserker'],    // Defense vs reckless attack
+                        
+                        // NEW CREATURE CONTRADICTIONS
+                        ['incorporeal', 'engulf'],                // Ghost vs engulfing creature
+                        ['rotting_presence', 'healing_aura'],     // Disease vs healing contradiction
+                        ['displacement', 'true_sight'],           // Displacement vs true sight
+                        ['wail_of_doom', 'silence_aura'],         // Sound attack vs silence
+                    ],
+                    synergy_rules: {
+                        fire_healed: {
+                            compatible_with: ["fire_dealer"],
+                            synergy_type: "absorption",
+                            effect: "Iron Golem's Fire Absorption heals from Fire Elemental's attacks"
+                        },
+                        pack_tactics: {
+                            compatible_with: ["formation_tactics", "martial_advantage"],
+                            synergy_type: "mechanical",
+                            effect: "Pack tactics provides advantage when Hobgoblin uses martial advantage"
+                        },
+                        blood_drain: {
+                            compatible_with: ["prone_inflictor"],
+                            synergy_type: "mechanical", 
+                            effect: "Prone targets are easier for Stirge to attach and drain"
+                        }
+                    }
+                };
+            }
+
+            rollD6() {
+                return Math.floor(Math.random() * 6) + 1;
+            }
+
+            tier1Foundation() {
+                const crRoll = this.rollD6();
+                const contextRoll = this.rollD6();
+                const synergyRoll = this.rollD6();
+
+                let crBracket, crRange;
+                if (crRoll <= 2) {
+                    crBracket = "low";
+                    crRange = "0-2";
+                } else if (crRoll <= 4) {
+                    crBracket = "medium";
+                    crRange = "3-8";
+                } else {
+                    crBracket = "high";
+                    crRange = "9+";
+                }
+
+                let context;
+                if (contextRoll <= 2) {
+                    context = "wilderness";
+                } else if (contextRoll <= 4) {
+                    context = "underground";
+                } else {
+                    context = "civilized";
+                }
+
+                const synergyTypes = ["mechanical", "thematic", "tactical", "absorption", "trigger", "hybrid"];
+                const synergyType = synergyTypes[synergyRoll - 1];
+
+                return {
+                    cr_bracket: crBracket,
+                    cr_range: crRange,
+                    context: context,
+                    synergy_type: synergyType,
+                    rolls: {
+                        cr: crRoll,
+                        context: contextRoll,
+                        synergy: synergyRoll
+                    }
+                };
+            }
+
+            selectMonsterByCR(crBracket) {
+                const monsters = this.monsterData.monsters;
+                let candidates = [];
+
+                if (crBracket === "low") {
+                    candidates = monsters.filter(m => m.cr <= 2);
+                } else if (crBracket === "medium") {
+                    candidates = monsters.filter(m => m.cr >= 3 && m.cr <= 8);
+                } else {
+                    candidates = monsters.filter(m => m.cr >= 9);
+                }
+
+                if (candidates.length === 0) {
+                    candidates = monsters; // Fallback to all monsters
+                }
+
+                return candidates[Math.floor(Math.random() * candidates.length)];
+            }
+
+            checkRealSynergy(monster1, monster2) {
+                // Check for verified mechanical synergies
+                for (const [tag1, tag2] of this.synergyData.verified_synergies) {
+                    if ((monster1.synergy_tags.includes(tag1) && monster2.synergy_tags.includes(tag2)) ||
+                        (monster1.synergy_tags.includes(tag2) && monster2.synergy_tags.includes(tag1))) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            checkContradictorySynergy(monster1, monster2) {
+                // Check for contradictory synergies that need high creativity
+                for (const [tag1, tag2] of this.synergyData.contradictory_synergies) {
+                    if ((monster1.synergy_tags.includes(tag1) && monster2.synergy_tags.includes(tag2)) ||
+                        (monster1.synergy_tags.includes(tag2) && monster2.synergy_tags.includes(tag1))) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            findSynergy(monster1, monster2, synergyType) {
+                // First: Check for VERIFIED mechanical synergies
+                for (const tag1 of monster1.synergy_tags) {
+                    for (const tag2 of monster2.synergy_tags) {
+                        if (this.synergyData.synergy_rules[tag1]?.compatible_with?.includes(tag2)) {
+                            return {
+                                type: this.synergyData.synergy_rules[tag1].synergy_type,
+                                explanation: this.synergyData.synergy_rules[tag1].effect,
+                                verified: true
+                            };
+                        }
+                        if (this.synergyData.synergy_rules[tag2]?.compatible_with?.includes(tag1)) {
+                            return {
+                                type: this.synergyData.synergy_rules[tag2].synergy_type,
+                                explanation: this.synergyData.synergy_rules[tag2].effect,
+                                verified: true
+                            };
+                        }
+                    }
+                }
+
+                // Second: Generate accurate tactical/thematic synergy
+                return this.generateAccurateSynergy(monster1, monster2, synergyType);
+            }
+
+            generateAccurateSynergy(monster1, monster2, synergyType) {
+                // Analyze actual complementary roles and abilities
+                const roles1 = monster1.roles || [];
+                const roles2 = monster2.roles || [];
+                const range1 = monster1.tactical_range || 'mixed';
+                const range2 = monster2.tactical_range || 'mixed';
+                
+                // Tactical synergy based on role complementarity
+                if (this.hasRoleComplementarity(roles1, roles2)) {
+                    return {
+                        type: 'tactical',
+                        explanation: this.generateTacticalExplanation(monster1, monster2, roles1, roles2),
+                        verified: false
+                    };
+                }
+                
+                // Range synergy
+                if (range1 !== range2 && (range1 !== 'mixed' && range2 !== 'mixed')) {
+                    return {
+                        type: 'tactical',
+                        explanation: `${monster1.name}'s ${range1} combat complements ${monster2.name}'s ${range2} tactics, creating layered battlefield control`,
+                        verified: false
+                    };
+                }
+                
+                // Thematic synergy fallback
+                return {
+                    type: 'thematic',
+                    explanation: this.generateThematicExplanation(monster1, monster2),
+                    verified: false
+                };
+            }
+
+            hasRoleComplementarity(roles1, roles2) {
+                const complementaryPairs = [
+                    ['artillery', 'soldier'], ['brute', 'controller'], ['lurker', 'brute'],
+                    ['skirmisher', 'artillery'], ['leader', 'soldier'], ['controller', 'brute']
+                ];
+                
+                for (const [role1, role2] of complementaryPairs) {
+                    if ((roles1.includes(role1) && roles2.includes(role2)) ||
+                        (roles1.includes(role2) && roles2.includes(role1))) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            generateTacticalExplanation(monster1, monster2, roles1, roles2) {
+                const explanations = {
+                    'artillery_soldier': `${monster2.name} provides frontline protection while ${monster1.name} delivers ranged support`,
+                    'brute_controller': `${monster1.name} applies direct pressure while ${monster2.name} manipulates battlefield conditions`,
+                    'lurker_brute': `${monster1.name} creates chaos and distraction, allowing ${monster2.name} to strike from hiding`,
+                    'skirmisher_artillery': `${monster1.name}'s mobility complements ${monster2.name}'s ranged precision`,
+                    'leader_soldier': `${monster1.name} coordinates tactics while ${monster2.name} executes formation maneuvers`
+                };
+                
+                // Find matching explanation
+                for (const [key, explanation] of Object.entries(explanations)) {
+                    const [role1, role2] = key.split('_');
+                    if ((roles1.includes(role1) && roles2.includes(role2)) ||
+                        (roles1.includes(role2) && roles2.includes(role1))) {
+                        return explanation;
+                    }
+                }
+                
+                return `${monster1.name} and ${monster2.name} utilize complementary combat roles for tactical advantage`;
+            }
+
+            generateThematicExplanation(monster1, monster2) {
+                const type1 = monster1.type;
+                const type2 = monster2.type;
+                
+                if (type1 === type2) {
+                    return `Both ${type1} creatures share common origins and behavioral patterns`;
+                }
+                
+                const thematicPairs = {
+                    'construct_undead': 'Both are artificial beings freed from natural limitations',
+                    'elemental_construct': 'Magical energy animates both creatures',
+                    'beast_humanoid': 'Natural instinct guides civilized tactics',
+                    'undead_construct': 'Neither creature fears death or pain',
+                    'elemental_undead': 'Both exist beyond normal life and death'
+                };
+                
+                const key = [type1, type2].sort().join('_');
+                return thematicPairs[key] || `${monster1.name} and ${monster2.name} form an unusual but effective partnership`;
+            }
+
+            generateCreativeSynergy(monster1, monster2, synergyType) {
+                const creativeSynergies = {
+                    mechanical: [
+                        `${monster1.name}'s abilities trigger ${monster2.name}'s reactive powers`,
+                        `They share a symbiotic relationship where one's attacks empower the other`,
+                        `Their different damage types create combo opportunities`
+                    ],
+                    thematic: [
+                        `United by a common origin or magical bond`,
+                        `They represent opposing forces that create balance`,
+                        `Bound together by ancient pact or curse`
+                    ],
+                    tactical: [
+                        `Perfect complementary roles: one controls, one strikes`,
+                        `Their different ranges create layered defensive positions`,
+                        `Size difference allows for mounted combat synergy`
+                    ],
+                    absorption: [
+                        `One is immune to the other's signature damage type`,
+                        `They heal each other through their natural abilities`,
+                        `Energy flows between them in combat`
+                    ],
+                    trigger: [
+                        `One's presence activates the other's dormant abilities`,
+                        `They respond to each other's emotional states`,
+                        `Environmental changes affect them as a connected pair`
+                    ],
+                    hybrid: [
+                        `Multiple synergy types create complex interactions`,
+                        `Their bond transcends simple tactical cooperation`,
+                        `Reality bends around their combined presence`
+                    ]
+                };
+
+                const options = creativeSynergies[synergyType] || creativeSynergies.hybrid;
+                return {
+                    type: synergyType,
+                    explanation: options[Math.floor(Math.random() * options.length)]
+                };
+            }
+
+            applyCreativityChaos(foundation, creativityLevel) {
+                // Apply chaos modifiers based on creativity level
+                if (creativityLevel >= 3) {
+                    // High creativity can scramble context
+                    if (Math.random() < 0.3) {
+                        const contexts = ["wilderness", "underground", "civilized", "planar", "ethereal", "dreamscape"];
+                        foundation.context = contexts[Math.floor(Math.random() * contexts.length)];
+                        foundation.chaos_applied = true;
+                    }
+                }
+
+                if (creativityLevel >= 4) {
+                    // Surreal creativity can change synergy types
+                    if (Math.random() < 0.4) {
+                        const synergyTypes = ["mechanical", "thematic", "tactical", "absorption", "trigger", "hybrid", "impossible", "reality-bending"];
+                        foundation.synergy_type = synergyTypes[Math.floor(Math.random() * synergyTypes.length)];
+                        foundation.synergy_chaos = true;
+                    }
+                }
+
+                return foundation;
+            }
+
+            generateNarrativeSuggestions(monster1, monster2, creativityLevel) {
+                const name1 = monster1.name;
+                const name2 = monster2.name;
+                const type1 = monster1.type;
+                const type2 = monster2.type;
+                const isContradictory = this.checkContradictorySynergy(monster1, monster2);
+                
+                // Create large pools of varied suggestions for each creativity level
+                const suggestionPools = this.createSuggestionPools(monster1, monster2, isContradictory);
+                
+                // Select 3 random suggestions from the appropriate pool
+                const pool = suggestionPools[creativityLevel] || suggestionPools[2];
+                const selected = this.selectRandomSuggestions(pool, 3);
+                
+                return selected;
+            }
+
+            createSuggestionPools(monster1, monster2, isContradictory) {
+                const name1 = monster1.name;
+                const name2 = monster2.name;
+                const type1 = monster1.type;
+                const type2 = monster2.type;
+                const stronger = monster1.cr > monster2.cr ? name1 : name2;
+                const weaker = monster1.cr > monster2.cr ? name2 : name1;
+                const humanoid = type1 === 'humanoid' ? name1 : (type2 === 'humanoid' ? name2 : null);
+                const nonHumanoid = humanoid === name1 ? name2 : name1;
+                
+                return {
+                    0: [ // Ultra-Logical
+                        { type: "Domestication", text: humanoid ? `${humanoid} has trained ${nonHumanoid} through careful conditioning and food rewards.` : `One creature has learned to follow the other's hunting patterns for mutual benefit.` },
+                        { type: "Territorial Division", text: `${name1} controls the primary territory while ${name2} patrols the outer boundaries.` },
+                        { type: "Hunting Cooperation", text: `${name1} drives prey toward ${name2}'s ambush points in an efficient predator system.` },
+                        { type: "Resource Sharing", text: `${stronger} provides protection while ${weaker} offers specialized scouting or foraging services.` },
+                        { type: "Symbiotic Roles", text: `${name1} handles direct confrontation while ${name2} manages territory control and warning systems.` },
+                        { type: "Master-Servant Bond", text: humanoid ? `${humanoid} has established dominance through consistent feeding and behavioral conditioning.` : `The larger creature provides shelter while the smaller serves as an early warning system.` },
+                        { type: "Survival Partnership", text: `Both creatures benefit from this alliance: ${name1}'s strengths complement ${name2}'s weaknesses perfectly.` },
+                        { type: "Ecological Niche", text: `They occupy different parts of the same ecosystem - ${name1} active during different times than ${name2}.` }
+                    ],
+                    
+                    1: [ // Sensible - REVISED FOR CAUSE-BASED ORIGINS
+                        { type: "Threat Response Alliance", text: `${name1} and ${name2} first allied when facing a common predator that neither could handle alone.` },
+                        { type: "Resource Crisis Bond", text: `A harsh winter with scarce food sources forced them to cooperate for survival rather than compete.` },
+                        { type: "Natural Hierarchy", text: `${stronger} naturally established dominance while ${weaker} offered specialized abilities, creating a stable partnership.` },
+                        { type: "Habitat Change Adaptation", text: `Environmental changes destroyed their separate territories, forcing them to share the remaining viable area.` },
+                        { type: "Ancestral Memory", text: `Both carry genetic memories of their species cooperating in the distant past during great migrations.` },
+                        { type: "Seasonal Necessity", text: `Extreme seasonal changes require both creatures' abilities to survive - neither can make it alone through winter.` },
+                        { type: "Superior Predator Arrival", text: `A apex predator moved into the region, forcing former competitors to unite or be picked off individually.` },
+                        { type: "Mutual Dependency Discovery", text: humanoid ? `${humanoid} discovered ${nonHumanoid} could provide vital services, leading to a beneficial trade arrangement.` : `One creature's natural byproducts proved essential for the other's health and reproduction.` },
+                        { type: "Intelligence Gap Bridge", text: `The smarter creature recognized the potential of partnership and gradually convinced the other through consistent benefits.` }
+                    ],
+                    
+                    2: [ // Interesting
+                        { type: "Shared Trauma", text: `Both creatures survived the same catastrophic event and bonded over their shared experience and mutual understanding.` },
+                        { type: "Common Enemy", text: `Adventurers have been hunting both creatures, forcing them into a defensive alliance for survival.` },
+                        { type: "Accidental Rescue", text: `One creature saved the other from a deadly trap, creating an unexpected debt of gratitude that evolved into partnership.` },
+                        { type: "Territorial Compromise", text: `After a lengthy border conflict, they negotiated a truce that evolved into active cooperation for mutual benefit.` }, 
+                        { type: "Wounded Healer Bond", text: `${weaker} nursed ${stronger} back to health after a serious injury, creating lasting loyalty and protection.` },
+                        { type: "Mutual Exile", text: `Both were cast out from their respective communities and found solace and strength in each other's company.` },
+                        { type: "Resource Scarcity", text: `Depleted hunting grounds forced them to pool their different hunting skills rather than compete for limited prey.` },
+                        { type: "Chance Encounter", text: `A random meeting during a crisis revealed they worked surprisingly well together, leading to a permanent alliance.` },
+                        { type: "Parental Bond", text: `${stronger} found ${weaker} as a young/injured creature and raised it, creating a family-like protective relationship.` },
+                        { type: "Symbiotic Discovery", text: `They discovered their natural abilities create a beneficial cycle - ${name1}'s actions directly help ${name2} and vice versa.` },
+                        { type: "Environmental Displacement", text: `Climate change or territorial expansion drove both from their homes, forcing them to adapt together in new territory.` }
+                    ],
+                    
+                    3: [ // Creative - CAUSE-BASED MAGICAL ORIGINS
+                        { type: "Magical Bond Origin", text: `During a wizard's duel, a misfired binding spell accidentally linked their life essences together permanently.` },
+                        { type: "Hag's Curse Genesis", text: `A vengeful hag cursed them to be inseparable after they both trespassed on her sacred grove.` },
+                        { type: "Soul Sundering Event", text: `A catastrophic magical explosion tore a single ancient soul apart, splitting it between these two vessels.` },
+                        { type: "Divine Selection", text: `A god of balance specifically chose these natural opposites to demonstrate that harmony can exist in any form.` },
+                        { type: "Prophetic Convergence", text: `Ancient oracles foretold these specific creatures would meet at this exact location to prevent disaster.` },
+                        { type: "Wild Magic Fusion", text: `They were both caught in a wild magic surge at the same moment, permanently linking their magical auras.` },
+                        { type: "Past Life Recognition", text: `Soul-deep memories from previous incarnations as bonded companions awakened when they first met.` },
+                        { type: "Experimental Accident", text: `A druid's symbiosis experiment went awry, creating an unbreakable mystical connection between test subjects.` },
+                        { type: "Artifact Activation", text: `An ancient artifact activated when both creatures approached, compelling them into magical partnership.` },
+                        { type: "Feywild Crossing", text: `Simultaneous exposure to Feywild energy during a planar crossing rewrote their natural instincts toward cooperation.` },
+                        ...(isContradictory ? this.getContradictorySpecialSuggestions(monster1, monster2) : [])
+                    ],
+                    
+                    4: [ // Surreal - REALITY-ALTERING ORIGINS
+                        { type: "Pocket Dimension Creation", text: `A planar accident created this reality bubble where ${name1} and ${name2} first learned cooperation was possible.` },
+                        { type: "Temporal Convergence", text: `A time magic experiment pulled them from different eras when their species were naturally allied.` },
+                        { type: "Dream Manifestation", text: `An ancient dragon's sleeping mind dreamed of their partnership, accidentally making it real when they entered its domain.` },
+                        { type: "Conceptual Experiment", text: `A philosopher's stone made the abstract ideas of '${type1}' and '${type2}' cooperation tangible when they touched it.` },
+                        { type: "Ancestral Memory Awakening", text: `This sacred site awakened genetic memories from an ancient era when their species were allied, compelling them to recreate that bond.` },
+                        { type: "Planar Convergence Event", text: `Multiple dimensions collided at this location, bringing them together from realities where they were already partners.` },
+                        { type: "Ancient Magic Resonance", text: `Dormant enchantments in this area awakened when both creatures arrived, rewriting their instincts toward cooperation.` },
+                        { type: "Stellar Influence", text: `A rare cosmic alignment occurred precisely when they met, imbuing them with celestial compulsion to work together.` },
+                        { type: "Emotional Crystallization", text: `Intense emotions from a ancient tragedy here crystallized into magic that binds unlikely pairs into healing partnerships.` },
+                        { type: "Story Reality", text: `This location exists where stories become real - their partnership began because bards sang of such an alliance here.` }
+                    ],
+                    
+                    5: [ // Chaotic - ABSURD ORIGIN CAUSES
+                        { type: "Cosmic Joke Initiation", text: `The universe's sense of humor spontaneously decided that ${name1} and ${name2} being best friends would be absolutely hilarious.` },
+                        { type: "Reality System Crash", text: `Reality.exe encountered a critical error and defaulted all creature relationships to 'friendship' as a fail-safe.` },
+                        { type: "Meta-Awareness Breakthrough", text: `Both creatures simultaneously realized they're in a fantasy setting and chose to rebel against their assigned roles.` },
+                        { type: "Quantum Entanglement Event", text: `A magical experiment accidentally quantum-entangled their behavioral states at the moment they first met.` },
+                        { type: "Divine Comedy Casting", text: `The god of irony specifically cast them as leads in a cosmic comedy about impossible friendships.` },
+                        { type: "Chaos Storm Origin", text: `A wild magic surge inverted the fundamental force that governs creature relationships in this region.` },
+                        { type: "Paradox Engine Activation", text: `An ancient artifact powered by contradictions malfunctioned, making their impossible partnership its primary energy source.` },
+                        { type: "Species Revolution", text: `${type1}s and ${type2}s simultaneously staged a metaphysical rebellion against their stereotypical roles.` },
+                        { type: "Cosmic Beta Test", text: `The universe randomly selected these two to test new social interaction protocols before universal deployment.` },
+                        { type: "Memetic Spell Infection", text: `A viral enchantment spread the concept that all creatures should be friends, and these two were patient zero.` },
+                        { type: "Quantum Friendship State", text: `A reality-bending spell put their relationship in superposition of all possibilities when they first encountered each other.` }
+                    ]
+                };
+            }
+
+            getContradictorySpecialSuggestions(monster1, monster2) {
+                const name1 = monster1.name;
+                const name2 = monster2.name;
+                const special = [];
+                
+                if ((name1.includes('Fire') && name2.includes('Troll')) || (name2.includes('Fire') && name1.includes('Troll'))) {
+                    special.push(
+                        { type: "Alchemical Experiment", text: `A mad wizard's attempt to create an 'eternal burning troll' went partially wrong, binding them together.` },
+                        { type: "Symbiotic Desperation", text: `The Troll trades constant agony for the Fire Elemental's power, becoming a living weapon.` },
+                        { type: "Magical Immunity", text: `The fire has burned away the Troll's ability to feel pain, making the partnership bearable.` }
+                    );
+                }
+                
+                if ((name1.includes('Cube') || name1.includes('Acid') || name2.includes('Cube') || name2.includes('Acid')) && 
+                    (name1.includes('Troll') || name2.includes('Troll'))) {
+                    special.push(
+                        { type: "Undeath Immunity", text: `The acid has killed the Troll so many times it developed supernatural resilience to its own death.` },
+                        { type: "Toxic Symbiosis", text: `The Troll's regeneration has adapted to process acid as a nutrient source rather than poison.` },
+                        { type: "Evolutionary Pressure", text: `Constant exposure has forced the Troll to evolve beyond normal regeneration limitations.` }
+                    );
+                }
+                
+                return special;
+            }
+
+            selectRandomSuggestions(pool, count) {
+                const shuffled = [...pool].sort(() => Math.random() - 0.5);
+                return shuffled.slice(0, count);
+            }
+
+            generateCreativeExplanation(monster1, monster2, synergy, creativityLevel) {
+                let explanation = synergy.explanation;
+
+                if (creativityLevel >= 3 && !synergy.verified) {
+                    const creativeAdditions = [
+                        "bound by ancient magic",
+                        "sharing a telepathic connection", 
+                        "influenced by planar convergence",
+                        "affected by wild magic surges",
+                        "guided by prophetic visions"
+                    ];
+                    explanation += ` - ${creativeAdditions[Math.floor(Math.random() * creativeAdditions.length)]}`;
+                }
+
+                if (creativityLevel >= 5) {
+                    const chaoticTwists = [
+                        "Reality warps around their impossible alliance",
+                        "The laws of physics pause to watch their cooperation", 
+                        "Even the dice are confused by this pairing",
+                        "The universe's sense of humor manifests physically"
+                    ];
+                    explanation += `. ${chaoticTwists[Math.floor(Math.random() * chaoticTwists.length)]}.`;
+                }
+
+                return explanation;
+            }
+
+            generatePairing(creativityLevel = 2) {
+                const creativityNames = ["Ultra-Logical", "Sensible", "Interesting", "Creative", "Surreal", "Chaotic"];
+                
+                let attempts = 0;
+                const maxAttempts = 50;
+                
+                while (attempts < maxAttempts) {
+                    attempts++;
+                    
+                    // Tier 1: Foundation
+                    let foundation = this.tier1Foundation();
+                    foundation = this.applyCreativityChaos(foundation, creativityLevel);
+
+                    // Select monsters
+                    const monster1 = this.selectMonsterByCR(foundation.cr_bracket);
+                    let availableMonsters = this.monsterData.monsters.filter(m => m.name !== monster1.name);
+                    const monster2 = availableMonsters[Math.floor(Math.random() * availableMonsters.length)];
+
+                    // Apply creativity-based filtering
+                    if (creativityLevel <= 2) {
+                        // Check for contradictory synergies (should be level 3+)
+                        if (this.checkContradictorySynergy(monster1, monster2)) {
+                            continue; // Try again
+                        }
+                        
+                        // Level 0-1: Require verified mechanical synergy
+                        if (creativityLevel <= 1 && !this.checkRealSynergy(monster1, monster2)) {
+                            continue; // Try again
+                        }
+                        
+                        // Level 2: Allow if no contradictions (tactical synergy acceptable)
+                    }
+
+                    // Calculate encounter CR
+                    const totalCR = monster1.cr + monster2.cr;
+
+                    // Find synergy
+                    const synergy = this.findSynergy(monster1, monster2, foundation.synergy_type);
+                    synergy.explanation = this.generateCreativeExplanation(monster1, monster2, synergy, creativityLevel);
+
+                    // Generate narrative suggestions
+                    const narrativeSuggestions = this.generateNarrativeSuggestions(monster1, monster2, creativityLevel);
+
+                    return {
+                        creativity_level: creativityLevel,
+                        creativity_name: creativityNames[creativityLevel],
+                        foundation: foundation,
+                        monster1: monster1,
+                        monster2: monster2,
+                        total_cr: totalCR,
+                        synergy: synergy,
+                        narrative_suggestions: narrativeSuggestions,
+                        generation_attempts: attempts
+                    };
+                }
+                
+                // Fallback: generate at higher creativity level if strict requirements can't be met
+                console.warn(`Could not find suitable pairing at level ${creativityLevel} after ${maxAttempts} attempts. Generating at level 3.`);
+                return this.generatePairing(3);
+            }
+        }
+
+        // Initialize generator
+        const generator = new MonsterPairingGenerator();
+
+        // UI Functions
+        function updateCreativityLabel() {
+            const slider = document.getElementById('creativitySlider');
+            const label = document.getElementById('creativityLabel');
+            const names = ["0 - Ultra-Logical", "1 - Sensible", "2 - Interesting", "3 - Creative", "4 - Surreal", "5 - Chaotic"];
+            label.textContent = names[slider.value];
+        }
+
+        function toggleCreativityInfo() {
+            const info = document.getElementById('creativityInfo');
+            const btn = document.querySelector('.creativity-toggle-btn');
+            
+            if (info.classList.contains('show')) {
+                info.classList.remove('show');
+                btn.textContent = '📖 Learn About Creativity Levels';
+            } else {
+                info.classList.add('show');
+                btn.textContent = '🔼 Hide Creativity Guide';
+                info.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function generatePairing() {
+            const creativityLevel = parseInt(document.getElementById('creativitySlider').value);
+            const loadingDiv = document.getElementById('loadingDiv');
+            const resultsDiv = document.getElementById('resultsDiv');
+
+            // Show loading
+            loadingDiv.style.display = 'block';
+            resultsDiv.style.display = 'none';
+
+            // Simulate brief loading for better UX
+            setTimeout(() => {
+                const pairing = generator.generatePairing(creativityLevel);
+                displayPairing(pairing);
+                
+                loadingDiv.style.display = 'none';
+                resultsDiv.style.display = 'block';
+                resultsDiv.scrollIntoView({ behavior: 'smooth' });
+            }, 500);
+        }
+
+        function displayPairing(pairing) {
+            const resultsDiv = document.getElementById('resultsDiv');
+            
+            resultsDiv.innerHTML = `
+                <div class="pairing-header">
+                    <div class="creativity-level">
+                        🎨 ${pairing.creativity_name} (Level ${pairing.creativity_level})
+                    </div>
+                    <h2>Monster Pairing Generated!</h2>
+                </div>
+
+                <div class="encounter-cards">
+                    <div class="monster-card">
+                        <div class="monster-name">${pairing.monster1.name}</div>
+                        <div class="monster-stats">
+                            <div class="stat-item"><span class="stat-label">CR:</span> ${pairing.monster1.cr}</div>
+                            <div class="stat-item"><span class="stat-label">Type:</span> ${pairing.monster1.type}</div>
+                            <div class="stat-item"><span class="stat-label">Size:</span> ${pairing.monster1.size || 'medium'}</div>
+                            <div class="stat-item"><span class="stat-label">AC:</span> ${pairing.monster1.ac || 'Unknown'}</div>
+                            <div class="stat-item"><span class="stat-label">HP:</span> ${pairing.monster1.hp || 'Unknown'}</div>
+                            <div class="stat-item"><span class="stat-label">Range:</span> ${pairing.monster1.tactical_range || 'mixed'}</div>
+                        </div>
+                        <div class="synergy-tags">
+                            ${pairing.monster1.synergy_tags.map(tag => `<span class="tag">${tag.replace('_', ' ')}</span>`).join('')}
+                        </div>
+                        ${pairing.monster1.source ? `
+                        <div class="monster-source">
+                            <div class="source-title">${pairing.monster1.source.abbreviation}</div>
+                            <div class="source-page">p. ${pairing.monster1.source.page}</div>
+                        </div>` : ''}
+                    </div>
+
+                    <div class="synergy-connector">⚔️</div>
+
+                    <div class="monster-card">
+                        <div class="monster-name">${pairing.monster2.name}</div>
+                        <div class="monster-stats">
+                            <div class="stat-item"><span class="stat-label">CR:</span> ${pairing.monster2.cr}</div>
+                            <div class="stat-item"><span class="stat-label">Type:</span> ${pairing.monster2.type}</div>
+                            <div class="stat-item"><span class="stat-label">Size:</span> ${pairing.monster2.size || 'medium'}</div>
+                            <div class="stat-item"><span class="stat-label">AC:</span> ${pairing.monster2.ac || 'Unknown'}</div>
+                            <div class="stat-item"><span class="stat-label">HP:</span> ${pairing.monster2.hp || 'Unknown'}</div>
+                            <div class="stat-item"><span class="stat-label">Range:</span> ${pairing.monster2.tactical_range || 'mixed'}</div>
+                        </div>
+                        <div class="synergy-tags">
+                            ${pairing.monster2.synergy_tags.map(tag => `<span class="tag">${tag.replace('_', ' ')}</span>`).join('')}
+                        </div>
+                        ${pairing.monster2.source ? `
+                        <div class="monster-source">
+                            <div class="source-title">${pairing.monster2.source.abbreviation}</div>
+                            <div class="source-page">p. ${pairing.monster2.source.page}</div>
+                        </div>` : ''}
+                    </div>
+                </div>
+
+                <div class="synergy-explanation">
+                    <div class="synergy-type">${pairing.synergy.type} Synergy</div>
+                    <div class="synergy-description">${pairing.synergy.explanation}</div>
+                </div>
+
+                <div class="foundation-info">
+                    <div class="foundation-item">
+                        <div class="foundation-label">Encounter CR</div>
+                        <div class="foundation-value">${pairing.total_cr}</div>
+                    </div>
+                    <div class="foundation-item">
+                        <div class="foundation-label">Context</div>
+                        <div class="foundation-value">${pairing.foundation.context}</div>
+                    </div>
+                    <div class="foundation-item">
+                        <div class="foundation-label">CR Bracket</div>
+                        <div class="foundation-value">${pairing.foundation.cr_range}</div>
+                    </div>
+                    <div class="foundation-item">
+                        <div class="foundation-label">Dice Rolls</div>
+                        <div class="foundation-value">[${pairing.foundation.rolls.cr}, ${pairing.foundation.rolls.context}, ${pairing.foundation.rolls.synergy}]</div>
+                    </div>
+                </div>
+
+                <div class="narrative-suggestions">
+                    <h4>📖 Narrative Suggestions</h4>
+                    ${pairing.narrative_suggestions.map(suggestion => `
+                        <div class="narrative-suggestion-item">
+                            <div class="narrative-suggestion-type">${suggestion.type}</div>
+                            <div>${suggestion.text}</div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div class="export-section">
+                    <button class="export-btn" onclick="exportAsText()">📄 Export as Text</button>
+                    <button class="export-btn" onclick="copyToClipboard()">📋 Copy to Clipboard</button>
+                    <button class="export-btn" onclick="generatePairing()">🎲 Generate Another</button>
+                </div>
+            `;
+            
+            // Store current pairing for export
+            window.currentPairing = pairing;
+        }
+
+        function exportAsText() {
+            if (!window.currentPairing) return;
+            
+            const p = window.currentPairing;
+            const text = `Monster Pairing - ${p.creativity_name} (Level ${p.creativity_level})
+
+Monster 1: ${p.monster1.name}
+- CR: ${p.monster1.cr} | Type: ${p.monster1.type} | Size: ${p.monster1.size || 'medium'}
+- AC: ${p.monster1.ac || 'Unknown'} | HP: ${p.monster1.hp || 'Unknown'}
+- Tags: ${p.monster1.synergy_tags.join(', ')}
+${p.monster1.source ? `- Source: ${p.monster1.source.title} (${p.monster1.source.abbreviation}) p.${p.monster1.source.page}` : ''}
+
+Monster 2: ${p.monster2.name}
+- CR: ${p.monster2.cr} | Type: ${p.monster2.type} | Size: ${p.monster2.size || 'medium'} 
+- AC: ${p.monster2.ac || 'Unknown'} | HP: ${p.monster2.hp || 'Unknown'}
+- Tags: ${p.monster2.synergy_tags.join(', ')}
+${p.monster2.source ? `- Source: ${p.monster2.source.title} (${p.monster2.source.abbreviation}) p.${p.monster2.source.page}` : ''}
+
+Synergy: ${p.synergy.type.toUpperCase()}
+${p.synergy.explanation}
+
+Encounter Details:
+- Total CR: ${p.total_cr}
+- Context: ${p.foundation.context}
+- Dice Rolls: [${p.foundation.rolls.cr}, ${p.foundation.rolls.context}, ${p.foundation.rolls.synergy}]
+
+Generated by Monster Pairing System`;
+
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `monster-pairing-${p.monster1.name.toLowerCase().replace(' ', '-')}-${p.monster2.name.toLowerCase().replace(' ', '-')}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function copyToClipboard() {
+            if (!window.currentPairing) return;
+            
+            const p = window.currentPairing;
+            const text = `${p.monster1.name} + ${p.monster2.name} (CR ${p.total_cr}) - ${p.synergy.type} synergy: ${p.synergy.explanation}`;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✅ Copied!';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                }, 2000);
+            });
+        }
+
+        // Initialize slider
+        document.getElementById('creativitySlider').addEventListener('input', updateCreativityLabel);
+        updateCreativityLabel();
+
+        // Generate initial pairing on load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                generatePairing();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
