@@ -137,6 +137,32 @@
             box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
         }
 
+        .export-section {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .export-btn {
+            background: rgba(212, 175, 55, 0.2);
+            color: #d4af37;
+            border: 1px solid #d4af37;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .export-btn:hover {
+            background: rgba(212, 175, 55, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .export-btn:active {
+            transform: translateY(0);
+        }
+
         .results {
             margin-top: 30px;
         }
@@ -278,6 +304,62 @@
                 grid-template-columns: 1fr;
             }
         }
+    
+        .environmental-signs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .environmental-column {
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .environmental-column h4 {
+            color: #d4af37;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            text-align: center;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 4px;
+        }
+
+        .environmental-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .environmental-list li {
+            font-size: 0.85rem;
+            line-height: 1.3;
+            margin-bottom: 6px;
+            padding-left: 12px;
+            position: relative;
+        }
+
+        .environmental-list li:before {
+            content: "🌿";
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .environmental-list li:nth-child(4n+1):before { content: "🌿"; }
+        .environmental-list li:nth-child(4n+2):before { content: "👁️"; }
+        .environmental-list li:nth-child(4n+3):before { content: "👂"; }
+        .environmental-list li:nth-child(4n+4):before { content: "🗂️"; }
+
+        @media (max-width: 768px) {
+            .environmental-signs {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -343,7 +425,7 @@ this.monsterData = {
             ac: 13,
             hp: 102,
             synergy_tags: ["fire_dealer", "immunity_fire", "aoe_damage", "ignition_source"],
-            environmental_signs: ["Scorched earth and burned vegetation", "Lingering heat and smoky scent"],
+            environmental_signs: ["Blackened tree stumps with smoldering cores", "Ground cracked from intense heat exposure", "Metal objects warped and discolored from flames", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 125
@@ -357,7 +439,7 @@ this.monsterData = {
             ac: 20,
             hp: 210,
             synergy_tags: ["fire_healed", "immunity_fire", "metal_construct", "magic_resistance"],
-            environmental_signs: ["Heavy footprints and mechanical sounds", "Lingering magical aura"],
+            environmental_signs: ["Footprints pressed 6+ inches into hardpacked earth", "Boulder formations disturbed and rearranged", "Pathways widened far beyond normal passage", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Ground vibrations felt through feet and bones", "Thunderous roaring echoing from mountain valleys", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 157
@@ -371,7 +453,7 @@ this.monsterData = {
             ac: 18,
             hp: 11,
             synergy_tags: ["martial_advantage", "pack_fighter", "tactical_coordination"],
-            environmental_signs: ["Disturbed stone and echo patterns", "Broken branches and disturbed undergrowth"],
+            environmental_signs: ["Claw marks scored deep into bark and stone", "Disturbed earth revealing recent excavation", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Fresh kill sites with specific dismemberment patterns", "Scent markings renewed within the past few days", "Disturbed vegetation indicating recent passage", "Unnatural stillness in areas that should be active"],
             source: {
                 abbreviation: "SRD",
                 page: 186
@@ -385,7 +467,7 @@ this.monsterData = {
             ac: 13,
             hp: 11,
             synergy_tags: ["pack_tactics", "prone_inflictor", "keen_hearing"],
-            environmental_signs: ["Animal tracks and territorial markings", "Disturbed vegetation and prey remains"],
+            environmental_signs: ["Claw marks scored deep into bark and stone", "Disturbed earth revealing recent excavation", "Multiple sets of tracks moving in coordinated patterns", "Prey remains showing evidence of group hunting", "Howling or calls echoing in sequence from different directions", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Fresh kill sites with specific dismemberment patterns", "Scent markings renewed within the past few days", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 341
@@ -399,7 +481,7 @@ this.monsterData = {
             ac: 15,
             hp: 136,
             synergy_tags: ["lightning_healed", "engulf_grappler", "swamp_native", "immunity_lightning"],
-            environmental_signs: ["Broken branches and disturbed undergrowth", "Murky water disturbance and strange sounds"],
+            environmental_signs: ["Footprints pressed 6+ inches into hardpacked earth", "Boulder formations disturbed and rearranged", "Pathways widened far beyond normal passage", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 270
@@ -413,7 +495,7 @@ this.monsterData = {
             ac: 19,
             hp: 22,
             synergy_tags: ["lightning_dealer", "incorporeal", "consume_life", "lure_tactic"],
-            environmental_signs: ["Electrical discharge marks on surfaces", "Metallic taste in the air"],
+            environmental_signs: ["Plants wilting despite adequate water and sunlight", "Temperature dropping 10-15 degrees in localized areas", "Milk souring and food spoiling rapidly", "Horses, dogs, and cats becoming agitated and fearful", "Wild animals abandoning traditional feeding grounds", "Air carrying the scent of old graves and decay", "Silence so complete that heartbeats become audible", "Grave dirt scattered in ritualistic patterns", "Bone fragments arranged according to ancient customs", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 301
@@ -427,7 +509,7 @@ this.monsterData = {
             ac: 6,
             hp: 84,
             synergy_tags: ["engulf_controller", "acid_dealer", "transparent", "dungeon_cleaner"],
-            environmental_signs: ["Acid-etched stone and corroded metal", "Acrid chemical smell"],
+            environmental_signs: ["Stone surfaces pitted with acid erosion", "Metallic equipment dissolved into twisted shapes", "Plant life wilted with chemical burn patterns", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Bubbling and hissing from dissolved organic matter", "Acrid chemical odor burning nasal passages", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 242
@@ -441,7 +523,7 @@ this.monsterData = {
             ac: 14,
             hp: 133,
             synergy_tags: ["acid_healed", "immunity_acid", "construct_durability", "haste_benefit"],
-            environmental_signs: ["Heavy footprints and mechanical sounds", "Lingering magical aura"],
+            environmental_signs: ["Footprints pressed 6+ inches into hardpacked earth", "Boulder formations disturbed and rearranged", "Pathways widened far beyond normal passage", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Ground vibrations felt through feet and bones", "Thunderous roaring echoing from mountain valleys", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 168
@@ -455,7 +537,7 @@ this.monsterData = {
             ac: 13,
             hp: 59,
             synergy_tags: ["keen_sight", "territorial", "fierce_predator"],
-            environmental_signs: ["Broken branches and disturbed undergrowth"],
+            environmental_signs: ["Footprints pressed 6+ inches into hardpacked earth", "Boulder formations disturbed and rearranged", "Pathways widened far beyond normal passage", "Birds and small mammals fleeing area before danger appears", "Domestic animals refusing to enter certain zones", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 249
@@ -469,7 +551,7 @@ this.monsterData = {
             ac: 14,
             hp: 2,
             synergy_tags: ["blood_drain", "attach_grappler", "swarm_behavior", "flying_pest"],
-            environmental_signs: ["Animal tracks and territorial markings", "Disturbed vegetation and prey remains"],
+            environmental_signs: ["Claw marks scored deep into bark and stone", "Disturbed earth revealing recent excavation", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Animal corpses with precise circular wounds", "Bloodstain patterns indicating feeding frenzies", "Disturbed vegetation indicating recent passage", "Unnatural stillness in areas that should be active"],
             source: {
                 abbreviation: "SRD",
                 page: 284
@@ -483,7 +565,7 @@ this.monsterData = {
             ac: 15,
             hp: 7,
             synergy_tags: ["nimble_escape", "pack_fighter", "sneaky", "small_size"],
-            environmental_signs: ["Disturbed stone and echo patterns", "Broken branches and disturbed undergrowth"],
+            environmental_signs: ["Claw marks scored deep into bark and stone", "Disturbed earth revealing recent excavation", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Fresh kill sites with specific dismemberment patterns", "Scent markings renewed within the past few days", "Disturbed vegetation indicating recent passage", "Unnatural stillness in areas that should be active"],
             source: {
                 abbreviation: "SRD",
                 page: 166
@@ -497,7 +579,7 @@ this.monsterData = {
             ac: 13,
             hp: 13,
             synergy_tags: ["undead_resilience", "no_morale", "basic_undead", "bone_construct"],
-            environmental_signs: ["Unnatural cold and eerie silence", "Withered plants and necrotic energy"],
+            environmental_signs: ["Plants wilting despite adequate water and sunlight", "Temperature dropping 10-15 degrees in localized areas", "Milk souring and food spoiling rapidly", "Horses, dogs, and cats becoming agitated and fearful", "Wild animals abandoning traditional feeding grounds", "Air carrying the scent of old graves and decay", "Silence so complete that heartbeats become audible", "Grave dirt scattered in ritualistic patterns", "Bone fragments arranged according to ancient customs", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 272
@@ -511,7 +593,7 @@ this.monsterData = {
             ac: 13,
             hp: 15,
             synergy_tags: ["aggressive", "relentless", "tribal_warrior", "intimidating"],
-            environmental_signs: ["Disturbed stone and echo patterns"],
+            environmental_signs: ["Claw marks scored deep into bark and stone", "Disturbed earth revealing recent excavation", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Fresh kill sites with specific dismemberment patterns", "Scent markings renewed within the past few days", "Disturbed vegetation indicating recent passage", "Unnatural stillness in areas that should be active"],
             source: {
                 abbreviation: "SRD",
                 page: 246
@@ -525,7 +607,7 @@ this.monsterData = {
             ac: 11,
             hp: 34,
             synergy_tags: ["keen_smell", "territorial", "grapple_specialist", "natural_predator"],
-            environmental_signs: ["Animal tracks and territorial markings", "Disturbed vegetation and prey remains"],
+            environmental_signs: ["Footprints pressed 6+ inches into hardpacked earth", "Boulder formations disturbed and rearranged", "Pathways widened far beyond normal passage", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 319
@@ -539,7 +621,7 @@ this.monsterData = {
             ac: 14,
             hp: 37,
             synergy_tags: ["pack_tactics", "prone_inflictor", "keen_hearing", "alpha_predator"],
-            environmental_signs: ["Animal tracks and territorial markings", "Disturbed vegetation and prey remains"],
+            environmental_signs: ["Footprints pressed 6+ inches into hardpacked earth", "Boulder formations disturbed and rearranged", "Pathways widened far beyond normal passage", "Multiple sets of tracks moving in coordinated patterns", "Prey remains showing evidence of group hunting", "Howling or calls echoing in sequence from different directions", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption"],
             source: {
                 abbreviation: "SRD",
                 page: 321
@@ -553,7 +635,7 @@ this.monsterData = {
             ac: 16,
             hp: 27,
             synergy_tags: ["brute_force", "surprise_attack", "sneaky", "reach_weapon"],
-            environmental_signs: ["Disturbed stone and echo patterns", "Broken branches and disturbed undergrowth"],
+            environmental_signs: ["Claw marks scored deep into bark and stone", "Disturbed earth revealing recent excavation", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Fresh kill sites with specific dismemberment patterns", "Scent markings renewed within the past few days", "Disturbed vegetation indicating recent passage", "Unnatural stillness in areas that should be active"],
             source: {
                 abbreviation: "SRD",
                 page: 33
@@ -567,7 +649,7 @@ this.monsterData = {
             ac: 14,
             hp: 26,
             synergy_tags: ["web_restraint", "poison_dealer", "climb_specialist", "ambush_predator"],
-            environmental_signs: ["Animal tracks and territorial markings", "Disturbed vegetation and prey remains"],
+            environmental_signs: ["Footprints pressed 6+ inches into hardpacked earth", "Boulder formations disturbed and rearranged", "Pathways widened far beyond normal passage", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Silken strands spanning impossible distances", "Chittering sounds from within hollow logs", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 328
@@ -581,7 +663,7 @@ this.monsterData = {
             ac: 12,
             hp: 22,
             synergy_tags: ["paralysis_inflector", "undead_resilience", "consume_flesh", "pack_undead"],
-            environmental_signs: ["Unnatural cold and eerie silence", "Withered plants and necrotic energy"],
+            environmental_signs: ["Plants wilting despite adequate water and sunlight", "Temperature dropping 10-15 degrees in localized areas", "Milk souring and food spoiling rapidly", "Horses, dogs, and cats becoming agitated and fearful", "Wild animals abandoning traditional feeding grounds", "Air carrying the scent of old graves and decay", "Silence so complete that heartbeats become audible", "Grave dirt scattered in ritualistic patterns", "Bone fragments arranged according to ancient customs", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 148
@@ -595,7 +677,7 @@ this.monsterData = {
             ac: 8,
             hp: 45,
             synergy_tags: ["acid_dealer", "split_creature", "immunity_lightning", "ooze_nature"],
-            environmental_signs: ["Acid-etched stone and corroded metal", "Acrid chemical smell"],
+            environmental_signs: ["Stone surfaces pitted with acid erosion", "Metallic equipment dissolved into twisted shapes", "Plant life wilted with chemical burn patterns", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Bubbling and hissing from dissolved organic matter", "Acrid chemical odor burning nasal passages", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 243
@@ -609,7 +691,7 @@ this.monsterData = {
             ac: 11,
             hp: 59,
             synergy_tags: ["giant_strength", "simple_minded", "brute_force", "large_size"],
-            environmental_signs: ["Broken branches and disturbed undergrowth"],
+            environmental_signs: ["Footprints pressed 6+ inches into hardpacked earth", "Boulder formations disturbed and rearranged", "Pathways widened far beyond normal passage", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 237
@@ -623,7 +705,7 @@ this.monsterData = {
             ac: 12,
             hp: 59,
             synergy_tags: ["aerial_superiority", "keen_sight", "dive_attack", "mount_potential"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Footprints pressed 6+ inches into hardpacked earth", "Boulder formations disturbed and rearranged", "Pathways widened far beyond normal passage", "Birds and small mammals fleeing area before danger appears", "Domestic animals refusing to enter certain zones", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 174
@@ -637,7 +719,7 @@ this.monsterData = {
             ac: 14,
             hp: 45,
             synergy_tags: ["life_drain", "undead_leader", "create_spawn", "intelligent_undead"],
-            environmental_signs: ["Unnatural cold and eerie silence", "Withered plants and necrotic energy"],
+            environmental_signs: ["Plants wilting despite adequate water and sunlight", "Temperature dropping 10-15 degrees in localized areas", "Milk souring and food spoiling rapidly", "Horses, dogs, and cats becoming agitated and fearful", "Wild animals abandoning traditional feeding grounds", "Air carrying the scent of old graves and decay", "Silence so complete that heartbeats become audible", "Grave dirt scattered in ritualistic patterns", "Bone fragments arranged according to ancient customs", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 300
@@ -651,7 +733,7 @@ this.monsterData = {
             ac: 14,
             hp: 76,
             synergy_tags: ["charge_attack", "labyrinth_master", "relentless", "horn_gore"],
-            environmental_signs: ["Disturbed stone and echo patterns"],
+            environmental_signs: ["Footprints pressed 6+ inches into hardpacked earth", "Boulder formations disturbed and rearranged", "Pathways widened far beyond normal passage", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 223
@@ -665,7 +747,7 @@ this.monsterData = {
             ac: 14,
             hp: 68,
             synergy_tags: ["tail_spikes", "aerial_artillery", "intelligent_predator", "flying_threat"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Footprints pressed 6+ inches into hardpacked earth", "Boulder formations disturbed and rearranged", "Pathways widened far beyond normal passage", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 213
@@ -679,7 +761,7 @@ this.monsterData = {
             ac: 13,
             hp: 85,
             synergy_tags: ["displacement", "tentacle_reach", "illusion_defense", "pack_hunter"],
-            environmental_signs: ["Broken branches and disturbed undergrowth"],
+            environmental_signs: ["Footprints pressed 6+ inches into hardpacked earth", "Boulder formations disturbed and rearranged", "Pathways widened far beyond normal passage", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 81
@@ -693,7 +775,7 @@ this.monsterData = {
             ac: 15,
             hp: 45,
             synergy_tags: ["fire_dealer", "pack_tactics", "keen_hearing", "infernal_beast"],
-            environmental_signs: ["Scorched earth and burned vegetation", "Lingering heat and smoky scent"],
+            environmental_signs: ["Blackened tree stumps with smoldering cores", "Ground cracked from intense heat exposure", "Metal objects warped and discolored from flames", "Multiple sets of tracks moving in coordinated patterns", "Prey remains showing evidence of group hunting", "Howling or calls echoing in sequence from different directions", "Acrid smoke rising without visible fire source", "Metallic taste lingering in the air", "Distant screaming carried on wind currents", "Fresh kill sites with specific dismemberment patterns"],
             source: {
                 abbreviation: "SRD",
                 page: 182
@@ -707,7 +789,7 @@ this.monsterData = {
             ac: 14,
             hp: 27,
             synergy_tags: ["metal_destruction", "equipment_threat", "antennae_sense", "utility_monster"],
-            environmental_signs: ["Disturbed stone and echo patterns"],
+            environmental_signs: ["Claw marks scored deep into bark and stone", "Disturbed earth revealing recent excavation", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Fresh kill sites with specific dismemberment patterns", "Scent markings renewed within the past few days", "Disturbed vegetation indicating recent passage", "Unnatural stillness in areas that should be active"],
             source: {
                 abbreviation: "SRD",
                 page: 262
@@ -721,7 +803,7 @@ this.monsterData = {
             ac: 14,
             hp: 52,
             synergy_tags: ["shapeshifter", "deception_master", "ambush_specialist", "social_infiltrator"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Claw marks scored deep into bark and stone", "Disturbed earth revealing recent excavation", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Fresh kill sites with specific dismemberment patterns", "Scent markings renewed within the past few days", "Disturbed vegetation indicating recent passage", "Unnatural stillness in areas that should be active"],
             source: {
                 abbreviation: "SRD",
                 page: 82
@@ -735,7 +817,7 @@ this.monsterData = {
             ac: 12,
             hp: 58,
             synergy_tags: ["wail_attack", "incorporeal", "fear_aura", "intelligent_undead"],
-            environmental_signs: ["Unnatural cold and eerie silence", "Withered plants and necrotic energy"],
+            environmental_signs: ["Plants wilting despite adequate water and sunlight", "Temperature dropping 10-15 degrees in localized areas", "Milk souring and food spoiling rapidly", "Horses, dogs, and cats becoming agitated and fearful", "Wild animals abandoning traditional feeding grounds", "Air carrying the scent of old graves and decay", "Silence so complete that heartbeats become audible", "Grave dirt scattered in ritualistic patterns", "Bone fragments arranged according to ancient customs", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 23
@@ -749,7 +831,7 @@ this.monsterData = {
             ac: 12,
             hp: 85,
             synergy_tags: ["two_heads", "wakeful", "giant_strength", "dual_attacks"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Footprints pressed 6+ inches into hardpacked earth", "Boulder formations disturbed and rearranged", "Pathways widened far beyond normal passage", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 132
@@ -763,7 +845,7 @@ this.monsterData = {
             ac: 7,
             hp: 85,
             synergy_tags: ["acid_dealer", "corrosive", "split_creature", "equipment_destruction"],
-            environmental_signs: ["Acid-etched stone and corroded metal", "Acrid chemical smell"],
+            environmental_signs: ["Stone surfaces pitted with acid erosion", "Metallic equipment dissolved into twisted shapes", "Plant life wilted with chemical burn patterns", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Bubbling and hissing from dissolved organic matter", "Acrid chemical odor burning nasal passages", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 31
@@ -777,7 +859,7 @@ this.monsterData = {
             ac: 15,
             hp: 84,
             synergy_tags: ["regeneration", "keen_smell", "fire_vulnerable", "relentless"],
-            environmental_signs: ["Broken branches and disturbed undergrowth", "Murky water disturbance and strange sounds"],
+            environmental_signs: ["Footprints pressed 6+ inches into hardpacked earth", "Boulder formations disturbed and rearranged", "Pathways widened far beyond normal passage", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 291
@@ -791,7 +873,7 @@ this.monsterData = {
             ac: 14,
             hp: 52,
             synergy_tags: ["rotting_presence", "standing_leap", "demonic_resilience", "herd_mentality"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Claw marks scored deep into bark and stone", "Disturbed earth revealing recent excavation", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Acrid smoke rising without visible fire source", "Metallic taste lingering in the air", "Distant screaming carried on wind currents", "Fresh kill sites with specific dismemberment patterns", "Scent markings renewed within the past few days", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 52
@@ -805,7 +887,7 @@ this.monsterData = {
             ac: 15,
             hp: 127,
             synergy_tags: ["petrifying_gaze", "snake_hair", "intelligent_predator", "lair_guardian"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Claw marks scored deep into bark and stone", "Disturbed earth revealing recent excavation", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Fresh kill sites with specific dismemberment patterns", "Scent markings renewed within the past few days", "Disturbed vegetation indicating recent passage", "Unnatural stillness in areas that should be active"],
             source: {
                 abbreviation: "SRD",
                 page: 214
@@ -819,7 +901,7 @@ this.monsterData = {
             ac: 14,
             hp: 114,
             synergy_tags: ["fire_breath", "aerial_superiority", "multi_attack", "triple_threat"],
-            environmental_signs: ["Scorched earth and burned vegetation", "Lingering heat and smoky scent"],
+            environmental_signs: ["Blackened tree stumps with smoldering cores", "Ground cracked from intense heat exposure", "Metal objects warped and discolored from flames", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 39
@@ -833,7 +915,7 @@ this.monsterData = {
             ac: 13,
             hp: 105,
             synergy_tags: ["giant_strength", "rock_throwing", "huge_size", "simple_minded"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Footprints pressed 6+ inches into hardpacked earth", "Boulder formations disturbed and rearranged", "Pathways widened far beyond normal passage", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 155
@@ -847,7 +929,7 @@ this.monsterData = {
             ac: 13,
             hp: 110,
             synergy_tags: ["poison_stinger", "aerial_superiority", "dive_attack", "draconic_presence"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Massive gouges torn through solid rock faces", "Trees snapped at 15-20 foot heights", "Ground compacted from immense weight impacts", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Ground vibrations felt through feet and bones", "Thunderous roaring echoing from mountain valleys", "Coins and jewelry embedded in mud from recent rainfall", "Scratched walls where valuable metals were scraped away", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 303
@@ -861,7 +943,7 @@ this.monsterData = {
             ac: 18,
             hp: 127,
             synergy_tags: ["acid_breath", "swamp_native", "draconic_presence", "legendary_creature"],
-            environmental_signs: ["Acid-etched stone and corroded metal", "Acrid chemical smell"],
+            environmental_signs: ["Stone surfaces pitted with acid erosion", "Metallic equipment dissolved into twisted shapes", "Plant life wilted with chemical burn patterns", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Ground vibrations felt through feet and bones", "Thunderous roaring echoing from mountain valleys", "Coins and jewelry embedded in mud from recent rainfall", "Scratched walls where valuable metals were scraped away", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 88
@@ -875,7 +957,7 @@ this.monsterData = {
             ac: 17,
             hp: 126,
             synergy_tags: ["stone_camouflage", "rock_throwing", "giant_strength", "mountain_native"],
-            environmental_signs: ["Disturbed stone and echo patterns"],
+            environmental_signs: ["Footprints pressed 6+ inches into hardpacked earth", "Boulder formations disturbed and rearranged", "Pathways widened far beyond normal passage", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 156
@@ -889,7 +971,7 @@ this.monsterData = {
             ac: 15,
             hp: 71,
             synergy_tags: ["mind_blast", "domination", "telepathy", "aberrant_master"],
-            environmental_signs: ["Disturbed stone and echo patterns"],
+            environmental_signs: ["Rocks arranged in impossible geometric configurations", "Shadows falling at wrong angles to light sources", "Colors appearing muted or shifted in spectrum", "Livestock standing motionless in perfect rows", "Predator species ignoring typical prey in the area", "Whispers in languages that hurt to comprehend", "Colors that seem to exist outside normal vision", "Fresh kill sites with specific dismemberment patterns", "Scent markings renewed within the past few days", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 222
@@ -903,7 +985,7 @@ this.monsterData = {
             ac: 15,
             hp: 138,
             synergy_tags: ["cold_immunity", "rock_throwing", "giant_strength", "ice_native"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Ice crystals coating surfaces despite warm weather", "Frozen puddles that refuse to melt", "Breath misting in pockets of frigid air", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Ground vibrations felt through feet and bones", "Thunderous roaring echoing from mountain valleys", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 155
@@ -917,7 +999,7 @@ this.monsterData = {
             ac: 18,
             hp: 178,
             synergy_tags: ["fire_breath", "draconic_presence", "legendary_creature", "fire_immunity"],
-            environmental_signs: ["Scorched earth and burned vegetation", "Lingering heat and smoky scent"],
+            environmental_signs: ["Blackened tree stumps with smoldering cores", "Ground cracked from intense heat exposure", "Metal objects warped and discolored from flames", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Ground vibrations felt through feet and bones", "Thunderous roaring echoing from mountain valleys", "Coins and jewelry embedded in mud from recent rainfall", "Scratched walls where valuable metals were scraped away", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 98
@@ -931,7 +1013,7 @@ this.monsterData = {
             ac: 17,
             hp: 135,
             synergy_tags: ["domination", "psychic_slavery", "aquatic_master", "legendary_creature"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Rocks arranged in impossible geometric configurations", "Shadows falling at wrong angles to light sources", "Colors appearing muted or shifted in spectrum", "Livestock standing motionless in perfect rows", "Predator species ignoring typical prey in the area", "Ground vibrations felt through feet and bones", "Thunderous roaring echoing from mountain valleys", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 13
@@ -945,7 +1027,7 @@ this.monsterData = {
             ac: 18,
             hp: 180,
             synergy_tags: ["antimagic_cone", "eye_rays", "legendary_creature", "aberrant_master"],
-            environmental_signs: ["Scorched earth and burned vegetation", "Lingering heat and smoky scent"],
+            environmental_signs: ["Blackened tree stumps with smoldering cores", "Ground cracked from intense heat exposure", "Metal objects warped and discolored from flames", "Livestock standing motionless in perfect rows", "Predator species ignoring typical prey in the area", "Ground vibrations felt through feet and bones", "Thunderous roaring echoing from mountain valleys", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 28
@@ -959,7 +1041,7 @@ this.monsterData = {
             ac: 19,
             hp: 195,
             synergy_tags: ["acid_breath", "legendary_creature", "lair_actions", "regional_effects"],
-            environmental_signs: ["Acid-etched stone and corroded metal", "Acrid chemical smell"],
+            environmental_signs: ["Stone surfaces pitted with acid erosion", "Metallic equipment dissolved into twisted shapes", "Plant life wilted with chemical burn patterns", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Ground vibrations felt through feet and bones", "Thunderous roaring echoing from mountain valleys", "Coins and jewelry embedded in mud from recent rainfall", "Scratched walls where valuable metals were scraped away", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 88
@@ -973,7 +1055,7 @@ this.monsterData = {
             ac: 19,
             hp: 256,
             synergy_tags: ["fire_breath", "legendary_creature", "lair_actions", "regional_effects"],
-            environmental_signs: ["Scorched earth and burned vegetation", "Lingering heat and smoky scent"],
+            environmental_signs: ["Blackened tree stumps with smoldering cores", "Ground cracked from intense heat exposure", "Metal objects warped and discolored from flames", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Ground vibrations felt through feet and bones", "Thunderous roaring echoing from mountain valleys", "Coins and jewelry embedded in mud from recent rainfall", "Scratched walls where valuable metals were scraped away", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 98
@@ -987,7 +1069,7 @@ this.monsterData = {
             ac: 22,
             hp: 367,
             synergy_tags: ["acid_breath", "legendary_creature", "lair_actions", "regional_effects"],
-            environmental_signs: ["Acid-etched stone and corroded metal", "Acrid chemical smell"],
+            environmental_signs: ["Stone surfaces pitted with acid erosion", "Metallic equipment dissolved into twisted shapes", "Plant life wilted with chemical burn patterns", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Ground vibrations felt through feet and bones", "Thunderous roaring echoing from mountain valleys", "Coins and jewelry embedded in mud from recent rainfall", "Scratched walls where valuable metals were scraped away", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 88
@@ -1001,7 +1083,7 @@ this.monsterData = {
             ac: 25,
             hp: 676,
             synergy_tags: ["legendary_creature", "magic_resistance", "reflective_carapace", "world_ending"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Footprints pressed 6+ inches into hardpacked earth", "Boulder formations disturbed and rearranged", "Pathways widened far beyond normal passage", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Ground vibrations felt through feet and bones", "Thunderous roaring echoing from mountain valleys", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 286
@@ -1015,7 +1097,7 @@ this.monsterData = {
             ac: 12,
             hp: 58,
             synergy_tags: ["incorporeal", "horror_presence", "wail_of_doom", "undead_resilience", "fear_aura"],
-            environmental_signs: ["Unnatural cold and eerie silence", "Withered plants and necrotic energy"],
+            environmental_signs: ["Plants wilting despite adequate water and sunlight", "Temperature dropping 10-15 degrees in localized areas", "Milk souring and food spoiling rapidly", "Horses, dogs, and cats becoming agitated and fearful", "Wild animals abandoning traditional feeding grounds", "Air carrying the scent of old graves and decay", "Silence so complete that heartbeats become audible", "Grave dirt scattered in ritualistic patterns", "Bone fragments arranged according to ancient customs", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 23
@@ -1029,7 +1111,7 @@ this.monsterData = {
             ac: 14,
             hp: 52,
             synergy_tags: ["rotting_presence", "standing_leap", "sure_footed", "fiend_heritage"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Claw marks scored deep into bark and stone", "Disturbed earth revealing recent excavation", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Acrid smoke rising without visible fire source", "Metallic taste lingering in the air", "Distant screaming carried on wind currents", "Fresh kill sites with specific dismemberment patterns", "Scent markings renewed within the past few days", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "A5ESRD",
                 page: 45
@@ -1043,7 +1125,7 @@ this.monsterData = {
             ac: 14,
             hp: 114,
             synergy_tags: ["flight", "fire_breath", "multi_headed", "keen_smell"],
-            environmental_signs: ["Scorched earth and burned vegetation", "Lingering heat and smoky scent"],
+            environmental_signs: ["Blackened tree stumps with smoldering cores", "Ground cracked from intense heat exposure", "Metal objects warped and discolored from flames", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 39
@@ -1057,7 +1139,7 @@ this.monsterData = {
             ac: 13,
             hp: 85,
             synergy_tags: ["displacement", "avoidance", "pack_tactics", "keen_sight"],
-            environmental_signs: ["Broken branches and disturbed undergrowth"],
+            environmental_signs: ["Footprints pressed 6+ inches into hardpacked earth", "Boulder formations disturbed and rearranged", "Pathways widened far beyond normal passage", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 81
@@ -1071,7 +1153,7 @@ this.monsterData = {
             ac: 14,
             hp: 68,
             synergy_tags: ["flight", "tail_spikes", "ranged_attack", "keen_sight"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Footprints pressed 6+ inches into hardpacked earth", "Boulder formations disturbed and rearranged", "Pathways widened far beyond normal passage", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 213
@@ -1085,7 +1167,7 @@ this.monsterData = {
             ac: 14,
             hp: 27,
             synergy_tags: ["metal_corrosion", "antennae_sense", "equipment_destroyer"],
-            environmental_signs: ["Disturbed stone and echo patterns"],
+            environmental_signs: ["Claw marks scored deep into bark and stone", "Disturbed earth revealing recent excavation", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Fresh kill sites with specific dismemberment patterns", "Scent markings renewed within the past few days", "Disturbed vegetation indicating recent passage", "Unnatural stillness in areas that should be active"],
             source: {
                 abbreviation: "SRD",
                 page: 262
@@ -1099,7 +1181,7 @@ this.monsterData = {
             ac: 17,
             hp: 199,
             synergy_tags: ["flight", "spell_caster", "magic_resistance", "legend_lore", "riddle_master"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Footprints pressed 6+ inches into hardpacked earth", "Boulder formations disturbed and rearranged", "Pathways widened far beyond normal passage", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Ground vibrations felt through feet and bones", "Thunderous roaring echoing from mountain valleys", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 281
@@ -1113,7 +1195,7 @@ this.monsterData = {
             ac: 17,
             hp: 135,
             synergy_tags: ["telepathy", "mucous_cloud", "enslave", "psychic_drain", "aquatic"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Rocks arranged in impossible geometric configurations", "Shadows falling at wrong angles to light sources", "Colors appearing muted or shifted in spectrum", "Livestock standing motionless in perfect rows", "Predator species ignoring typical prey in the area", "Ground vibrations felt through feet and bones", "Thunderous roaring echoing from mountain valleys", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 13
@@ -1127,7 +1209,7 @@ this.monsterData = {
             ac: 14,
             hp: 39,
             synergy_tags: ["burrow", "acid_spray", "tremorsense", "ambush_predator"],
-            environmental_signs: ["Acid-etched stone and corroded metal", "Acrid chemical smell"],
+            environmental_signs: ["Stone surfaces pitted with acid erosion", "Metallic equipment dissolved into twisted shapes", "Plant life wilted with chemical burn patterns", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 14
@@ -1141,7 +1223,7 @@ this.monsterData = {
             ac: 15,
             hp: 52,
             synergy_tags: ["petrifying_gaze", "keen_smell", "slow_movement"],
-            environmental_signs: ["Disturbed stone and echo patterns"],
+            environmental_signs: ["Claw marks scored deep into bark and stone", "Disturbed earth revealing recent excavation", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Fresh kill sites with specific dismemberment patterns", "Scent markings renewed within the past few days", "Disturbed vegetation indicating recent passage", "Unnatural stillness in areas that should be active"],
             source: {
                 abbreviation: "SRD",
                 page: 24
@@ -1155,7 +1237,7 @@ this.monsterData = {
             ac: 17,
             hp: 168,
             synergy_tags: ["lightning_breath", "constrict", "swallow", "immunity_lightning"],
-            environmental_signs: ["Electrical discharge marks on surfaces", "Metallic taste in the air"],
+            environmental_signs: ["Footprints pressed 6+ inches into hardpacked earth", "Boulder formations disturbed and rearranged", "Pathways widened far beyond normal passage", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Ground vibrations felt through feet and bones", "Thunderous roaring echoing from mountain valleys", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 25
@@ -1169,7 +1251,7 @@ this.monsterData = {
             ac: 17,
             hp: 94,
             synergy_tags: ["burrow", "deadly_leap", "standing_leap", "tremorsense"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Footprints pressed 6+ inches into hardpacked earth", "Boulder formations disturbed and rearranged", "Pathways widened far beyond normal passage", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 34
@@ -1183,7 +1265,7 @@ this.monsterData = {
             ac: 13,
             hp: 51,
             synergy_tags: ["paralysis_poison", "keen_smell", "spider_climb", "tentacles"],
-            environmental_signs: ["Disturbed stone and echo patterns"],
+            environmental_signs: ["Vegetation dying in concentric circles", "Insects and small animals found dead without wounds", "Water sources tainted with sickly green film", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 37
@@ -1197,7 +1279,7 @@ this.monsterData = {
             ac: 16,
             hp: 78,
             synergy_tags: ["damage_transfer", "false_appearance", "light_sensitivity", "moan"],
-            environmental_signs: ["Disturbed stone and echo patterns"],
+            environmental_signs: ["Rocks arranged in impossible geometric configurations", "Shadows falling at wrong angles to light sources", "Colors appearing muted or shifted in spectrum", "Livestock standing motionless in perfect rows", "Predator species ignoring typical prey in the area", "Ground vibrations felt through feet and bones", "Thunderous roaring echoing from mountain valleys", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 41
@@ -1211,7 +1293,7 @@ this.monsterData = {
             ac: 11,
             hp: 27,
             synergy_tags: ["petrifying_bite", "flight", "keen_sight"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Claw marks scored deep into bark and stone", "Disturbed earth revealing recent excavation", "Birds and small mammals fleeing area before danger appears", "Domestic animals refusing to enter certain zones", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Fresh kill sites with specific dismemberment patterns", "Scent markings renewed within the past few days", "Disturbed vegetation indicating recent passage", "Unnatural stillness in areas that should be active"],
             source: {
                 abbreviation: "SRD",
                 page: 42
@@ -1225,7 +1307,7 @@ this.monsterData = {
             ac: 19,
             hp: 97,
             synergy_tags: ["flight", "spell_caster", "poison_sting", "telepathy", "shapechange"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Vegetation dying in concentric circles", "Insects and small animals found dead without wounds", "Water sources tainted with sickly green film", "Multiple animal species gathering without apparent purpose", "Creatures moving with unnatural coordination", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Fresh kill sites with specific dismemberment patterns", "Scent markings renewed within the past few days", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 43
@@ -1239,7 +1321,7 @@ this.monsterData = {
             ac: 11,
             hp: 22,
             synergy_tags: ["darkness_aura", "echolocation", "false_appearance", "grappler"],
-            environmental_signs: ["Disturbed stone and echo patterns"],
+            environmental_signs: ["Claw marks scored deep into bark and stone", "Disturbed earth revealing recent excavation", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Fresh kill sites with specific dismemberment patterns", "Scent markings renewed within the past few days", "Disturbed vegetation indicating recent passage", "Unnatural stillness in areas that should be active"],
             source: {
                 abbreviation: "SRD",
                 page: 44
@@ -1253,7 +1335,7 @@ this.monsterData = {
             ac: 11,
             hp: 22,
             synergy_tags: ["fey_charm", "tree_stride", "speak_with_beasts", "innate_spellcasting"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Claw marks scored deep into bark and stone", "Disturbed earth revealing recent excavation", "Flowers blooming in perfect spirals or geometric patterns", "Animals displaying human-like curiosity and intelligence", "Time seeming to move differently in certain spots", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Fresh kill sites with specific dismemberment patterns", "Scent markings renewed within the past few days", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 111
@@ -1267,7 +1349,7 @@ this.monsterData = {
             ac: 13,
             hp: 44,
             synergy_tags: ["spider_climb", "web_sense", "web_walker", "poison_bite"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Vegetation dying in concentric circles", "Insects and small animals found dead without wounds", "Water sources tainted with sickly green film", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Cocoons containing drained animal carcasses", "Web anchors driven deep into solid rock", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 131
@@ -1281,7 +1363,7 @@ this.monsterData = {
             ac: 15,
             hp: 52,
             synergy_tags: ["false_appearance", "damage_resistance", "flight", "keen_sight"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Claw marks scored deep into bark and stone", "Disturbed earth revealing recent excavation", "Birds and small mammals fleeing area before danger appears", "Domestic animals refusing to enter certain zones", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Fresh kill sites with specific dismemberment patterns", "Scent markings renewed within the past few days", "Disturbed vegetation indicating recent passage", "Unnatural stillness in areas that should be active"],
             source: {
                 abbreviation: "SRD",
                 page: 140
@@ -1295,7 +1377,7 @@ this.monsterData = {
             ac: 14,
             hp: 27,
             synergy_tags: ["damage_resistance", "stone_camouflage", "tentacle_attacks"],
-            environmental_signs: ["Disturbed stone and echo patterns"],
+            environmental_signs: ["Claw marks scored deep into bark and stone", "Disturbed earth revealing recent excavation", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Fresh kill sites with specific dismemberment patterns", "Scent markings renewed within the past few days", "Disturbed vegetation indicating recent passage", "Unnatural stillness in areas that should be active"],
             source: {
                 abbreviation: "SRD",
                 page: 175
@@ -1309,7 +1391,7 @@ this.monsterData = {
             ac: 11,
             hp: 38,
             synergy_tags: ["luring_song", "flight", "keen_sight"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Claw marks scored deep into bark and stone", "Disturbed earth revealing recent excavation", "Birds and small mammals fleeing area before danger appears", "Domestic animals refusing to enter certain zones", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Fresh kill sites with specific dismemberment patterns", "Scent markings renewed within the past few days", "Disturbed vegetation indicating recent passage", "Unnatural stillness in areas that should be active"],
             source: {
                 abbreviation: "SRD",
                 page: 181
@@ -1323,7 +1405,7 @@ this.monsterData = {
             ac: 15,
             hp: 75,
             synergy_tags: ["echolocation", "keen_hearing", "hook_attacks"],
-            environmental_signs: ["Disturbed stone and echo patterns"],
+            environmental_signs: ["Footprints pressed 6+ inches into hardpacked earth", "Boulder formations disturbed and rearranged", "Pathways widened far beyond normal passage", "Birds and small mammals fleeing area before danger appears", "Domestic animals refusing to enter certain zones", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 189
@@ -1337,7 +1419,7 @@ this.monsterData = {
             ac: 13,
             hp: 97,
             synergy_tags: ["intoxicating_touch", "spell_caster", "deception", "wisdom_drain"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Footprints pressed 6+ inches into hardpacked earth", "Boulder formations disturbed and rearranged", "Pathways widened far beyond normal passage", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 201
@@ -1351,7 +1433,7 @@ this.monsterData = {
             ac: 15,
             hp: 127,
             synergy_tags: ["petrifying_gaze", "snake_hair", "poison_immunity"],
-            environmental_signs: ["Disturbed stone and echo patterns"],
+            environmental_signs: ["Claw marks scored deep into bark and stone", "Disturbed earth revealing recent excavation", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Fresh kill sites with specific dismemberment patterns", "Scent markings renewed within the past few days", "Disturbed vegetation indicating recent passage", "Unnatural stillness in areas that should be active"],
             source: {
                 abbreviation: "SRD",
                 page: 214
@@ -1365,7 +1447,7 @@ this.monsterData = {
             ac: 14,
             hp: 76,
             synergy_tags: ["charge", "labyrinthine_recall", "reckless", "keen_smell"],
-            environmental_signs: ["Disturbed stone and echo patterns"],
+            environmental_signs: ["Footprints pressed 6+ inches into hardpacked earth", "Boulder formations disturbed and rearranged", "Pathways widened far beyond normal passage", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 223
@@ -1379,7 +1461,7 @@ this.monsterData = {
             ac: 15,
             hp: 45,
             synergy_tags: ["weird_insight", "rotting_gaze", "keen_sight", "stealth"],
-            environmental_signs: ["Disturbed stone and echo patterns"],
+            environmental_signs: ["Rocks arranged in impossible geometric configurations", "Shadows falling at wrong angles to light sources", "Colors appearing muted or shifted in spectrum", "Birds and small mammals fleeing area before danger appears", "Domestic animals refusing to enter certain zones", "Whispers in languages that hurt to comprehend", "Colors that seem to exist outside normal vision", "Fresh kill sites with specific dismemberment patterns", "Scent markings renewed within the past few days", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 236
@@ -1393,7 +1475,7 @@ this.monsterData = {
             ac: 14,
             hp: 114,
             synergy_tags: ["disease_bite", "tentacle_slam", "telepathy", "limited_telepathy"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Rocks arranged in impossible geometric configurations", "Shadows falling at wrong angles to light sources", "Colors appearing muted or shifted in spectrum", "Livestock standing motionless in perfect rows", "Predator species ignoring typical prey in the area", "Whispers in languages that hurt to comprehend", "Colors that seem to exist outside normal vision", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "SRD",
                 page: 248
@@ -1407,7 +1489,7 @@ this.monsterData = {
             ac: 16,
             hp: 65,
             synergy_tags: ["larvae_infection", "telepathy", "fiend_heritage", "disease_carrier"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Claw marks scored deep into bark and stone", "Disturbed earth revealing recent excavation", "Multiple animal species gathering without apparent purpose", "Creatures moving with unnatural coordination", "Acrid smoke rising without visible fire source", "Metallic taste lingering in the air", "Distant screaming carried on wind currents", "Fresh kill sites with specific dismemberment patterns", "Scent markings renewed within the past few days", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "A5ESRD",
                 page: 78
@@ -1421,7 +1503,7 @@ this.monsterData = {
             ac: 18,
             hp: 142,
             synergy_tags: ["larvae_infection", "telepathy", "flight", "command_khalkos", "burrow"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Footprints pressed 6+ inches into hardpacked earth", "Boulder formations disturbed and rearranged", "Pathways widened far beyond normal passage", "Multiple animal species gathering without apparent purpose", "Creatures moving with unnatural coordination", "Acrid smoke rising without visible fire source", "Metallic taste lingering in the air", "Distant screaming carried on wind currents", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption"],
             source: {
                 abbreviation: "A5ESRD",
                 page: 76
@@ -1435,7 +1517,7 @@ this.monsterData = {
             ac: 15,
             hp: 95,
             synergy_tags: ["phase_step", "dimensional_anchor", "ethereal_sight", "phase_disruption"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Rocks arranged in impossible geometric configurations", "Shadows falling at wrong angles to light sources", "Colors appearing muted or shifted in spectrum", "Livestock standing motionless in perfect rows", "Predator species ignoring typical prey in the area", "Whispers in languages that hurt to comprehend", "Colors that seem to exist outside normal vision", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "A5ESRD",
                 page: 112
@@ -1449,7 +1531,7 @@ this.monsterData = {
             ac: 16,
             hp: 58,
             synergy_tags: ["flight", "essence_breath", "keen_senses", "draconic_presence"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Massive gouges torn through solid rock faces", "Trees snapped at 15-20 foot heights", "Ground compacted from immense weight impacts", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Ground vibrations felt through feet and bones", "Thunderous roaring echoing from mountain valleys", "Coins and jewelry embedded in mud from recent rainfall", "Scratched walls where valuable metals were scraped away", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "A5ESRD",
                 page: 89
@@ -1463,7 +1545,7 @@ this.monsterData = {
             ac: 17,
             hp: 75,
             synergy_tags: ["flight", "psychic_breath", "telepathy", "gem_resonance", "burrow"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Massive gouges torn through solid rock faces", "Trees snapped at 15-20 foot heights", "Ground compacted from immense weight impacts", "Multiple animal species gathering without apparent purpose", "Creatures moving with unnatural coordination", "Ground vibrations felt through feet and bones", "Thunderous roaring echoing from mountain valleys", "Coins and jewelry embedded in mud from recent rainfall", "Scratched walls where valuable metals were scraped away", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "A5ESRD",
                 page: 95
@@ -1477,7 +1559,7 @@ this.monsterData = {
             ac: 18,
             hp: 199,
             synergy_tags: ["petrifying_gaze", "snake_hair", "command_medusae", "poison_immunity", "serpent_lord"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Vegetation dying in concentric circles", "Insects and small animals found dead without wounds", "Water sources tainted with sickly green film", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Ground vibrations felt through feet and bones", "Thunderous roaring echoing from mountain valleys", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "A5ESRD",
                 page: 128
@@ -1491,7 +1573,7 @@ this.monsterData = {
             ac: 22,
             hp: 565,
             synergy_tags: ["legendary_creature", "lair_actions", "regional_effects", "frightful_presence", "ancient_magic"],
-            environmental_signs: ["Scorched earth and burned vegetation", "Lingering heat and smoky scent"],
+            environmental_signs: ["Blackened tree stumps with smoldering cores", "Ground cracked from intense heat exposure", "Metal objects warped and discolored from flames", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Ground vibrations felt through feet and bones", "Thunderous roaring echoing from mountain valleys", "Coins and jewelry embedded in mud from recent rainfall", "Scratched walls where valuable metals were scraped away", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "A5ESRD",
                 page: 156
@@ -1505,7 +1587,7 @@ this.monsterData = {
             ac: 18,
             hp: 82,
             synergy_tags: ["undead_resilience", "formation_tactics", "weapon_mastery", "undead_command"],
-            environmental_signs: ["Unnatural cold and eerie silence", "Withered plants and necrotic energy"],
+            environmental_signs: ["Plants wilting despite adequate water and sunlight", "Temperature dropping 10-15 degrees in localized areas", "Milk souring and food spoiling rapidly", "Horses, dogs, and cats becoming agitated and fearful", "Wild animals abandoning traditional feeding grounds", "Air carrying the scent of old graves and decay", "Silence so complete that heartbeats become audible", "Grave dirt scattered in ritualistic patterns", "Bone fragments arranged according to ancient customs", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "A5ESRD",
                 page: 145
@@ -1519,7 +1601,7 @@ this.monsterData = {
             ac: 18,
             hp: 178,
             synergy_tags: ["flight", "magic_resistance", "devil_sight", "infernal_tactics"],
-            environmental_signs: ["Scorched earth and burned vegetation", "Lingering heat and smoky scent"],
+            environmental_signs: ["Blackened tree stumps with smoldering cores", "Ground cracked from intense heat exposure", "Metal objects warped and discolored from flames", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Acrid smoke rising without visible fire source", "Metallic taste lingering in the air", "Distant screaming carried on wind currents", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption"],
             source: {
                 abbreviation: "A5ESRD",
                 page: 167
@@ -1533,7 +1615,7 @@ this.monsterData = {
             ac: 13,
             hp: 45,
             synergy_tags: ["pack_tactics", "teleport", "keen_hearing", "fey_ancestry", "pack_leader"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Claw marks scored deep into bark and stone", "Disturbed earth revealing recent excavation", "Multiple sets of tracks moving in coordinated patterns", "Prey remains showing evidence of group hunting", "Howling or calls echoing in sequence from different directions", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Fresh kill sites with specific dismemberment patterns", "Scent markings renewed within the past few days", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "A5ESRD",
                 page: 189
@@ -1547,7 +1629,7 @@ this.monsterData = {
             ac: 20,
             hp: 275,
             synergy_tags: ["spell_caster", "storm_aura", "lightning_mastery", "amphibious", "giant_strength"],
-            environmental_signs: ["Electrical discharge marks on surfaces", "Metallic taste in the air"],
+            environmental_signs: ["Footprints pressed 6+ inches into hardpacked earth", "Boulder formations disturbed and rearranged", "Pathways widened far beyond normal passage", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Ground vibrations felt through feet and bones", "Thunderous roaring echoing from mountain valleys", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "A5ESRD",
                 page: 201
@@ -1561,7 +1643,7 @@ this.monsterData = {
             ac: 17,
             hp: 165,
             synergy_tags: ["legendary_creature", "fey_magic", "charm_mastery", "nature_command", "teleport"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Claw marks scored deep into bark and stone", "Disturbed earth revealing recent excavation", "Flowers blooming in perfect spirals or geometric patterns", "Animals displaying human-like curiosity and intelligence", "Time seeming to move differently in certain spots", "Ground vibrations felt through feet and bones", "Thunderous roaring echoing from mountain valleys", "Scorched earth from battles with other powerful entities", "Territorial markings burned or carved into landmarks", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "A5ESRD",
                 page: 213
@@ -1575,7 +1657,7 @@ this.monsterData = {
             ac: 16,
             hp: 126,
             synergy_tags: ["elemental_aura", "slam_tremor", "elemental_immunity", "massive_size"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Footprints pressed 6+ inches into hardpacked earth", "Boulder formations disturbed and rearranged", "Pathways widened far beyond normal passage", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Ground vibrations felt through feet and bones", "Thunderous roaring echoing from mountain valleys", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "A5ESRD",
                 page: 225
@@ -1589,7 +1671,7 @@ this.monsterData = {
             ac: 20,
             hp: 225,
             synergy_tags: ["legendary_creature", "spell_mastery", "undead_command", "phylactery", "paralyzing_touch"],
-            environmental_signs: ["Unnatural cold and eerie silence", "Withered plants and necrotic energy"],
+            environmental_signs: ["Ice crystals coating surfaces despite warm weather", "Frozen puddles that refuse to melt", "Breath misting in pockets of frigid air", "Horses, dogs, and cats becoming agitated and fearful", "Wild animals abandoning traditional feeding grounds", "Air carrying the scent of old graves and decay", "Silence so complete that heartbeats become audible", "Grave dirt scattered in ritualistic patterns", "Bone fragments arranged according to ancient customs", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "A5ESRD",
                 page: 237
@@ -1603,7 +1685,7 @@ this.monsterData = {
             ac: 18,
             hp: 112,
             synergy_tags: ["void_aura", "undead_resilience", "life_drain", "shadow_step"],
-            environmental_signs: ["Unnatural cold and eerie silence", "Withered plants and necrotic energy"],
+            environmental_signs: ["Ice crystals coating surfaces despite warm weather", "Frozen puddles that refuse to melt", "Breath misting in pockets of frigid air", "Horses, dogs, and cats becoming agitated and fearful", "Wild animals abandoning traditional feeding grounds", "Air carrying the scent of old graves and decay", "Silence so complete that heartbeats become audible", "Grave dirt scattered in ritualistic patterns", "Bone fragments arranged according to ancient customs", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "A5ESRD",
                 page: 249
@@ -1617,7 +1699,7 @@ this.monsterData = {
             ac: 17,
             hp: 95,
             synergy_tags: ["crystal_resonance", "force_beam", "construct_resilience", "magic_detection"],
-            environmental_signs: ["Heavy footprints and mechanical sounds", "Lingering magical aura"],
+            environmental_signs: ["Footprints pressed 6+ inches into hardpacked earth", "Boulder formations disturbed and rearranged", "Pathways widened far beyond normal passage", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Rhythmic grinding of stone on metal mechanisms", "Mechanical clicking echoing from hidden chambers", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "A5ESRD",
                 page: 261
@@ -1631,7 +1713,7 @@ this.monsterData = {
             ac: 19,
             hp: 212,
             synergy_tags: ["prismatic_breath", "color_spray", "flight", "legendary_creature", "spell_reflection"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Massive gouges torn through solid rock faces", "Trees snapped at 15-20 foot heights", "Ground compacted from immense weight impacts", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Ground vibrations felt through feet and bones", "Thunderous roaring echoing from mountain valleys", "Coins and jewelry embedded in mud from recent rainfall", "Scratched walls where valuable metals were scraped away", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "A5ESRD",
                 page: 273
@@ -1645,7 +1727,7 @@ this.monsterData = {
             ac: 15,
             hp: 68,
             synergy_tags: ["ethereal_stride", "fear_aura", "fire_immunity", "nightmare_touch"],
-            environmental_signs: ["Scorched earth and burned vegetation", "Lingering heat and smoky scent"],
+            environmental_signs: ["Blackened tree stumps with smoldering cores", "Ground cracked from intense heat exposure", "Metal objects warped and discolored from flames", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Acrid smoke rising without visible fire source", "Metallic taste lingering in the air", "Distant screaming carried on wind currents", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption"],
             source: {
                 abbreviation: "A5ESRD",
                 page: 285
@@ -1659,7 +1741,7 @@ this.monsterData = {
             ac: 19,
             hp: 175,
             synergy_tags: ["divine_magic", "healing_touch", "flight", "celestial_weapons", "aura_of_protection"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Claw marks scored deep into bark and stone", "Disturbed earth revealing recent excavation", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Ground vibrations felt through feet and bones", "Thunderous roaring echoing from mountain valleys", "Scorched earth from battles with other powerful entities", "Territorial markings burned or carved into landmarks", "Disturbed vegetation indicating recent passage", "Unnatural stillness in areas that should be active"],
             source: {
                 abbreviation: "A5ESRD",
                 page: 297
@@ -1673,7 +1755,7 @@ this.monsterData = {
             ac: 16,
             hp: 91,
             synergy_tags: ["shadow_step", "sneak_attack", "poison_weapons", "assassination", "stealth_mastery"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Vegetation dying in concentric circles", "Insects and small animals found dead without wounds", "Water sources tainted with sickly green film", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Ground vibrations felt through feet and bones", "Thunderous roaring echoing from mountain valleys", "Fresh kill sites with specific dismemberment patterns", "Scent markings renewed within the past few days", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "A5ESRD",
                 page: 309
@@ -1687,7 +1769,7 @@ this.monsterData = {
             ac: 15,
             hp: 133,
             synergy_tags: ["keen_sight", "keen_smell", "powerful_build", "dire_rage", "territorial"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Footprints pressed 6+ inches into hardpacked earth", "Boulder formations disturbed and rearranged", "Pathways widened far beyond normal passage", "Birds and small mammals fleeing area before danger appears", "Domestic animals refusing to enter certain zones", "Guttural sounds that don't match any known animal", "Heavy musk hanging thick in still air", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "A5ESRD",
                 page: 321
@@ -1701,7 +1783,7 @@ this.monsterData = {
             ac: 18,
             hp: 152,
             synergy_tags: ["telepathy", "psychic_drain", "mind_control", "mucous_cloud", "enslave"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Rocks arranged in impossible geometric configurations", "Shadows falling at wrong angles to light sources", "Colors appearing muted or shifted in spectrum", "Livestock standing motionless in perfect rows", "Predator species ignoring typical prey in the area", "Ground vibrations felt through feet and bones", "Thunderous roaring echoing from mountain valleys", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption", "Disturbed vegetation indicating recent passage"],
             source: {
                 abbreviation: "A5ESRD",
                 page: 333
@@ -1715,7 +1797,7 @@ this.monsterData = {
             ac: 19,
             hp: 157,
             synergy_tags: ["siege_weapons", "infernal_artillery", "construct_resilience", "hellfire_cannons"],
-            environmental_signs: ["Scorched earth and burned vegetation", "Lingering heat and smoky scent"],
+            environmental_signs: ["Blackened tree stumps with smoldering cores", "Ground cracked from intense heat exposure", "Metal objects warped and discolored from flames", "Game trails redirected around specific territorial boundaries", "Scavenger birds circling but refusing to land", "Acrid smoke rising without visible fire source", "Metallic taste lingering in the air", "Distant screaming carried on wind currents", "Crude shelters built from entire tree trunks", "Cooking fires requiring enormous fuel consumption"],
             source: {
                 abbreviation: "A5ESRD",
                 page: 345
@@ -1729,7 +1811,7 @@ this.monsterData = {
             ac: 18,
             hp: 195,
             synergy_tags: ["legendary_creature", "fey_magic", "reality_alteration", "nature_mastery", "time_distortion"],
-            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            environmental_signs: ["Ice crystals coating surfaces despite warm weather", "Frozen puddles that refuse to melt", "Breath misting in pockets of frigid air", "Flowers blooming in perfect spirals or geometric patterns", "Animals displaying human-like curiosity and intelligence", "Time seeming to move differently in certain spots", "Ground vibrations felt through feet and bones", "Thunderous roaring echoing from mountain valleys", "Scorched earth from battles with other powerful entities", "Territorial markings burned or carved into landmarks"],
             source: {
                 abbreviation: "A5ESRD",
                 page: 357
@@ -2052,10 +2134,26 @@ this.monsterData = {
                         ${result.monster1.source ? `
                             <div class="source-info">Source: ${result.monster1.source.abbreviation} p.${result.monster1.source.page}</div>
                         ` : ""}
-                        ${result.monster1.environmental_signs ? `
-                            <div style="margin-top: 10px; font-size: 0.8rem; color: #cccccc;">
-                                <strong>Environmental Signs:</strong><br>
-                                ${result.monster1.environmental_signs.slice(0, 2).join('<br>')}
+                        ${result.monster1.environmental_signs && result.monster1.environmental_signs.length > 0 ? `
+                            <div class="environmental-signs">
+                                <div class="environmental-column">
+                                    <h4>Physical Effects</h4>
+                                    <ul class="environmental-list">
+                                        ${result.monster1.environmental_signs.slice(0, Math.ceil(result.monster1.environmental_signs.length/3)).map(sign => `<li>${sign}</li>`).join('')}
+                                    </ul>
+                                </div>
+                                <div class="environmental-column">
+                                    <h4>Creature Behavior</h4>
+                                    <ul class="environmental-list">
+                                        ${result.monster1.environmental_signs.slice(Math.ceil(result.monster1.environmental_signs.length/3), Math.ceil(result.monster1.environmental_signs.length*2/3)).map(sign => `<li>${sign}</li>`).join('')}
+                                    </ul>
+                                </div>
+                                <div class="environmental-column">
+                                    <h4>Signs & Evidence</h4>
+                                    <ul class="environmental-list">
+                                        ${result.monster1.environmental_signs.slice(Math.ceil(result.monster1.environmental_signs.length*2/3)).map(sign => `<li>${sign}</li>`).join('')}
+                                    </ul>
+                                </div>
                             </div>
                         ` : ''}
                     </div>
@@ -2077,10 +2175,26 @@ this.monsterData = {
                         ${result.monster2.source ? `
                             <div class="source-info">Source: ${result.monster2.source.abbreviation} p.${result.monster2.source.page}</div>
                         ` : ""}
-                        ${result.monster2.environmental_signs ? `
-                            <div style="margin-top: 10px; font-size: 0.8rem; color: #cccccc;">
-                                <strong>Environmental Signs:</strong><br>
-                                ${result.monster2.environmental_signs.slice(0, 2).join('<br>')}
+                        ${result.monster2.environmental_signs && result.monster2.environmental_signs.length > 0 ? `
+                            <div class="environmental-signs">
+                                <div class="environmental-column">
+                                    <h4>Physical Effects</h4>
+                                    <ul class="environmental-list">
+                                        ${result.monster2.environmental_signs.slice(0, Math.ceil(result.monster2.environmental_signs.length/3)).map(sign => `<li>${sign}</li>`).join('')}
+                                    </ul>
+                                </div>
+                                <div class="environmental-column">
+                                    <h4>Creature Behavior</h4>
+                                    <ul class="environmental-list">
+                                        ${result.monster2.environmental_signs.slice(Math.ceil(result.monster2.environmental_signs.length/3), Math.ceil(result.monster2.environmental_signs.length*2/3)).map(sign => `<li>${sign}</li>`).join('')}
+                                    </ul>
+                                </div>
+                                <div class="environmental-column">
+                                    <h4>Signs & Evidence</h4>
+                                    <ul class="environmental-list">
+                                        ${result.monster2.environmental_signs.slice(Math.ceil(result.monster2.environmental_signs.length*2/3)).map(sign => `<li>${sign}</li>`).join('')}
+                                    </ul>
+                                </div>
                             </div>
                         ` : ''}
                     </div>
@@ -2097,10 +2211,118 @@ this.monsterData = {
                             ${result.narratives.map(narrative => `<li>${narrative}</li>`).join('')}
                         </ul>
                     </div>
+
+                    <div class="export-section">
+                        <button class="export-btn" onclick="exportAsText()">📄 Export as Text</button>
+                        <button class="export-btn" onclick="copyToClipboard()">📋 Copy to Clipboard</button>
+                        <button class="export-btn" onclick="generatePairing()">🎲 Generate Another</button>
+                    </div>
                 </div>
             `;
             
             document.getElementById('resultsDiv').innerHTML = html;
+            
+            // Store current pairing for export
+            window.currentPairing = {
+                monster1: result.monster1,
+                monster2: result.monster2,
+                synergy: { type: result.synergyType, explanation: result.synergy },
+                total_cr: result.combinedCR,
+                context: result.context || 'Generated encounter',
+                dice_rolls: result.diceRolls || 'Standard generation',
+                creativity_level: generator.selectedCreativity
+            };
+        }
+
+        // Export functionality
+        function exportAsText() {
+            if (!window.currentPairing) return;
+            
+            const p = window.currentPairing;
+            const creativityNames = ['LOGICAL', 'BALANCED', 'CHAOTIC'];
+            
+            let text = `Monster Pairing - ${creativityNames[p.creativity_level]} (Level ${p.creativity_level})\n\n`;
+            
+            // Monster 1 details
+            text += `Monster 1: ${p.monster1.name}\n`;
+            text += `- CR: ${p.monster1.cr} | Type: ${p.monster1.type} | Size: ${p.monster1.size || 'medium'}\n`;
+            text += `- AC: ${p.monster1.ac || 'Unknown'} | HP: ${p.monster1.hp || 'Unknown'}\n`;
+            text += `- Tags: ${p.monster1.synergy_tags.join(', ')}\n`;
+            if (p.monster1.source) {
+                text += `- Source: ${p.monster1.source.title || 'D&D 5e System Reference Document'} (${p.monster1.source.abbreviation}) p.${p.monster1.source.page}\n`;
+            }
+            if (p.monster1.environmental_signs) {
+                text += `- Environmental Signs:\n${p.monster1.environmental_signs.map(sign => `  • ${sign}`).join('\n')}\n`;
+            }
+            
+            text += `\n`;
+            
+            // Monster 2 details
+            text += `Monster 2: ${p.monster2.name}\n`;
+            text += `- CR: ${p.monster2.cr} | Type: ${p.monster2.type} | Size: ${p.monster2.size || 'medium'}\n`;
+            text += `- AC: ${p.monster2.ac || 'Unknown'} | HP: ${p.monster2.hp || 'Unknown'}\n`;
+            text += `- Tags: ${p.monster2.synergy_tags.join(', ')}\n`;
+            if (p.monster2.source) {
+                text += `- Source: ${p.monster2.source.title || 'D&D 5e System Reference Document'} (${p.monster2.source.abbreviation}) p.${p.monster2.source.page}\n`;
+            }
+            if (p.monster2.environmental_signs) {
+                text += `- Environmental Signs:\n${p.monster2.environmental_signs.map(sign => `  • ${sign}`).join('\n')}\n`;
+            }
+            
+            text += `\n`;
+            
+            // Synergy details
+            text += `Synergy: ${p.synergy.type.toUpperCase()}\n${p.synergy.explanation}\n\n`;
+            
+            // Encounter details
+            text += `Encounter Details:\n`;
+            text += `- Total CR: ${p.total_cr}\n`;
+            text += `- Context: ${p.context}\n`;
+            text += `- Dice Rolls: ${p.dice_rolls}\n\n`;
+            
+            text += `Generated by Monster Pairing System - 3-Tier Creativity Engine`;
+            
+            // Create and download file
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `monster-pairing-${p.monster1.name.replace(/\s+/g, '-')}-${p.monster2.name.replace(/\s+/g, '-')}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function copyToClipboard() {
+            if (!window.currentPairing) return;
+            
+            const p = window.currentPairing;
+            const text = `${p.monster1.name} + ${p.monster2.name} (CR ${p.total_cr}) - ${p.synergy.type} synergy: ${p.synergy.explanation}`;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✅ Copied!';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                }, 2000);
+            }).catch(() => {
+                // Fallback for browsers that don't support clipboard API
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✅ Copied!';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                }, 2000);
+            });
         }
 
         // Generate initial pairing on load
