@@ -1,0 +1,2110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monster Pairing Generator - NEW 3-TIER SYSTEM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c1810, #4a2c2a);
+            color: #f0f0f0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #d4af37;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
+        }
+
+        .header .new-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #cccccc;
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .creativity-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .creativity-option {
+            background: rgba(0,0,0,0.4);
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .creativity-option:hover {
+            transform: translateY(-2px);
+            border-color: rgba(212, 175, 55, 0.5);
+        }
+
+        .creativity-option.selected {
+            border-color: #d4af37;
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .creativity-option .icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .creativity-option .title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #d4af37;
+            margin-bottom: 8px;
+        }
+
+        .creativity-option .description {
+            font-size: 0.9rem;
+            color: #cccccc;
+            line-height: 1.4;
+        }
+
+        .generate-section {
+            text-align: center;
+        }
+
+        .generate-btn {
+            background: linear-gradient(45deg, #d4af37, #f4d03f);
+            color: #2c1810;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .results {
+            margin-top: 30px;
+        }
+
+        .encounter-cards {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .monster-card {
+            background: rgba(0,0,0,0.4);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .monster-name {
+            font-size: 1.4rem;
+            color: #d4af37;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .monster-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .stat-item {
+            padding: 4px 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+        }
+
+        .source-info {
+            font-size: 0.8rem;
+            color: #aaaaaa;
+            text-align: center;
+            margin-top: 8px;
+            padding: 4px 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            font-style: italic;
+        }
+
+        .synergy-connector {
+            text-align: center;
+            font-size: 2rem;
+            color: #d4af37;
+        }
+
+        .synergy-info {
+            background: rgba(0,0,0,0.4);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            text-align: center;
+        }
+
+        .synergy-title {
+            font-size: 1.3rem;
+            color: #d4af37;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .synergy-explanation {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .narrative-suggestions {
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .narrative-title {
+            font-size: 1.1rem;
+            color: #d4af37;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .narrative-list {
+            text-align: left;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .narrative-list li {
+            margin-bottom: 5px;
+        }
+
+        .loading {
+            text-align: center;
+            color: #d4af37;
+            font-size: 1.2rem;
+            margin: 20px 0;
+        }
+
+        .creativity-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .badge-logical { background: #28a745; }
+        .badge-balanced { background: #fd7e14; }
+        .badge-chaotic { background: #dc3545; }
+
+        @media (max-width: 768px) {
+            .encounter-cards {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .synergy-connector {
+                transform: rotate(90deg);
+                margin: 10px 0;
+            }
+            
+            .monster-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .creativity-selector {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🐉 Monster Pairing Generator 🐉</h1>
+            <div class="new-badge">🎯 NEW 3-TIER SYSTEM 🎯</div>
+            <p>Research-based creativity system with meaningful differentiation</p>
+        </div>
+
+        <div class="controls">
+            <div class="creativity-selector">
+                <div class="creativity-option" data-level="0" onclick="selectCreativity(0)">
+                    <div class="icon">🔐</div>
+                    <div class="title">LOGICAL</div>
+                    <div class="description">80% sensible pairings, strict CR limits (≤5), verified synergies preferred</div>
+                </div>
+                
+                <div class="creativity-option selected" data-level="1" onclick="selectCreativity(1)">
+                    <div class="icon">⚖️</div>
+                    <div class="title">BALANCED</div>
+                    <div class="description">50/50 logical/creative mix, moderate CR limits (≤10), narrative variety</div>
+                </div>
+                
+                <div class="creativity-option" data-level="2" onclick="selectCreativity(2)">
+                    <div class="icon">🌪️</div>
+                    <div class="title">CHAOTIC</div>
+                    <div class="description">80% absurd pairings, no limits, reality-bending explanations</div>
+                </div>
+            </div>
+            
+            <div class="generate-section">
+                <button class="generate-btn" onclick="generatePairing()">🎲 Generate Monster Pairing</button>
+            </div>
+        </div>
+
+        <div id="loadingDiv" class="loading" style="display: none;">
+            <div>⚔️ Rolling the dice of fate... ⚔️</div>
+        </div>
+
+        <div id="resultsDiv" class="results">
+            <!-- Results will be populated here -->
+        </div>
+    </div>
+
+    <script>
+        // Monster Pairing Generator - NEW 3-TIER SYSTEM
+        class MonsterPairingGenerator {
+            constructor() {
+                this.loadData();
+                this.selectedCreativity = 1; // Default to Balanced
+            }
+
+            loadData() {
+                // Monster database with 100+ creatures
+this.monsterData = {
+    monsters: [
+        {
+            name: "Fire Elemental",
+            cr: 5,
+            type: "elemental",
+            size: "large",
+            ac: 13,
+            hp: 102,
+            synergy_tags: ["fire_dealer", "immunity_fire", "aoe_damage", "ignition_source"],
+            environmental_signs: ["Scorched earth and burned vegetation", "Lingering heat and smoky scent"],
+            source: {
+                abbreviation: "SRD",
+                page: 125
+            }
+        },
+        {
+            name: "Iron Golem",
+            cr: 16,
+            type: "construct",
+            size: "large",
+            ac: 20,
+            hp: 210,
+            synergy_tags: ["fire_healed", "immunity_fire", "metal_construct", "magic_resistance"],
+            environmental_signs: ["Heavy footprints and mechanical sounds", "Lingering magical aura"],
+            source: {
+                abbreviation: "SRD",
+                page: 157
+            }
+        },
+        {
+            name: "Hobgoblin",
+            cr: 0.5,
+            type: "humanoid",
+            size: "medium",
+            ac: 18,
+            hp: 11,
+            synergy_tags: ["martial_advantage", "pack_fighter", "tactical_coordination"],
+            environmental_signs: ["Disturbed stone and echo patterns", "Broken branches and disturbed undergrowth"],
+            source: {
+                abbreviation: "SRD",
+                page: 186
+            }
+        },
+        {
+            name: "Wolf",
+            cr: 0.25,
+            type: "beast",
+            size: "medium",
+            ac: 13,
+            hp: 11,
+            synergy_tags: ["pack_tactics", "prone_inflictor", "keen_hearing"],
+            environmental_signs: ["Animal tracks and territorial markings", "Disturbed vegetation and prey remains"],
+            source: {
+                abbreviation: "SRD",
+                page: 341
+            }
+        },
+        {
+            name: "Shambling Mound",
+            cr: 5,
+            type: "plant",
+            size: "large",
+            ac: 15,
+            hp: 136,
+            synergy_tags: ["lightning_healed", "engulf_grappler", "swamp_native", "immunity_lightning"],
+            environmental_signs: ["Broken branches and disturbed undergrowth", "Murky water disturbance and strange sounds"],
+            source: {
+                abbreviation: "SRD",
+                page: 270
+            }
+        },
+        {
+            name: "Will-o'-Wisp",
+            cr: 2,
+            type: "undead",
+            size: "tiny",
+            ac: 19,
+            hp: 22,
+            synergy_tags: ["lightning_dealer", "incorporeal", "consume_life", "lure_tactic"],
+            environmental_signs: ["Electrical discharge marks on surfaces", "Metallic taste in the air"],
+            source: {
+                abbreviation: "SRD",
+                page: 301
+            }
+        },
+        {
+            name: "Gelatinous Cube",
+            cr: 2,
+            type: "ooze",
+            size: "large",
+            ac: 6,
+            hp: 84,
+            synergy_tags: ["engulf_controller", "acid_dealer", "transparent", "dungeon_cleaner"],
+            environmental_signs: ["Acid-etched stone and corroded metal", "Acrid chemical smell"],
+            source: {
+                abbreviation: "SRD",
+                page: 242
+            }
+        },
+        {
+            name: "Clay Golem",
+            cr: 9,
+            type: "construct",
+            size: "large",
+            ac: 14,
+            hp: 133,
+            synergy_tags: ["acid_healed", "immunity_acid", "construct_durability", "haste_benefit"],
+            environmental_signs: ["Heavy footprints and mechanical sounds", "Lingering magical aura"],
+            source: {
+                abbreviation: "SRD",
+                page: 168
+            }
+        },
+        {
+            name: "Owlbear",
+            cr: 3,
+            type: "monstrosity",
+            size: "large",
+            ac: 13,
+            hp: 59,
+            synergy_tags: ["keen_sight", "territorial", "fierce_predator"],
+            environmental_signs: ["Broken branches and disturbed undergrowth"],
+            source: {
+                abbreviation: "SRD",
+                page: 249
+            }
+        },
+        {
+            name: "Stirge",
+            cr: 0.125,
+            type: "beast",
+            size: "tiny",
+            ac: 14,
+            hp: 2,
+            synergy_tags: ["blood_drain", "attach_grappler", "swarm_behavior", "flying_pest"],
+            environmental_signs: ["Animal tracks and territorial markings", "Disturbed vegetation and prey remains"],
+            source: {
+                abbreviation: "SRD",
+                page: 284
+            }
+        },
+        {
+            name: "Goblin",
+            cr: 0.25,
+            type: "humanoid",
+            size: "small",
+            ac: 15,
+            hp: 7,
+            synergy_tags: ["nimble_escape", "pack_fighter", "sneaky", "small_size"],
+            environmental_signs: ["Disturbed stone and echo patterns", "Broken branches and disturbed undergrowth"],
+            source: {
+                abbreviation: "SRD",
+                page: 166
+            }
+        },
+        {
+            name: "Skeleton",
+            cr: 0.25,
+            type: "undead",
+            size: "medium",
+            ac: 13,
+            hp: 13,
+            synergy_tags: ["undead_resilience", "no_morale", "basic_undead", "bone_construct"],
+            environmental_signs: ["Unnatural cold and eerie silence", "Withered plants and necrotic energy"],
+            source: {
+                abbreviation: "SRD",
+                page: 272
+            }
+        },
+        {
+            name: "Orc",
+            cr: 0.5,
+            type: "humanoid",
+            size: "medium",
+            ac: 13,
+            hp: 15,
+            synergy_tags: ["aggressive", "relentless", "tribal_warrior", "intimidating"],
+            environmental_signs: ["Disturbed stone and echo patterns"],
+            source: {
+                abbreviation: "SRD",
+                page: 246
+            }
+        },
+        {
+            name: "Brown Bear",
+            cr: 1,
+            type: "beast",
+            size: "large",
+            ac: 11,
+            hp: 34,
+            synergy_tags: ["keen_smell", "territorial", "grapple_specialist", "natural_predator"],
+            environmental_signs: ["Animal tracks and territorial markings", "Disturbed vegetation and prey remains"],
+            source: {
+                abbreviation: "SRD",
+                page: 319
+            }
+        },
+        {
+            name: "Dire Wolf",
+            cr: 1,
+            type: "beast",
+            size: "large",
+            ac: 14,
+            hp: 37,
+            synergy_tags: ["pack_tactics", "prone_inflictor", "keen_hearing", "alpha_predator"],
+            environmental_signs: ["Animal tracks and territorial markings", "Disturbed vegetation and prey remains"],
+            source: {
+                abbreviation: "SRD",
+                page: 321
+            }
+        },
+        {
+            name: "Bugbear",
+            cr: 1,
+            type: "humanoid",
+            size: "medium",
+            ac: 16,
+            hp: 27,
+            synergy_tags: ["brute_force", "surprise_attack", "sneaky", "reach_weapon"],
+            environmental_signs: ["Disturbed stone and echo patterns", "Broken branches and disturbed undergrowth"],
+            source: {
+                abbreviation: "SRD",
+                page: 33
+            }
+        },
+        {
+            name: "Giant Spider",
+            cr: 1,
+            type: "beast",
+            size: "large",
+            ac: 14,
+            hp: 26,
+            synergy_tags: ["web_restraint", "poison_dealer", "climb_specialist", "ambush_predator"],
+            environmental_signs: ["Animal tracks and territorial markings", "Disturbed vegetation and prey remains"],
+            source: {
+                abbreviation: "SRD",
+                page: 328
+            }
+        },
+        {
+            name: "Ghoul",
+            cr: 1,
+            type: "undead",
+            size: "medium",
+            ac: 12,
+            hp: 22,
+            synergy_tags: ["paralysis_inflector", "undead_resilience", "consume_flesh", "pack_undead"],
+            environmental_signs: ["Unnatural cold and eerie silence", "Withered plants and necrotic energy"],
+            source: {
+                abbreviation: "SRD",
+                page: 148
+            }
+        },
+        {
+            name: "Ochre Jelly",
+            cr: 2,
+            type: "ooze",
+            size: "large",
+            ac: 8,
+            hp: 45,
+            synergy_tags: ["acid_dealer", "split_creature", "immunity_lightning", "ooze_nature"],
+            environmental_signs: ["Acid-etched stone and corroded metal", "Acrid chemical smell"],
+            source: {
+                abbreviation: "SRD",
+                page: 243
+            }
+        },
+        {
+            name: "Ogre",
+            cr: 2,
+            type: "giant",
+            size: "large",
+            ac: 11,
+            hp: 59,
+            synergy_tags: ["giant_strength", "simple_minded", "brute_force", "large_size"],
+            environmental_signs: ["Broken branches and disturbed undergrowth"],
+            source: {
+                abbreviation: "SRD",
+                page: 237
+            }
+        },
+        {
+            name: "Griffon",
+            cr: 2,
+            type: "monstrosity",
+            size: "large",
+            ac: 12,
+            hp: 59,
+            synergy_tags: ["aerial_superiority", "keen_sight", "dive_attack", "mount_potential"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "SRD",
+                page: 174
+            }
+        },
+        {
+            name: "Wight",
+            cr: 3,
+            type: "undead",
+            size: "medium",
+            ac: 14,
+            hp: 45,
+            synergy_tags: ["life_drain", "undead_leader", "create_spawn", "intelligent_undead"],
+            environmental_signs: ["Unnatural cold and eerie silence", "Withered plants and necrotic energy"],
+            source: {
+                abbreviation: "SRD",
+                page: 300
+            }
+        },
+        {
+            name: "Minotaur",
+            cr: 3,
+            type: "monstrosity",
+            size: "large",
+            ac: 14,
+            hp: 76,
+            synergy_tags: ["charge_attack", "labyrinth_master", "relentless", "horn_gore"],
+            environmental_signs: ["Disturbed stone and echo patterns"],
+            source: {
+                abbreviation: "SRD",
+                page: 223
+            }
+        },
+        {
+            name: "Manticore",
+            cr: 3,
+            type: "monstrosity",
+            size: "large",
+            ac: 14,
+            hp: 68,
+            synergy_tags: ["tail_spikes", "aerial_artillery", "intelligent_predator", "flying_threat"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "SRD",
+                page: 213
+            }
+        },
+        {
+            name: "Displacer Beast",
+            cr: 3,
+            type: "monstrosity",
+            size: "large",
+            ac: 13,
+            hp: 85,
+            synergy_tags: ["displacement", "tentacle_reach", "illusion_defense", "pack_hunter"],
+            environmental_signs: ["Broken branches and disturbed undergrowth"],
+            source: {
+                abbreviation: "SRD",
+                page: 81
+            }
+        },
+        {
+            name: "Hell Hound",
+            cr: 3,
+            type: "fiend",
+            size: "medium",
+            ac: 15,
+            hp: 45,
+            synergy_tags: ["fire_dealer", "pack_tactics", "keen_hearing", "infernal_beast"],
+            environmental_signs: ["Scorched earth and burned vegetation", "Lingering heat and smoky scent"],
+            source: {
+                abbreviation: "SRD",
+                page: 182
+            }
+        },
+        {
+            name: "Rust Monster",
+            cr: 0.5,
+            type: "monstrosity",
+            size: "medium",
+            ac: 14,
+            hp: 27,
+            synergy_tags: ["metal_destruction", "equipment_threat", "antennae_sense", "utility_monster"],
+            environmental_signs: ["Disturbed stone and echo patterns"],
+            source: {
+                abbreviation: "SRD",
+                page: 262
+            }
+        },
+        {
+            name: "Doppelganger",
+            cr: 3,
+            type: "monstrosity",
+            size: "medium",
+            ac: 14,
+            hp: 52,
+            synergy_tags: ["shapeshifter", "deception_master", "ambush_specialist", "social_infiltrator"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "SRD",
+                page: 82
+            }
+        },
+        {
+            name: "Banshee",
+            cr: 4,
+            type: "undead",
+            size: "medium",
+            ac: 12,
+            hp: 58,
+            synergy_tags: ["wail_attack", "incorporeal", "fear_aura", "intelligent_undead"],
+            environmental_signs: ["Unnatural cold and eerie silence", "Withered plants and necrotic energy"],
+            source: {
+                abbreviation: "SRD",
+                page: 23
+            }
+        },
+        {
+            name: "Ettin",
+            cr: 4,
+            type: "giant",
+            size: "large",
+            ac: 12,
+            hp: 85,
+            synergy_tags: ["two_heads", "wakeful", "giant_strength", "dual_attacks"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "SRD",
+                page: 132
+            }
+        },
+        {
+            name: "Black Pudding",
+            cr: 4,
+            type: "ooze",
+            size: "large",
+            ac: 7,
+            hp: 85,
+            synergy_tags: ["acid_dealer", "corrosive", "split_creature", "equipment_destruction"],
+            environmental_signs: ["Acid-etched stone and corroded metal", "Acrid chemical smell"],
+            source: {
+                abbreviation: "SRD",
+                page: 31
+            }
+        },
+        {
+            name: "Troll",
+            cr: 5,
+            type: "giant",
+            size: "large",
+            ac: 15,
+            hp: 84,
+            synergy_tags: ["regeneration", "keen_smell", "fire_vulnerable", "relentless"],
+            environmental_signs: ["Broken branches and disturbed undergrowth", "Murky water disturbance and strange sounds"],
+            source: {
+                abbreviation: "SRD",
+                page: 291
+            }
+        },
+        {
+            name: "Bulezau",
+            cr: 3,
+            type: "fiend",
+            size: "medium",
+            ac: 14,
+            hp: 52,
+            synergy_tags: ["rotting_presence", "standing_leap", "demonic_resilience", "herd_mentality"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "SRD",
+                page: 52
+            }
+        },
+        {
+            name: "Medusa",
+            cr: 6,
+            type: "monstrosity",
+            size: "medium",
+            ac: 15,
+            hp: 127,
+            synergy_tags: ["petrifying_gaze", "snake_hair", "intelligent_predator", "lair_guardian"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "SRD",
+                page: 214
+            }
+        },
+        {
+            name: "Chimera",
+            cr: 6,
+            type: "monstrosity",
+            size: "large",
+            ac: 14,
+            hp: 114,
+            synergy_tags: ["fire_breath", "aerial_superiority", "multi_attack", "triple_threat"],
+            environmental_signs: ["Scorched earth and burned vegetation", "Lingering heat and smoky scent"],
+            source: {
+                abbreviation: "SRD",
+                page: 39
+            }
+        },
+        {
+            name: "Hill Giant",
+            cr: 5,
+            type: "giant",
+            size: "huge",
+            ac: 13,
+            hp: 105,
+            synergy_tags: ["giant_strength", "rock_throwing", "huge_size", "simple_minded"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "SRD",
+                page: 155
+            }
+        },
+        {
+            name: "Wyvern",
+            cr: 6,
+            type: "dragon",
+            size: "large",
+            ac: 13,
+            hp: 110,
+            synergy_tags: ["poison_stinger", "aerial_superiority", "dive_attack", "draconic_presence"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "SRD",
+                page: 303
+            }
+        },
+        {
+            name: "Young Black Dragon",
+            cr: 7,
+            type: "dragon",
+            size: "large",
+            ac: 18,
+            hp: 127,
+            synergy_tags: ["acid_breath", "swamp_native", "draconic_presence", "legendary_creature"],
+            environmental_signs: ["Acid-etched stone and corroded metal", "Acrid chemical smell"],
+            source: {
+                abbreviation: "SRD",
+                page: 88
+            }
+        },
+        {
+            name: "Stone Giant",
+            cr: 7,
+            type: "giant",
+            size: "huge",
+            ac: 17,
+            hp: 126,
+            synergy_tags: ["stone_camouflage", "rock_throwing", "giant_strength", "mountain_native"],
+            environmental_signs: ["Disturbed stone and echo patterns"],
+            source: {
+                abbreviation: "SRD",
+                page: 156
+            }
+        },
+        {
+            name: "Mind Flayer",
+            cr: 7,
+            type: "aberration",
+            size: "medium",
+            ac: 15,
+            hp: 71,
+            synergy_tags: ["mind_blast", "domination", "telepathy", "aberrant_master"],
+            environmental_signs: ["Disturbed stone and echo patterns"],
+            source: {
+                abbreviation: "SRD",
+                page: 222
+            }
+        },
+        {
+            name: "Frost Giant",
+            cr: 8,
+            type: "giant",
+            size: "huge",
+            ac: 15,
+            hp: 138,
+            synergy_tags: ["cold_immunity", "rock_throwing", "giant_strength", "ice_native"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "SRD",
+                page: 155
+            }
+        },
+        {
+            name: "Young Red Dragon",
+            cr: 10,
+            type: "dragon",
+            size: "large",
+            ac: 18,
+            hp: 178,
+            synergy_tags: ["fire_breath", "draconic_presence", "legendary_creature", "fire_immunity"],
+            environmental_signs: ["Scorched earth and burned vegetation", "Lingering heat and smoky scent"],
+            source: {
+                abbreviation: "SRD",
+                page: 98
+            }
+        },
+        {
+            name: "Aboleth",
+            cr: 10,
+            type: "aberration",
+            size: "large",
+            ac: 17,
+            hp: 135,
+            synergy_tags: ["domination", "psychic_slavery", "aquatic_master", "legendary_creature"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "SRD",
+                page: 13
+            }
+        },
+        {
+            name: "Beholder",
+            cr: 13,
+            type: "aberration",
+            size: "large",
+            ac: 18,
+            hp: 180,
+            synergy_tags: ["antimagic_cone", "eye_rays", "legendary_creature", "aberrant_master"],
+            environmental_signs: ["Scorched earth and burned vegetation", "Lingering heat and smoky scent"],
+            source: {
+                abbreviation: "SRD",
+                page: 28
+            }
+        },
+        {
+            name: "Adult Black Dragon",
+            cr: 14,
+            type: "dragon",
+            size: "huge",
+            ac: 19,
+            hp: 195,
+            synergy_tags: ["acid_breath", "legendary_creature", "lair_actions", "regional_effects"],
+            environmental_signs: ["Acid-etched stone and corroded metal", "Acrid chemical smell"],
+            source: {
+                abbreviation: "SRD",
+                page: 88
+            }
+        },
+        {
+            name: "Adult Red Dragon",
+            cr: 17,
+            type: "dragon",
+            size: "huge",
+            ac: 19,
+            hp: 256,
+            synergy_tags: ["fire_breath", "legendary_creature", "lair_actions", "regional_effects"],
+            environmental_signs: ["Scorched earth and burned vegetation", "Lingering heat and smoky scent"],
+            source: {
+                abbreviation: "SRD",
+                page: 98
+            }
+        },
+        {
+            name: "Ancient Black Dragon",
+            cr: 21,
+            type: "dragon",
+            size: "gargantuan",
+            ac: 22,
+            hp: 367,
+            synergy_tags: ["acid_breath", "legendary_creature", "lair_actions", "regional_effects"],
+            environmental_signs: ["Acid-etched stone and corroded metal", "Acrid chemical smell"],
+            source: {
+                abbreviation: "SRD",
+                page: 88
+            }
+        },
+        {
+            name: "Tarrasque",
+            cr: 30,
+            type: "monstrosity",
+            size: "gargantuan",
+            ac: 25,
+            hp: 676,
+            synergy_tags: ["legendary_creature", "magic_resistance", "reflective_carapace", "world_ending"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "SRD",
+                page: 286
+            }
+        },
+        {
+            name: "Banshee",
+            cr: 4,
+            type: "undead",
+            size: "medium",
+            ac: 12,
+            hp: 58,
+            synergy_tags: ["incorporeal", "horror_presence", "wail_of_doom", "undead_resilience", "fear_aura"],
+            environmental_signs: ["Unnatural cold and eerie silence", "Withered plants and necrotic energy"],
+            source: {
+                abbreviation: "SRD",
+                page: 23
+            }
+        },
+        {
+            name: "Bulezau",
+            cr: 3,
+            type: "fiend",
+            size: "medium",
+            ac: 14,
+            hp: 52,
+            synergy_tags: ["rotting_presence", "standing_leap", "sure_footed", "fiend_heritage"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "A5ESRD",
+                page: 45
+            }
+        },
+        {
+            name: "Chimera",
+            cr: 6,
+            type: "monstrosity",
+            size: "large",
+            ac: 14,
+            hp: 114,
+            synergy_tags: ["flight", "fire_breath", "multi_headed", "keen_smell"],
+            environmental_signs: ["Scorched earth and burned vegetation", "Lingering heat and smoky scent"],
+            source: {
+                abbreviation: "SRD",
+                page: 39
+            }
+        },
+        {
+            name: "Displacer Beast",
+            cr: 3,
+            type: "monstrosity",
+            size: "large",
+            ac: 13,
+            hp: 85,
+            synergy_tags: ["displacement", "avoidance", "pack_tactics", "keen_sight"],
+            environmental_signs: ["Broken branches and disturbed undergrowth"],
+            source: {
+                abbreviation: "SRD",
+                page: 81
+            }
+        },
+        {
+            name: "Manticore",
+            cr: 3,
+            type: "monstrosity",
+            size: "large",
+            ac: 14,
+            hp: 68,
+            synergy_tags: ["flight", "tail_spikes", "ranged_attack", "keen_sight"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "SRD",
+                page: 213
+            }
+        },
+        {
+            name: "Rust Monster",
+            cr: 0.5,
+            type: "monstrosity",
+            size: "medium",
+            ac: 14,
+            hp: 27,
+            synergy_tags: ["metal_corrosion", "antennae_sense", "equipment_destroyer"],
+            environmental_signs: ["Disturbed stone and echo patterns"],
+            source: {
+                abbreviation: "SRD",
+                page: 262
+            }
+        },
+        {
+            name: "Sphinx",
+            cr: 11,
+            type: "monstrosity",
+            size: "large",
+            ac: 17,
+            hp: 199,
+            synergy_tags: ["flight", "spell_caster", "magic_resistance", "legend_lore", "riddle_master"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "SRD",
+                page: 281
+            }
+        },
+        {
+            name: "Aboleth",
+            cr: 10,
+            type: "aberration",
+            size: "large",
+            ac: 17,
+            hp: 135,
+            synergy_tags: ["telepathy", "mucous_cloud", "enslave", "psychic_drain", "aquatic"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "SRD",
+                page: 13
+            }
+        },
+        {
+            name: "Ankheg",
+            cr: 2,
+            type: "monstrosity",
+            size: "large",
+            ac: 14,
+            hp: 39,
+            synergy_tags: ["burrow", "acid_spray", "tremorsense", "ambush_predator"],
+            environmental_signs: ["Acid-etched stone and corroded metal", "Acrid chemical smell"],
+            source: {
+                abbreviation: "SRD",
+                page: 14
+            }
+        },
+        {
+            name: "Basilisk",
+            cr: 3,
+            type: "monstrosity",
+            size: "medium",
+            ac: 15,
+            hp: 52,
+            synergy_tags: ["petrifying_gaze", "keen_smell", "slow_movement"],
+            environmental_signs: ["Disturbed stone and echo patterns"],
+            source: {
+                abbreviation: "SRD",
+                page: 24
+            }
+        },
+        {
+            name: "Behir",
+            cr: 11,
+            type: "monstrosity",
+            size: "huge",
+            ac: 17,
+            hp: 168,
+            synergy_tags: ["lightning_breath", "constrict", "swallow", "immunity_lightning"],
+            environmental_signs: ["Electrical discharge marks on surfaces", "Metallic taste in the air"],
+            source: {
+                abbreviation: "SRD",
+                page: 25
+            }
+        },
+        {
+            name: "Bulette",
+            cr: 5,
+            type: "monstrosity",
+            size: "large",
+            ac: 17,
+            hp: 94,
+            synergy_tags: ["burrow", "deadly_leap", "standing_leap", "tremorsense"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "SRD",
+                page: 34
+            }
+        },
+        {
+            name: "Carrion Crawler",
+            cr: 2,
+            type: "monstrosity",
+            size: "large",
+            ac: 13,
+            hp: 51,
+            synergy_tags: ["paralysis_poison", "keen_smell", "spider_climb", "tentacles"],
+            environmental_signs: ["Disturbed stone and echo patterns"],
+            source: {
+                abbreviation: "SRD",
+                page: 37
+            }
+        },
+        {
+            name: "Cloaker",
+            cr: 8,
+            type: "aberration",
+            size: "large",
+            ac: 16,
+            hp: 78,
+            synergy_tags: ["damage_transfer", "false_appearance", "light_sensitivity", "moan"],
+            environmental_signs: ["Disturbed stone and echo patterns"],
+            source: {
+                abbreviation: "SRD",
+                page: 41
+            }
+        },
+        {
+            name: "Cockatrice",
+            cr: 0.5,
+            type: "monstrosity",
+            size: "small",
+            ac: 11,
+            hp: 27,
+            synergy_tags: ["petrifying_bite", "flight", "keen_sight"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "SRD",
+                page: 42
+            }
+        },
+        {
+            name: "Couatl",
+            cr: 4,
+            type: "celestial",
+            size: "medium",
+            ac: 19,
+            hp: 97,
+            synergy_tags: ["flight", "spell_caster", "poison_sting", "telepathy", "shapechange"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "SRD",
+                page: 43
+            }
+        },
+        {
+            name: "Darkmantle",
+            cr: 0.5,
+            type: "monstrosity",
+            size: "small",
+            ac: 11,
+            hp: 22,
+            synergy_tags: ["darkness_aura", "echolocation", "false_appearance", "grappler"],
+            environmental_signs: ["Disturbed stone and echo patterns"],
+            source: {
+                abbreviation: "SRD",
+                page: 44
+            }
+        },
+        {
+            name: "Dryad",
+            cr: 1,
+            type: "fey",
+            size: "medium",
+            ac: 11,
+            hp: 22,
+            synergy_tags: ["fey_charm", "tree_stride", "speak_with_beasts", "innate_spellcasting"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "SRD",
+                page: 111
+            }
+        },
+        {
+            name: "Ettercap",
+            cr: 2,
+            type: "monstrosity",
+            size: "medium",
+            ac: 13,
+            hp: 44,
+            synergy_tags: ["spider_climb", "web_sense", "web_walker", "poison_bite"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "SRD",
+                page: 131
+            }
+        },
+        {
+            name: "Gargoyle",
+            cr: 2,
+            type: "elemental",
+            size: "medium",
+            ac: 15,
+            hp: 52,
+            synergy_tags: ["false_appearance", "damage_resistance", "flight", "keen_sight"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "SRD",
+                page: 140
+            }
+        },
+        {
+            name: "Grick",
+            cr: 2,
+            type: "monstrosity",
+            size: "medium",
+            ac: 14,
+            hp: 27,
+            synergy_tags: ["damage_resistance", "stone_camouflage", "tentacle_attacks"],
+            environmental_signs: ["Disturbed stone and echo patterns"],
+            source: {
+                abbreviation: "SRD",
+                page: 175
+            }
+        },
+        {
+            name: "Harpy",
+            cr: 1,
+            type: "monstrosity",
+            size: "medium",
+            ac: 11,
+            hp: 38,
+            synergy_tags: ["luring_song", "flight", "keen_sight"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "SRD",
+                page: 181
+            }
+        },
+        {
+            name: "Hook Horror",
+            cr: 3,
+            type: "monstrosity",
+            size: "large",
+            ac: 15,
+            hp: 75,
+            synergy_tags: ["echolocation", "keen_hearing", "hook_attacks"],
+            environmental_signs: ["Disturbed stone and echo patterns"],
+            source: {
+                abbreviation: "SRD",
+                page: 189
+            }
+        },
+        {
+            name: "Lamia",
+            cr: 4,
+            type: "monstrosity",
+            size: "large",
+            ac: 13,
+            hp: 97,
+            synergy_tags: ["intoxicating_touch", "spell_caster", "deception", "wisdom_drain"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "SRD",
+                page: 201
+            }
+        },
+        {
+            name: "Medusa",
+            cr: 6,
+            type: "monstrosity",
+            size: "medium",
+            ac: 15,
+            hp: 127,
+            synergy_tags: ["petrifying_gaze", "snake_hair", "poison_immunity"],
+            environmental_signs: ["Disturbed stone and echo patterns"],
+            source: {
+                abbreviation: "SRD",
+                page: 214
+            }
+        },
+        {
+            name: "Minotaur",
+            cr: 3,
+            type: "monstrosity",
+            size: "large",
+            ac: 14,
+            hp: 76,
+            synergy_tags: ["charge", "labyrinthine_recall", "reckless", "keen_smell"],
+            environmental_signs: ["Disturbed stone and echo patterns"],
+            source: {
+                abbreviation: "SRD",
+                page: 223
+            }
+        },
+        {
+            name: "Nothic",
+            cr: 2,
+            type: "aberration",
+            size: "medium",
+            ac: 15,
+            hp: 45,
+            synergy_tags: ["weird_insight", "rotting_gaze", "keen_sight", "stealth"],
+            environmental_signs: ["Disturbed stone and echo patterns"],
+            source: {
+                abbreviation: "SRD",
+                page: 236
+            }
+        },
+        {
+            name: "Otyugh",
+            cr: 5,
+            type: "aberration",
+            size: "large",
+            ac: 14,
+            hp: 114,
+            synergy_tags: ["disease_bite", "tentacle_slam", "telepathy", "limited_telepathy"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "SRD",
+                page: 248
+            }
+        },
+        {
+            name: "Khalkos Soldier",
+            cr: 4,
+            type: "fiend",
+            size: "medium",
+            ac: 16,
+            hp: 65,
+            synergy_tags: ["larvae_infection", "telepathy", "fiend_heritage", "disease_carrier"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "A5ESRD",
+                page: 78
+            }
+        },
+        {
+            name: "Apex Khalkos",
+            cr: 9,
+            type: "fiend",
+            size: "large",
+            ac: 18,
+            hp: 142,
+            synergy_tags: ["larvae_infection", "telepathy", "flight", "command_khalkos", "burrow"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "A5ESRD",
+                page: 76
+            }
+        },
+        {
+            name: "Phase Monster",
+            cr: 6,
+            type: "aberration",
+            size: "large",
+            ac: 15,
+            hp: 95,
+            synergy_tags: ["phase_step", "dimensional_anchor", "ethereal_sight", "phase_disruption"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "A5ESRD",
+                page: 112
+            }
+        },
+        {
+            name: "Essence Dragon Wyrmling",
+            cr: 3,
+            type: "dragon",
+            size: "medium",
+            ac: 16,
+            hp: 58,
+            synergy_tags: ["flight", "essence_breath", "keen_senses", "draconic_presence"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "A5ESRD",
+                page: 89
+            }
+        },
+        {
+            name: "Gem Dragon Wyrmling",
+            cr: 4,
+            type: "dragon",
+            size: "medium",
+            ac: 17,
+            hp: 75,
+            synergy_tags: ["flight", "psychic_breath", "telepathy", "gem_resonance", "burrow"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "A5ESRD",
+                page: 95
+            }
+        },
+        {
+            name: "Medusa Queen",
+            cr: 12,
+            type: "monstrosity",
+            size: "large",
+            ac: 18,
+            hp: 199,
+            synergy_tags: ["petrifying_gaze", "snake_hair", "command_medusae", "poison_immunity", "serpent_lord"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "A5ESRD",
+                page: 128
+            }
+        },
+        {
+            name: "Great Wyrm Dragon",
+            cr: 26,
+            type: "dragon",
+            size: "gargantuan",
+            ac: 22,
+            hp: 565,
+            synergy_tags: ["legendary_creature", "lair_actions", "regional_effects", "frightful_presence", "ancient_magic"],
+            environmental_signs: ["Scorched earth and burned vegetation", "Lingering heat and smoky scent"],
+            source: {
+                abbreviation: "A5ESRD",
+                page: 156
+            }
+        },
+        {
+            name: "Skeletal Knight",
+            cr: 5,
+            type: "undead",
+            size: "medium",
+            ac: 18,
+            hp: 82,
+            synergy_tags: ["undead_resilience", "formation_tactics", "weapon_mastery", "undead_command"],
+            environmental_signs: ["Unnatural cold and eerie silence", "Withered plants and necrotic energy"],
+            source: {
+                abbreviation: "A5ESRD",
+                page: 145
+            }
+        },
+        {
+            name: "Horned Devil",
+            cr: 11,
+            type: "fiend",
+            size: "large",
+            ac: 18,
+            hp: 178,
+            synergy_tags: ["flight", "magic_resistance", "devil_sight", "infernal_tactics"],
+            environmental_signs: ["Scorched earth and burned vegetation", "Lingering heat and smoky scent"],
+            source: {
+                abbreviation: "A5ESRD",
+                page: 167
+            }
+        },
+        {
+            name: "Blink Dog Alpha",
+            cr: 2,
+            type: "fey",
+            size: "medium",
+            ac: 13,
+            hp: 45,
+            synergy_tags: ["pack_tactics", "teleport", "keen_hearing", "fey_ancestry", "pack_leader"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "A5ESRD",
+                page: 189
+            }
+        },
+        {
+            name: "Storm Giant Quintessent",
+            cr: 16,
+            type: "giant",
+            size: "huge",
+            ac: 20,
+            hp: 275,
+            synergy_tags: ["spell_caster", "storm_aura", "lightning_mastery", "amphibious", "giant_strength"],
+            environmental_signs: ["Electrical discharge marks on surfaces", "Metallic taste in the air"],
+            source: {
+                abbreviation: "A5ESRD",
+                page: 201
+            }
+        },
+        {
+            name: "Archfey Noble",
+            cr: 14,
+            type: "fey",
+            size: "medium",
+            ac: 17,
+            hp: 165,
+            synergy_tags: ["legendary_creature", "fey_magic", "charm_mastery", "nature_command", "teleport"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "A5ESRD",
+                page: 213
+            }
+        },
+        {
+            name: "Elemental Monolith",
+            cr: 8,
+            type: "elemental",
+            size: "huge",
+            ac: 16,
+            hp: 126,
+            synergy_tags: ["elemental_aura", "slam_tremor", "elemental_immunity", "massive_size"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "A5ESRD",
+                page: 225
+            }
+        },
+        {
+            name: "Lich Lord",
+            cr: 18,
+            type: "undead",
+            size: "medium",
+            ac: 20,
+            hp: 225,
+            synergy_tags: ["legendary_creature", "spell_mastery", "undead_command", "phylactery", "paralyzing_touch"],
+            environmental_signs: ["Unnatural cold and eerie silence", "Withered plants and necrotic energy"],
+            source: {
+                abbreviation: "A5ESRD",
+                page: 237
+            }
+        },
+        {
+            name: "Void Knight",
+            cr: 7,
+            type: "undead",
+            size: "medium",
+            ac: 18,
+            hp: 112,
+            synergy_tags: ["void_aura", "undead_resilience", "life_drain", "shadow_step"],
+            environmental_signs: ["Unnatural cold and eerie silence", "Withered plants and necrotic energy"],
+            source: {
+                abbreviation: "A5ESRD",
+                page: 249
+            }
+        },
+        {
+            name: "Crystal Sentinel",
+            cr: 6,
+            type: "construct",
+            size: "large",
+            ac: 17,
+            hp: 95,
+            synergy_tags: ["crystal_resonance", "force_beam", "construct_resilience", "magic_detection"],
+            environmental_signs: ["Heavy footprints and mechanical sounds", "Lingering magical aura"],
+            source: {
+                abbreviation: "A5ESRD",
+                page: 261
+            }
+        },
+        {
+            name: "Prismatic Dragon",
+            cr: 15,
+            type: "dragon",
+            size: "huge",
+            ac: 19,
+            hp: 212,
+            synergy_tags: ["prismatic_breath", "color_spray", "flight", "legendary_creature", "spell_reflection"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "A5ESRD",
+                page: 273
+            }
+        },
+        {
+            name: "Nightmare Spawn",
+            cr: 4,
+            type: "fiend",
+            size: "large",
+            ac: 15,
+            hp: 68,
+            synergy_tags: ["ethereal_stride", "fear_aura", "fire_immunity", "nightmare_touch"],
+            environmental_signs: ["Scorched earth and burned vegetation", "Lingering heat and smoky scent"],
+            source: {
+                abbreviation: "A5ESRD",
+                page: 285
+            }
+        },
+        {
+            name: "Astral Deva Champion",
+            cr: 13,
+            type: "celestial",
+            size: "medium",
+            ac: 19,
+            hp: 175,
+            synergy_tags: ["divine_magic", "healing_touch", "flight", "celestial_weapons", "aura_of_protection"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "A5ESRD",
+                page: 297
+            }
+        },
+        {
+            name: "Shadow Assassin",
+            cr: 8,
+            type: "humanoid",
+            size: "medium",
+            ac: 16,
+            hp: 91,
+            synergy_tags: ["shadow_step", "sneak_attack", "poison_weapons", "assassination", "stealth_mastery"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "A5ESRD",
+                page: 309
+            }
+        },
+        {
+            name: "Dire Owlbear",
+            cr: 7,
+            type: "monstrosity",
+            size: "huge",
+            ac: 15,
+            hp: 133,
+            synergy_tags: ["keen_sight", "keen_smell", "powerful_build", "dire_rage", "territorial"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "A5ESRD",
+                page: 321
+            }
+        },
+        {
+            name: "Psionic Aboleth",
+            cr: 12,
+            type: "aberration",
+            size: "large",
+            ac: 18,
+            hp: 152,
+            synergy_tags: ["telepathy", "psychic_drain", "mind_control", "mucous_cloud", "enslave"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "A5ESRD",
+                page: 333
+            }
+        },
+        {
+            name: "Infernal War Machine",
+            cr: 10,
+            type: "construct",
+            size: "huge",
+            ac: 19,
+            hp: 157,
+            synergy_tags: ["siege_weapons", "infernal_artillery", "construct_resilience", "hellfire_cannons"],
+            environmental_signs: ["Scorched earth and burned vegetation", "Lingering heat and smoky scent"],
+            source: {
+                abbreviation: "A5ESRD",
+                page: 345
+            }
+        },
+        {
+            name: "Fey Lord",
+            cr: 17,
+            type: "fey",
+            size: "medium",
+            ac: 18,
+            hp: 195,
+            synergy_tags: ["legendary_creature", "fey_magic", "reality_alteration", "nature_mastery", "time_distortion"],
+            environmental_signs: ["Unusual disturbances in the area", "Sense of being watched"],
+            source: {
+                abbreviation: "A5ESRD",
+                page: 357
+            }
+        }
+    ]
+};
+
+                // Known synergy relationships
+                this.synergyData = {
+                    mechanical_synergies: [
+                        ["fire_dealer", "fire_healed"],
+                        ["pack_tactics", "martial_advantage"],
+                        ["prone_inflictor", "pack_tactics"],
+                        ["blood_drain", "prone_inflictor"]
+                    ],
+                    contradictory_synergies: [
+                        ["fire_dealer", "fire_vulnerable"],
+                        ["fire_dealer", "regeneration"],
+                        ["pack_tactics", "territorial"],
+                        ["undead_master", "turn_undead"]
+                    ]
+                };
+            }
+
+            // NEW 3-TIER WEIGHTED SELECTION SYSTEM
+            weightedMonsterSelection(creativityLevel) {
+                const monsters = this.monsterData.monsters;
+                
+                if (creativityLevel === 0) {
+                    return this.logicalSelection(monsters);
+                } else if (creativityLevel === 1) {
+                    return this.balancedSelection(monsters);
+                } else {
+                    return this.chaoticSelection(monsters);
+                }
+            }
+
+            logicalSelection(monsters) {
+                // Generate 3 options, pick most logical
+                const options = [];
+                for (let i = 0; i < 3; i++) {
+                    const m1 = monsters[Math.floor(Math.random() * monsters.length)];
+                    let m2 = monsters[Math.floor(Math.random() * monsters.length)];
+                    while (m1.name === m2.name) {
+                        m2 = monsters[Math.floor(Math.random() * monsters.length)];
+                    }
+                    
+                    const score = this.calculateLogicScore(m1, m2);
+                    options.push({m1, m2, score});
+                }
+                
+                options.sort((a, b) => b.score - a.score);
+                return [options[0].m1, options[0].m2];
+            }
+
+            balancedSelection(monsters) {
+                if (Math.random() < 0.5) {
+                    return this.logicalSelection(monsters);
+                } else {
+                    // Bias toward different types/CRs
+                    const m1 = monsters[Math.floor(Math.random() * monsters.length)];
+                    const differentMonsters = monsters.filter(m => 
+                        m.name !== m1.name && 
+                        (Math.abs(m.cr - m1.cr) > 3 || m.type !== m1.type)
+                    );
+                    const m2 = differentMonsters.length > 0 ? 
+                        differentMonsters[Math.floor(Math.random() * differentMonsters.length)] :
+                        monsters[Math.floor(Math.random() * monsters.length)];
+                    return [m1, m2];
+                }
+            }
+
+            chaoticSelection(monsters) {
+                // Generate 3 options, pick most chaotic
+                const options = [];
+                for (let i = 0; i < 3; i++) {
+                    const m1 = monsters[Math.floor(Math.random() * monsters.length)];
+                    let m2 = monsters[Math.floor(Math.random() * monsters.length)];
+                    while (m1.name === m2.name) {
+                        m2 = monsters[Math.floor(Math.random() * monsters.length)];
+                    }
+                    
+                    const score = this.calculateChaosScore(m1, m2);
+                    options.push({m1, m2, score});
+                }
+                
+                options.sort((a, b) => b.score - a.score);
+                return [options[0].m1, options[0].m2];
+            }
+
+            calculateLogicScore(m1, m2) {
+                let score = 0;
+                
+                // Prefer similar CR (within 5)
+                const crDiff = Math.abs(m1.cr - m2.cr);
+                if (crDiff <= 2) score += 3;
+                else if (crDiff <= 5) score += 1;
+                
+                // Prefer same type
+                if (m1.type === m2.type) score += 2;
+                
+                // Check for mechanical synergy
+                if (this.checkMechanicalSynergy(m1, m2)) score += 4;
+                
+                // Penalize contradictory synergies
+                if (this.checkContradictorySynergy(m1, m2)) score -= 6;
+                
+                return score;
+            }
+
+            calculateChaosScore(m1, m2) {
+                let score = 0;
+                
+                // Prefer extreme CR differences
+                const crDiff = Math.abs(m1.cr - m2.cr);
+                if (crDiff > 15) score += 4;
+                else if (crDiff > 10) score += 3;
+                else if (crDiff > 5) score += 1;
+                
+                // Prefer different types
+                if (m1.type !== m2.type) score += 1;
+                
+                // Reward contradictory synergies
+                if (this.checkContradictorySynergy(m1, m2)) score += 5;
+                
+                // Size mismatches
+                const sizeDiff = this.getSizeDifference(m1.size, m2.size);
+                if (sizeDiff >= 3) score += 3;
+                else if (sizeDiff >= 2) score += 2;
+                
+                return score;
+            }
+
+            checkMechanicalSynergy(m1, m2) {
+                const tags1 = new Set(m1.synergy_tags || []);
+                const tags2 = new Set(m2.synergy_tags || []);
+                
+                for (const [tag1, tag2] of this.synergyData.mechanical_synergies) {
+                    if ((tags1.has(tag1) && tags2.has(tag2)) || 
+                        (tags1.has(tag2) && tags2.has(tag1))) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            checkContradictorySynergy(m1, m2) {
+                const tags1 = new Set(m1.synergy_tags || []);
+                const tags2 = new Set(m2.synergy_tags || []);
+                
+                for (const [tag1, tag2] of this.synergyData.contradictory_synergies) {
+                    if ((tags1.has(tag1) && tags2.has(tag2)) || 
+                        (tags1.has(tag2) && tags2.has(tag1))) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            getSizeDifference(size1, size2) {
+                const sizes = ["tiny", "small", "medium", "large", "huge", "gargantuan"];
+                const idx1 = sizes.indexOf(size1?.toLowerCase() || "medium");
+                const idx2 = sizes.indexOf(size2?.toLowerCase() || "medium");
+                return Math.abs(idx1 - idx2);
+            }
+
+            generateSynergyExplanation(m1, m2, creativityLevel) {
+                const isMechanical = this.checkMechanicalSynergy(m1, m2);
+                const isContradictory = this.checkContradictorySynergy(m1, m2);
+                
+                if (isMechanical) {
+                    return "Verified mechanical synergy: " + this.getMechanicalExplanation(m1, m2);
+                }
+                
+                if (creativityLevel === 0) {
+                    return `Sensible partnership: ${m1.name} provides support while ${m2.name} handles primary threats`;
+                } else if (creativityLevel === 1) {
+                    if (isContradictory) {
+                        return `Unlikely alliance: ${m1.name} and ${m2.name} overcome their differences through mutual necessity`;
+                    } else {
+                        return `Effective partnership: ${m1.name} and ${m2.name} complement each other's strengths`;
+                    }
+                } else { // creativityLevel === 2
+                    if (isContradictory) {
+                        const explanations = [
+                            `Reality-bending paradox: ${m1.name} and ${m2.name} exist in impossible harmony`,
+                            `Cosmic joke: ${m1.name} partners with ${m2.name} despite all logic`,
+                            `Chaotic fusion: ${m1.name} and ${m2.name} break the rules of nature itself`
+                        ];
+                        return explanations[Math.floor(Math.random() * explanations.length)];
+                    } else {
+                        const explanations = [
+                            `Surreal partnership: ${m1.name} and ${m2.name} defy conventional encounter design`,
+                            `Absurd alliance: ${m1.name} teams up with ${m2.name} for reasons beyond mortal comprehension`,
+                            `Chaotic synergy: ${m1.name} and ${m2.name} create impossible tactical advantages`
+                        ];
+                        return explanations[Math.floor(Math.random() * explanations.length)];
+                    }
+                }
+            }
+
+            getMechanicalExplanation(m1, m2) {
+                const tags1 = new Set(m1.synergy_tags || []);
+                const tags2 = new Set(m2.synergy_tags || []);
+                
+                if (tags1.has("fire_dealer") && tags2.has("fire_healed")) {
+                    return "Fire Elemental's attacks heal the Iron Golem through Fire Absorption";
+                } else if (tags2.has("fire_dealer") && tags1.has("fire_healed")) {
+                    return "Iron Golem heals from Fire Elemental's attacks";
+                } else if ((tags1.has("pack_tactics") && tags2.has("martial_advantage")) ||
+                          (tags2.has("pack_tactics") && tags1.has("martial_advantage"))) {
+                    return "Pack tactics provides advantage when ally uses coordinated maneuvers";
+                }
+                
+                return "Mechanical abilities interact synergistically";
+            }
+
+            generateNarrativeSuggestions(m1, m2, creativityLevel) {
+                const isContradictory = this.checkContradictorySynergy(m1, m2);
+                
+                if (creativityLevel === 0) {
+                    return [
+                        "Both creatures inhabit the same territory and formed a natural alliance",
+                        "Shared threat forced cooperation for mutual survival", 
+                        "Complementary hunting patterns led to beneficial partnership",
+                        "Environmental pressures created this practical alliance"
+                    ];
+                } else if (creativityLevel === 1) {
+                    if (isContradictory) {
+                        return [
+                            "Ancient magical binding forces their cooperation despite natural opposition",
+                            "Desperate circumstances overcame their inherent conflict",
+                            "Mutual enemy proved more threatening than their differences",
+                            "Shared trauma from adventurer attacks created unlikely bond"
+                        ];
+                    } else {
+                        return [
+                            "Chance encounter led to recognition of mutual benefit",
+                            "Seasonal migration patterns brought them together",
+                            "Both creatures were drawn to the same magical phenomenon", 
+                            "Common prey species encouraged coordinated hunting"
+                        ];
+                    }
+                } else { // creativityLevel === 2
+                    return [
+                        "Reality glitch made this impossible partnership temporarily stable",
+                        "Time paradox created causal loop binding their fates together",
+                        "Trickster deity arranged this pairing as cosmic entertainment",
+                        "Dimensional rift fused aspects of their consciousness",
+                        "Chaos magic experiment resulted in permanent psychic bond",
+                        "Both creatures are actually illusions of the same entity",
+                        "Quantum entanglement on the material plane"
+                    ];
+                }
+            }
+
+            generatePairing() {
+                const [m1, m2] = this.weightedMonsterSelection(this.selectedCreativity);
+                
+                const synergy = this.generateSynergyExplanation(m1, m2, this.selectedCreativity);
+                const narratives = this.generateNarrativeSuggestions(m1, m2, this.selectedCreativity);
+                
+                return {
+                    monster1: m1,
+                    monster2: m2, 
+                    combinedCR: m1.cr + m2.cr,
+                    synergy: synergy,
+                    narratives: narratives.slice(0, 3),
+                    creativityLevel: this.selectedCreativity
+                };
+            }
+        }
+
+        // Global generator instance
+        const generator = new MonsterPairingGenerator();
+
+        // UI Functions
+        function selectCreativity(level) {
+            // Update selection visuals
+            document.querySelectorAll('.creativity-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            document.querySelector(`[data-level="${level}"]`).classList.add('selected');
+            
+            // Update generator state
+            generator.selectedCreativity = level;
+        }
+
+        function generatePairing() {
+            document.getElementById('loadingDiv').style.display = 'block';
+            document.getElementById('resultsDiv').innerHTML = '';
+            
+            setTimeout(() => {
+                const result = generator.generatePairing();
+                displayResults(result);
+                document.getElementById('loadingDiv').style.display = 'none';
+            }, 500);
+        }
+
+        function displayResults(result) {
+            const creativityNames = ["LOGICAL", "BALANCED", "CHAOTIC"];
+            const creativityBadges = ["badge-logical", "badge-balanced", "badge-chaotic"];
+            const creativityIcons = ["🔐", "⚖️", "🌪️"];
+            
+            const html = `
+                <div class="encounter-cards">
+                    <div class="monster-card">
+                        <div class="creativity-badge ${creativityBadges[result.creativityLevel]}">
+                            ${creativityIcons[result.creativityLevel]} ${creativityNames[result.creativityLevel]}
+                        </div>
+                        <div class="monster-name">${result.monster1.name}</div>
+                        <div class="monster-stats">
+                            <div class="stat-item">CR: ${result.monster1.cr}</div>
+                            <div class="stat-item">Type: ${result.monster1.type}</div>
+                            <div class="stat-item">Size: ${result.monster1.size}</div>
+                            <div class="stat-item">AC: ${result.monster1.ac}</div>
+                            <div class="stat-item">HP: ${result.monster1.hp}</div>
+                        </div>
+                        ${result.monster1.source ? `
+                            <div class="source-info">Source: ${result.monster1.source.abbreviation} p.${result.monster1.source.page}</div>
+                        ` : ""}
+                        ${result.monster1.environmental_signs ? `
+                            <div style="margin-top: 10px; font-size: 0.8rem; color: #cccccc;">
+                                <strong>Environmental Signs:</strong><br>
+                                ${result.monster1.environmental_signs.slice(0, 2).join('<br>')}
+                            </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div class="synergy-connector">⚡</div>
+                    
+                    <div class="monster-card">
+                        <div class="creativity-badge ${creativityBadges[result.creativityLevel]}">
+                            ${creativityIcons[result.creativityLevel]} ${creativityNames[result.creativityLevel]}
+                        </div>
+                        <div class="monster-name">${result.monster2.name}</div>
+                        <div class="monster-stats">
+                            <div class="stat-item">CR: ${result.monster2.cr}</div>
+                            <div class="stat-item">Type: ${result.monster2.type}</div>
+                            <div class="stat-item">Size: ${result.monster2.size}</div>
+                            <div class="stat-item">AC: ${result.monster2.ac}</div>
+                            <div class="stat-item">HP: ${result.monster2.hp}</div>
+                        </div>
+                        ${result.monster2.source ? `
+                            <div class="source-info">Source: ${result.monster2.source.abbreviation} p.${result.monster2.source.page}</div>
+                        ` : ""}
+                        ${result.monster2.environmental_signs ? `
+                            <div style="margin-top: 10px; font-size: 0.8rem; color: #cccccc;">
+                                <strong>Environmental Signs:</strong><br>
+                                ${result.monster2.environmental_signs.slice(0, 2).join('<br>')}
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+                
+                <div class="synergy-info">
+                    <div class="synergy-title">🧠 Encounter Synergy</div>
+                    <div class="synergy-explanation">${result.synergy}</div>
+                    <div style="color: #d4af37; font-weight: bold;">Combined Challenge Rating: ${result.combinedCR}</div>
+                    
+                    <div class="narrative-suggestions">
+                        <div class="narrative-title">📖 Why They're Working Together:</div>
+                        <ul class="narrative-list">
+                            ${result.narratives.map(narrative => `<li>${narrative}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('resultsDiv').innerHTML = html;
+        }
+
+        // Generate initial pairing on load
+        window.onload = () => generatePairing();
+    </script>
+</body>
+</html>
